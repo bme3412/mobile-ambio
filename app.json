@@ -1,13 +1,14 @@
 {
   "expo": {
-    "name": "mobile-ambio",
-    "slug": "mobile-ambio",
+    "name": "Ambio Daily",
+    "slug": "ambio-daily",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ambio.daily"
     },
     "android": {
       "adaptiveIcon": {
@@ -16,10 +17,43 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ambio.daily",
+      "blockedPermissions": ["android.permission.CAMERA"],
+      "permissions": ["android.permission.BLUETOOTH_CONNECT"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "./plugins/with-voice-permissions",
+      "expo-router",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow Ambio to use your microphone for French conversation."
+        }
+      ],
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          "cameraPermission": false,
+          "microphonePermission": "Allow Ambio to use your microphone for French conversation."
+        }
+      ],
+      "expo-secure-store"
+    ],
+    "scheme": "ambio",
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "11832366-6806-432d-82ba-4b74d5676907"
+      }
+    },
+    "owner": "bme3412"
   }
 }

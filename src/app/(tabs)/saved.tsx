@@ -1,0 +1,222 @@
+import { hasPronunciation, pronounce } from "../../playback/pronunciation";
+import { episode } from "../../data/episode";
+import { IconButton } from "../../components/IconButton";
+import { useState } from "react";
+import { PracticeSheet } from "../../components/PracticeSheet";
+import { Bookmark } from "../../domain/types";
+import { Pressable, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Body, Button, colors, Page, s } from "../../components/ui";
+import { useLibrary } from "../../state/library";
+import { player } from "../../playback/player";
+export default function Saved() {
+  const {
+    bookmarks: allBookmarks,
+    sessions,
+    review,
+    toggle,
+    storageError,
+    transcripts,
+  } = useLibrary();
+  const bookmarks = allBookmarks;
+  const [practice, setPractice] = useState<Bookmark[] | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [filter, setFilter] = useState("All");
+  const visible = bookmarks.filter(
+    (b) =>
+      filter === "All" || (filter === "To review" ? !b.reviewed : b.reviewed),
+  );
+  return (
+    <Page mini>
+      <Text
+        accessibilityRole="header"
+        style={{
+          fontSize: 19,
+          fontWeight: "600",
+          color: colors.ink,
+          textAlign: "center",
+          paddingVertical: 10,
+        }}
+      >
+        Saved Words
+      </Text>
+      {storageError && (
+        <Body>
+          Local storage is unavailable. Changes may not survive a restart.
+        </Body>
+      )}
+      <View style={{ flexDirection: "row", gap: 8 }}>
+        {["All", "To review", "Reviewed"].map((f) => (
+          <Pressable
+            key={f}
+            accessibilityRole="button"
+            accessibilityState={{ selected: filter === f }}
+            onPress={() => setFilter(f)}
+            style={{
+              backgroundColor: filter === f ? colors.tint : "#F3F3F6",
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              flex: 1,
+              alignItems: "center",
+              borderRadius: 24,
+            }}
+          >
+            <Text style={{ color: colors.ink }}>{f}</Text>
+          </Pressable>
+        ))}
+      </View>
+      {bookmarks.length === 0 ? (
+        <View style={s.card}>
+          <Text style={s.subheading}>Something will stay with you.</Text>
+          <Body>
+            Tap any word in the transcript, then save it here with its original
+            context.
+          </Body>
+          <Button
+            label="Explore the transcript"
+            onPress={() => router.push("/transcript")}
+          />
+        </View>
+      ) : (
+        visible.map((b, index) => (
+          <View
+            key={b.id}
+            style={{
+              paddingVertical: 12,
+              marginTop: index === 0 ? 0 : -18,
+              borderBottomWidth: 1,
+              borderColor: colors.line,
+              gap: 10,
+            }}
+          >
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
+            >
+              {b.episodeId === episode.id && (
+                <View
+                  style={{ backgroundColor: colors.lavender, borderRadius: 24 }}
+                >
+                  <IconButton
+                    label={`Replay ${b.word.text}`}
+                    icon="volume"
+                    tint={colors.purple}
+                    onPress={() => {
+                      const segment = episode.segments.find(
+                        (s) => s.id === b.segmentId,
+                      );
+                      if (hasPronunciation(b.word.text)) pronounce(b.word.text);
+                      else if (segment)
+                        player.replay(segment.startMs, segment.endMs);
+                      router.push("/transcript");
+                    }}
+                  />
+                </View>
+              )}
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Details for ${b.word.text}`}
+                onPress={() => setExpanded(expanded === b.id ? null : b.id)}
+                style={{
+                  flex: 1,
+                  gap: 7,
+                  minHeight: 44,
+                  justifyContent: "center",
+                }}
+              >
+                <Text
+                  style={{ fontSize: 16, fontWeight: "500", color: colors.ink }}
+                >
+                  {b.word.text}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={{ fontSize: 13, color: colors.muted }}
+                >
+                  {b.context}
+                </Text>
+              </Pressable>
+              <IconButton
+                label={`Options for ${b.word.text}`}
+                icon="more"
+                onPress={() => setExpanded(expanded === b.id ? null : b.id)}
+              />
+            </View>
+            {expanded === b.id && (
+              <View
+                style={{
+                  marginLeft: 56,
+                  padding: 14,
+                  borderRadius: 16,
+                  backgroundColor: colors.tint,
+                  gap: 8,
+                }}
+              >
+                <Body>{b.word.meaning}</Body>
+                <Text style={s.note}>
+                  {b.episodeId === episode.id
+                    ? episode.title
+                    : "Earlier edition"}{" "}
+                  · {b.reviewed ? "Reviewed" : "To review"}
+                </Text>
+                <Button
+                  secondary
+                  label={b.reviewed ? "Mark for review" : "Mark reviewed"}
+                  onPress={() => review(b.id)}
+                />
+                <Button
+                  secondary
+                  label="Remove expression"
+                  onPress={() => toggle(b)}
+                />
+              </View>
+            )}
+          </View>
+        ))
+      )}
+      {bookmarks.length > 0 && visible.length === 0 && (
+        <Body>No words in this view yet.</Body>
+      )}
+      {bookmarks.length > 0 && (
+        <Button
+          label="Practice saved expressions"
+          onPress={() => setPractice([...bookmarks])}
+        />
+      )}
+      <View style={[s.divider, { marginTop: 12 }]} />
+      <Text style={{ fontSize: 15, fontWeight: "600", color: colors.muted }}>
+        Saved transcripts
+      </Text>
+      {transcripts.includes(episode.id) ? (
+        <Button
+          secondary
+          label={`${episode.title} · transcript`}
+          onPress={() => router.push("/transcript")}
+        />
+      ) : (
+        <Body>
+          Save the episode transcript from the player to keep it here.
+        </Body>
+      )}
+      <Text style={{ fontSize: 15, fontWeight: "600", color: colors.muted }}>
+        Conversation history
+      </Text>
+      {sessions.length === 0 ? (
+        <Body>Your saved conversation recaps will appear here.</Body>
+      ) : (
+        sessions.map((session) => (
+          <Button
+            key={session.id}
+            secondary
+            label={`${session.isMock ? "Demo session" : "Voice conversation"} · ${new Date(session.createdAt).toLocaleDateString()}`}
+            onPress={() =>
+              router.push({ pathname: "/recap", params: { id: session.id } })
+            }
+          />
+        ))
+      )}
+      {practice && (
+        <PracticeSheet items={practice} onClose={() => setPractice(null)} />
+      )}
+    </Page>
+  );
+}

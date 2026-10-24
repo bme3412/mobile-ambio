@@ -1,0 +1,97 @@
+export const vocabulary: Record<
+  string,
+  {
+    meaning: string;
+    pronunciation: string;
+    kind: string;
+    example: string;
+    translation: string;
+  }
+> = {
+  baignade: {
+    meaning: "swimming or bathing for leisure",
+    pronunciation: "/bɛ.ɲad/",
+    kind: "noun · feminine",
+    example: "La baignade est autorisée dans cette zone.",
+    translation: "Swimming is allowed in this area.",
+  },
+  rassurer: {
+    meaning: "to reassure; to put someone’s mind at ease",
+    pronunciation: "/ʁa.sy.ʁe/",
+    kind: "verb",
+    example: "Ces informations me rassurent.",
+    translation: "This information reassures me.",
+  },
+  courant: {
+    meaning: "current; the movement of water in a river",
+    pronunciation: "/ku.ʁɑ̃/",
+    kind: "noun · masculine",
+    example: "Le courant est trop fort aujourd’hui.",
+    translation: "The current is too strong today.",
+  },
+  consignes: {
+    meaning: "instructions or rules to follow",
+    pronunciation: "/kɔ̃.siɲ/",
+    kind: "noun · feminine plural",
+    example: "Lisez les consignes avant de commencer.",
+    translation: "Read the instructions before starting.",
+  },
+  restauration: {
+    meaning:
+      "restoration: helping something recover; here, natural environments",
+    pronunciation: "/ʁɛs.tɔ.ʁa.sjɔ̃/",
+    kind: "noun · feminine",
+    example: "La restauration de cette rivière prendra du temps.",
+    translation: "Restoring this river will take time.",
+  },
+  dégradés: {
+    meaning: "damaged or deteriorated",
+    pronunciation: "/de.ɡʁa.de/",
+    kind: "adjective · masculine plural",
+    example: "Ces milieux dégradés ont besoin de protection.",
+    translation: "These damaged environments need protection.",
+  },
+  cadre: {
+    meaning: "framework; a structure that guides action",
+    pronunciation: "/kɑdʁ/",
+    kind: "noun · masculine",
+    example: "Ce projet donne un cadre à notre travail.",
+    translation: "This project gives our work a framework.",
+  },
+  savoirfaire: {
+    meaning: "know-how; practical skill gained through experience",
+    pronunciation: "/sa.vwaʁ.fɛʁ/",
+    kind: "noun · masculine",
+    example: "Elle transmet son savoir-faire aux apprentis.",
+    translation: "She passes her know-how on to apprentices.",
+  },
+  patrimoine: {
+    meaning: "heritage; what a community inherits and passes on",
+    pronunciation: "/pa.tʁi.mwan/",
+    kind: "noun · masculine",
+    example: "Cette tradition fait partie de notre patrimoine.",
+    translation: "This tradition is part of our heritage.",
+  },
+  immatériel: {
+    meaning:
+      "intangible; relating to practices or knowledge rather than physical objects",
+    pronunciation: "/i.ma.te.ʁjɛl/",
+    kind: "adjective",
+    example: "Le chant appartient au patrimoine immatériel.",
+    translation: "Singing belongs to intangible heritage.",
+  },
+  transmettre: {
+    meaning: "to pass on; to hand down",
+    pronunciation: "/tʁɑ̃s.mɛtʁ/",
+    kind: "verb",
+    example: "Je voudrais transmettre cette recette à mes enfants.",
+    translation: "I’d like to pass this recipe on to my children.",
+  },
+  réserve: {
+    meaning: "reservation; a doubt or qualification about an idea",
+    pronunciation: "/ʁe.zɛʁv/",
+    kind: "noun · feminine",
+    example: "Je soutiens ce projet, avec une réserve sur son coût.",
+    translation: "I support this project, with a reservation about its cost.",
+  },
+};

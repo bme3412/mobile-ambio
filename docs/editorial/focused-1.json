@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "data": {
+    "web": [
+      {
+        "url": "https://global.jaxa.jp/press/2026/10/20261021-1_e.html",
+        "title": "Completion of the Initial Critical Operations Phase of the Martian ... - JAXA",
+        "description": "# Press Release\n## Completion of the Initial Critical Operations Phase of the Martian Moons eXploration (MMX) Spacecraft\nOctober 21, 2026 (JST)\n\nToday, on October 21, the Japan Aerospace Exploration Agency (JAXA) confirmed that the critical sequence during the initial operations of the Martian Moons eXploration (MMX) spacecraft, which launched on October 20, was successfully completed and that the spacecraft is in good health.\n\n## Related Links\n- [MMX - Martian Moons eXploration (ISAS)](https://www.mmx.jaxa.jp/en/index.html)",
+        "position": 1
+      },
+      {
+        "url": "https://global.jaxa.jp/press/2026/10/20261018-1_e.html",
+        "title": "Launch time of the Martian Moons eXploration (MMX) spacecraft ...",
+        "description": "# Press Release\n## Launch time of the Martian Moons eXploration (MMX) spacecraft aboard H3 Launch Vehicle Flight No.10\nLaunch time:04:41:03 JST[*1](https://global.jaxa.jp/press/2026/10/20261018-1_e.html#note_01) [*2](https://global.jaxa.jp/press/2026/10/20261018-1_e.html#note_02)\n\nReserved launch period:October 21, 2026 – November 9, 2026\n\nLaunch site:Yoshinobu Launch Complex at the JAXA Tanegashima Space Center\n\n## Related Links\n- [MMX - Martian Moons eXploration (ISAS)](https://www.mmx.jaxa.jp/en/index.html)",
+        "position": 2
+      },
+      {
+        "url": "https://www.facebook.com/FriendsOfNASA/posts/japans-martian-moons-exploration-mmx-spacecraft-launch-jaxafriendsofnasaorg-full/1437805061793267/",
+        "title": "Jaxa mmx launch from tanegashima space center (oct 2026) - Facebook",
+        "description": "4 days ago · Japan's JAXA to Launch Mars Moons Exploration Mission in 2026 ... (MMX), scheduled to launch on October 20, 2026, Japan time.",
+        "position": 3
+      },
+      {
+        "url": "https://www.esa.int/Science_Exploration/Space_Science/Mars_moon_lander_set_to_launch_on_19_October",
+        "title": "Mars moon lander set to launch on 19 October - European Space Agency",
+        "description": "The Martian Moons eXploration (MMX) mission is set to launch into space on a H3 rocket from the Tanegashima Space Center at 04:41 JST on 20 October 2026 ...",
+        "position": 4
+      },
+      {
+        "url": "https://www.facebook.com/filipinosingermanyfb/videos/-japan-successfully-launches-mmx-mission-to-mars-moonsjaxa-confirmed-that-its-h3/2268627907327225/",
+        "title": "Japan Launches MMX Mars Moons Mission on JAXA H3 Rocket Oct 20 ...",
+        "description": "3 days ago · JAXA confirmed that its H3 rocket lifted off from Tanegashima Space Center on October 20, 2026, at 4:41 a.m. Japan time. The MMX spacecraft ...",
+        "position": 5
+      }
+    ]
+  },
+  "creditsUsed": 2,
+  "id": "01a16e6d-e214-7442-b85f-f0e933bb3870"
+}

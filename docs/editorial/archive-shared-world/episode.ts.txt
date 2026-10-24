@@ -1,0 +1,86 @@
+import editorial from "./editorial.json";
+import timingData from "./audio-timing.json";
+import { dictionary, normalizeWord } from "./dictionary";
+import { vocabulary } from "./vocabulary";
+import { Episode } from "../domain/types";
+export const episode: Episode = {
+  id: "shared-world-fr-01",
+  title: editorial.title,
+  subtitle: editorial.subtitle,
+  language: "fr",
+  durationMs: timingData.durationMs,
+  isMock: false,
+  cover: "",
+  segments: editorial.turns.map(([speaker, text, translation], i) => {
+    const { startMs, endMs } = timingData.segments[i];
+    const tokens = text.split(" ");
+    const words = tokens.map((text, j) => {
+      const key = normalizeWord(text);
+      return {
+        id: `shared01-s${i}-w${j}`,
+        text,
+        startMs: timingData.segments[i].words[j].startMs,
+        endMs: timingData.segments[i].words[j].endMs,
+        meaning: vocabulary[key]?.meaning ?? dictionary[key],
+      };
+    });
+    return {
+      id: `shared01-s${i}`,
+      speaker,
+      startMs,
+      endMs,
+      translation,
+      words,
+    };
+  }),
+  stories: [
+    {
+      id: "seine",
+      category: "PARIS · 2025–2026",
+      title: "La Seine, à partager",
+      description:
+        "Three swimming sites opened in July 2025. What does it take to turn a river into a shared public space?",
+      segmentId: "shared01-s2",
+    },
+    {
+      id: "nature",
+      category: "EUROPE · 2024",
+      title: "Réparer la nature",
+      description:
+        "The EU adopted restoration targets in June 2024. Camille and Louis distinguish an ambition from a result.",
+      segmentId: "shared01-s8",
+    },
+    {
+      id: "baguette",
+      category: "CULTURE · 2022",
+      title: "Plus qu’une baguette",
+      description:
+        "UNESCO recognized baguette know-how and culture in 2022. What are we really preserving?",
+      segmentId: "shared01-s14",
+    },
+  ],
+};
+export const episodeSources = [
+  {
+    title: "Seine swimming sites inaugurated · 5 July 2025",
+    publisher: "Préfecture d’Île-de-France",
+    url: "https://www.prefectures-regions.gouv.fr/ile-de-france/Region-et-institutions/L-action-de-l-Etat/Jeux-olympiques-et-paralympiques-de-Paris-2024-JOP-2024/Inauguration-des-premiers-sites-de-baignade-publique-securisee-en-Seine",
+  },
+  {
+    title: "2026 season and water checks · updated 10 July 2026",
+    publisher: "Ville de Paris",
+    url: "https://www.paris.fr/pages/baignade-en-seine-toutes-les-questions-que-vous-vous-posez-31533",
+  },
+  {
+    title: "Nature Restoration Regulation adopted · 17 June 2024",
+    publisher: "Council of the European Union",
+    url: "https://www.consilium.europa.eu/fr/press/press-releases/2024/06/17/nature-restoration-law-council-gives-final-green-light/",
+  },
+  {
+    title: "Baguette know-how and culture · inscribed 2022",
+    publisher: "UNESCO",
+    url: "https://ich.unesco.org/fr/RL/les-savoir-faire-artisanaux-et-la-culture-de-la-baguette-de-pain-01883",
+  },
+];
+export const speakingPrompt =
+  "Votre ville peut soutenir un seul projet : une baignade publique, la restauration d’un milieu naturel, ou la transmission d’un savoir-faire. Lequel choisissez-vous, et pourquoi ?";

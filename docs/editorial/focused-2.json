@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "data": {
+    "web": [
+      {
+        "url": "https://www.service-public.gouv.fr/particuliers/actualites/A15263?lang=en",
+        "title": "Passage à l'heure d'hiver - Service Public",
+        "description": "# Transition to winter time\nIt will be necessary to think about moving your watches back one hour in the night from Saturday 24 to Sunday 25 October 2026.",
+        "position": 1
+      },
+      {
+        "url": "https://www.service-public.gouv.fr/particuliers/actualites/A18820?lang=en",
+        "title": "Le passage à l'heure d'été, c'est pour bientôt - Service Public",
+        "description": "Le passage à l'heure d'été se déroulera dans la nuit du samedi 28 au dimanche 29 mars 2026. À 2 heures du matin, il sera alors 3 heures.",
+        "position": 2
+      },
+      {
+        "url": "https://www.info.gouv.fr/actualite/changement-d-heure-ce-qu-il-faut-savoir-sur-le-passage-a-l-heure-d-hiver",
+        "title": "Changement d'heure : ce qu'il faut savoir sur le passage à l'heure d'hiver",
+        "description": "# Changement d’heure : ce qu’il faut savoir sur le passage à l’heure d’hiver\nLe passage à l’heure d’hiver a lieu dans la nuit du samedi 24 au dimanche 25 octobre 2026.\n\nLa France passe à **l’heure d’hiver** dans **la nuit du samedi 24 au dimanche 25 octobre 2026**.",
+        "position": 3
+      },
+      {
+        "url": "https://www.facebook.com/ServicePublicFr/posts/%EF%B8%8F-le-changement-dheure-cest-ce-week-end-%E2%84%B9%EF%B8%8F-chaque-ann%C3%A9e-intervient-le-dernier-we/1618717353627178/",
+        "title": "Le changement d'heure, c'est ce week-end ! ℹ️ Chaque année intervient ...",
+        "description": "5 days ago · A 3 heures du matin, dans la nuit du samedi 24 octobre au dimanche 25 octobre, il sera donc 2 heures. .service-public.gouv. 25 octobre 2026. 25 ...",
+        "position": 4
+      },
+      {
+        "url": "https://www.service-public.gouv.fr/particuliers/actualites/A18466?lang=en",
+        "title": "Ce qui change en octobre 2026 | Service Public",
+        "description": "# What changes in October 2026\nHealth, accommodation, winter time... Discover the changes taking place from this October.\n\n## Agenda\nPublié le 09 octobre 2026\n\n[Accidents du travail et maladies professionnelles : baisse du plafond servant au calcul des indemnités journalières](https://www.service-public.gouv.fr/particuliers/actualites/A19080?lang=en)\n\n[Taxe foncière 2026 : quelle est la date limite pour payer ?](https://www.service-public.gouv.fr/particuliers/actualites/A15144?lang=en)",
+        "position": 5
+      }
+    ]
+  },
+  "creditsUsed": 2,
+  "id": "01a16e6d-e21a-7171-a77c-097f91cc0196"
+}

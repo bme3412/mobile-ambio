@@ -39,3 +39,11 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Local generated speech cache
+.audio-cache/
+
+# Hosted preview generated files and private deployment state
+preview/private/
+preview/.vercel/
+.preview-password.local

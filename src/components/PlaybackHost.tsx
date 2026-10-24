@@ -1,0 +1,56 @@
+import { setAudioModeAsync } from "expo-audio";
+import { stopPronunciation } from "../playback/pronunciation";
+import { useEffect } from "react";
+import { AppState, Platform } from "react-native";
+import { player } from "../playback/player";
+import { useLibrary } from "../state/library";
+import { episode } from "../data/episode";
+export function PlaybackHost() {
+  useEffect(() => {
+    if (Platform.OS !== "web")
+      void setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
+    const restore = () => {
+      const p = useLibrary.getState().progress;
+      if (p?.episodeId === episode.id) {
+        player.seek(p.positionMs);
+        player.setRate(p.rate);
+      }
+    };
+    const unsub = useLibrary.persist.onFinishHydration(restore);
+    if (useLibrary.persist.hasHydrated()) restore();
+    const save = () => {
+      if (!useLibrary.persist.hasHydrated()) return;
+      const p = player.getSnapshot();
+      useLibrary.getState().saveProgress({
+        episodeId: episode.id,
+        positionMs: p.positionMs,
+        rate: p.rate,
+      });
+    };
+    let last = Date.now();
+    const timer = setInterval(() => {
+      const now = Date.now();
+      player.tick(now - last);
+      last = now;
+    }, 100);
+    const persistence = setInterval(save, 3000);
+    const app = AppState.addEventListener("change", (state) => {
+      if (state !== "active") {
+        stopPronunciation();
+        player.pause();
+        save();
+      }
+      last = Date.now();
+    });
+    return () => {
+      clearInterval(timer);
+      clearInterval(persistence);
+      app.remove();
+      unsub();
+      save();
+      stopPronunciation();
+      player.dispose();
+    };
+  }, []);
+  return null;
+}
