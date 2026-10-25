@@ -99,3 +99,9 @@ Owner clarified the no-audio report used the wrong link and confirmed the curren
 Removed the player live-words box minimum height. Added 252 manually paired French/English phrases covering every original timed token exactly once. Player live words and Focus reader select a single short phrase by its first word timestamp; Focus reader English switches with the same phrase, and Replay phrase uses its exact audio boundaries. Bilingual transcript pairs short French phrases with English directly underneath instead of a full speaker-turn translation.
 
 Deployment `dpl_CJpyR9CubbjS86g1GGrjpMmCT4uz`, https://ambio-daily-preview-aazmyydtq-bme3412.vercel.app ; stable alias updated. Lint, typecheck, all 72 tests, export and private-package checks passed. Verified compact player layout and paired phrases in signed-in preview. Audio engine unchanged; native backend remains excluded.
+
+## Prevent Git pushes from replacing the private preview — 25 October 2026
+
+Pushing commit 96a3f17 triggered an empty production deployment from the repository root (`dpl_C7qHa2Zkp1wyAox3PFxai1iQ6oNA`) and reassigned the stable preview domain, producing Vercel 404 responses. Restored the alias to the verified phrase-sync deployment `dpl_CJpyR9CubbjS86g1GGrjpMmCT4uz`. Unauthenticated /player now returns the expected 401 password gate.
+
+Root vercel.json disables Git-triggered deployments. Continue deploying the explicitly packaged, password-gated web preview via CLI; ordinary source pushes must not replace it. This does not enable the still-local native backend or change preview credentials.
