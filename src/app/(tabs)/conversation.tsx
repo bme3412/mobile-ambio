@@ -34,7 +34,7 @@ export default function Conversation() {
     voice.getSnapshot,
   );
   const [captions, setCaptions] = useState(true);
-  const [fullTranscript, setFullTranscript] = useState(false);
+  const [fullTranscript, setFullTranscript] = useState(true);
   const [draft, setDraft] = useState("");
   const [available, setAvailable] = useState<boolean | null>(null);
   const [needsSignIn, setNeedsSignIn] = useState(false);

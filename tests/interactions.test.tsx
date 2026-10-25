@@ -7,6 +7,7 @@ import { WordSheet } from "../src/components/WordSheet";
 import { PlaybackControls } from "../src/components/PlaybackControls";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { episode } from "../src/data/episode";
+import { currentPhrase } from "../src/data/phrases";
 import { useLibrary } from "../src/state/library";
 import { player } from "../src/playback/player";
 beforeEach(() => {
@@ -133,9 +134,7 @@ test("player live words follow playback, seeking and word lookup by default", as
     ui.getByLabelText(`Look up ${segment.words[2].text}`).props
       .accessibilityState.selected,
   ).toBe(true);
-  expect(
-    ui.getByLabelText("Look up Bonjour,").props.accessibilityState.selected,
-  ).toBe(false);
+  expect(ui.queryByLabelText("Look up Bonjour,")).toBeNull();
   const next = episode.segments[1];
   await act(async () => {
     player.seek(next.words[0].startMs);
@@ -189,7 +188,7 @@ test("player opens focus reader and returns without interrupting listening", asy
   expect(player.getSnapshot().playing).toBe(true);
 });
 
-test("focus English toggle follows each displayed French sentence without changing audio", async () => {
+test("focus English toggle follows each displayed French phrase without changing audio", async () => {
   const ui = await render(<Player />);
   await fireEvent.press(ui.getByLabelText("Focus reader"));
   expect(ui.queryByTestId("focus-translation")).toBeNull();
@@ -198,33 +197,74 @@ test("focus English toggle follows each displayed French sentence without changi
   });
   await fireEvent.press(ui.getByLabelText("English translation"));
   expect(ui.getByTestId("focus-translation").props.children).toBe(
-    "Hello, welcome to Ambio Daily.",
+    "Hello, welcome",
   );
   expect(ui.getAllByTestId("focus-translation")).toHaveLength(1);
+  await act(async () => {
+    player.seek(episode.segments[0].words[2].startMs);
+  });
+  expect(ui.getByTestId("focus-translation").props.children).toBe(
+    "to Ambio Daily.",
+  );
   await act(async () => {
     player.seek(episode.segments[1].startMs);
   });
   expect(ui.getAllByTestId("focus-translation")[0].props.children).toBe(
-    "So, a small adjustment to my alarm clock, a very long trip, then a reward.",
+    "So, a small adjustment",
   );
   expect(player.getSnapshot().playing).toBe(true);
   await fireEvent.press(ui.getByLabelText("English translation"));
   expect(ui.queryByTestId("focus-translation")).toBeNull();
 });
 
-test("focus replay uses the current sentence boundaries and stops at its end", async () => {
+test("focus replay uses the current phrase boundaries and stops at its end", async () => {
   const ui = await render(<Player />);
   const words = episode.segments[0].words;
-  const endIndex = words.findIndex((word) => /[.!?]$/.test(word.text));
-  await act(async () => { player.seek(words[2].startMs); });
+  const phrase = currentPhrase(words[2].startMs);
+  await act(async () => {
+    player.seek(words[2].startMs);
+  });
   await fireEvent.press(ui.getByLabelText("Focus reader"));
-  await fireEvent.press(ui.getByLabelText("Replay sentence"));
+  await fireEvent.press(ui.getByLabelText("Replay phrase"));
   expect(player.getSnapshot()).toMatchObject({
-    positionMs: words[0].startMs,
-    replayEndMs: words[endIndex].endMs,
+    positionMs: phrase.words[0].startMs,
+    replayEndMs: phrase.words.at(-1)!.endMs,
     playing: true,
   });
-  await act(async () => { player.tick(10000); });
-  expect(player.getSnapshot().positionMs).toBe(words[endIndex].endMs);
+  await act(async () => {
+    player.tick(10000);
+  });
+  expect(player.getSnapshot().positionMs).toBe(phrase.words.at(-1)!.endMs);
   expect(player.getSnapshot().playing).toBe(false);
+});
+
+test("a touch without a drag does not disable transcript following", async () => {
+  const scroll = jest
+    .spyOn(FlatList.prototype, "scrollToIndex")
+    .mockImplementation(() => {});
+  const ui = await render(<Transcript />);
+  await fireEvent(ui.getByTestId("transcript-list"), "touchStart");
+  scroll.mockClear();
+  await act(async () => {
+    player.seek(episode.segments[2].startMs);
+  });
+  expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ index: 2 }));
+  expect(ui.queryByText("Browsing · playback continues")).toBeNull();
+  scroll.mockRestore();
+});
+
+test("resuming playback restores following after browsing", async () => {
+  const scroll = jest
+    .spyOn(FlatList.prototype, "scrollToIndex")
+    .mockImplementation(() => {});
+  const ui = await render(<Transcript />);
+  await fireEvent(ui.getByTestId("transcript-list"), "scrollBeginDrag");
+  await act(async () => {
+    player.seek(episode.segments[2].startMs);
+  });
+  scroll.mockClear();
+  await fireEvent.press(ui.getByLabelText("Resume current episode"));
+  expect(ui.getByText("Following the conversation")).toBeTruthy();
+  expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ index: 2 }));
+  scroll.mockRestore();
 });

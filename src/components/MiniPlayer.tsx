@@ -4,7 +4,13 @@ import { router } from "expo-router";
 import { episode } from "../data/episode";
 import { player, time, usePlayback } from "../playback/player";
 import { IconButton } from "./IconButton";
-export function MiniPlayer({ always = false }: { always?: boolean }) {
+export function MiniPlayer({
+  always = false,
+  onResume,
+}: {
+  always?: boolean;
+  onResume?: () => void;
+}) {
   const p = usePlayback();
   if (!always && !p.playing && p.positionMs === 0) return null;
   return (
@@ -51,7 +57,13 @@ export function MiniPlayer({ always = false }: { always?: boolean }) {
         filled
         label={p.playing ? "Pause current episode" : "Resume current episode"}
         icon={p.playing ? "pause" : "play"}
-        onPress={() => (p.playing ? player.pause() : player.play())}
+        onPress={() => {
+          if (p.playing) player.pause();
+          else {
+            onResume?.();
+            player.play();
+          }
+        }}
       />
     </View>
   );

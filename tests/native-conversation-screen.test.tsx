@@ -54,12 +54,13 @@ test("backgrounding releases a native conversation and leaves its recap saveable
       mockEvents.open();
       mockEvents.message(
         JSON.stringify({
-          type: "conversation.item.input_audio_transcription.completed",
+          type: "conversation.item.input_audio_transcription.delta",
           item_id: "user",
-          transcript: "Bonjour.",
+          delta: "Bonjour.",
         }),
       );
     });
+    expect(ui.getByText("Bonjour.")).toBeTruthy();
     expect(ui.getByText("LISTENING · TAKE YOUR TIME")).toBeTruthy();
     await act(async () => background("background"));
     expect(mockClose).toHaveBeenCalledTimes(1);

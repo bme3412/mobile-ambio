@@ -192,3 +192,42 @@ test.each(["timeout", "cancel"])(
     }
   },
 );
+
+test("learner captions stream before completion and final text replaces partial text", () => {
+  const voice = new VoiceConversation();
+  voice.handle({ type: "input_audio_buffer.committed", item_id: "u" });
+  voice.handle({
+    type: "conversation.item.input_audio_transcription.delta",
+    item_id: "u",
+    delta: "Je voudrais ",
+  });
+  expect(voice.getSnapshot().turns[0].text).toBe("Je voudrais ");
+  voice.handle({
+    type: "conversation.item.input_audio_transcription.delta",
+    item_id: "u",
+    delta: "parler.",
+  });
+  voice.handle({ type: "input_audio_buffer.committed", item_id: "u" });
+  expect(voice.getSnapshot().turns[0].text).toBe("Je voudrais parler.");
+  voice.handle({
+    type: "conversation.item.input_audio_transcription.completed",
+    item_id: "u",
+    transcript: "Je voudrais parler français.",
+  });
+  expect(voice.getSnapshot().turns).toEqual([
+    { id: "u", role: "user", text: "Je voudrais parler français." },
+  ]);
+});
+
+test("an empty completed speech transcript does not stay in the transcribing state", () => {
+  const voice = new VoiceConversation();
+  voice.handle({ type: "input_audio_buffer.committed", item_id: "empty" });
+  voice.handle({
+    type: "conversation.item.input_audio_transcription.completed",
+    item_id: "empty",
+    transcript: " ",
+  });
+  expect(voice.getSnapshot().turns[0].text).toBe(
+    "[No speech could be transcribed]",
+  );
+});

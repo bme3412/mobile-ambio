@@ -37,9 +37,12 @@ export function PlaybackHost() {
     const app = AppState.addEventListener("change", (state) => {
       if (state !== "active") {
         stopPronunciation();
-        player.pause();
+        // Browser visibility changes must not cancel an explicit Play request.
+        // The audio clock remains authoritative when returning to the tab.
+        if (Platform.OS !== "web") player.pause();
         save();
       }
+      if (state === "active") player.tick(0);
       last = Date.now();
     });
     return () => {

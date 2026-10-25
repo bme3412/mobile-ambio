@@ -1,5 +1,5 @@
 import { RotateCcw } from "lucide-react-native";
-import translations from "../data/sentence-translations.json";
+import { episodePhrases as phrases } from "../data/phrases";
 import { LanguageFlag } from "./LanguageFlag";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
@@ -13,21 +13,12 @@ import {
   View,
 } from "react-native";
 import { episode } from "../data/episode";
-import { sentenceWords } from "../domain/transcript";
 import { TranscriptSegment, WordToken } from "../domain/types";
 import { player, time, usePlayback } from "../playback/player";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconButton } from "./IconButton";
 import { RevealWord } from "./RevealWord";
 import { colors, Label, s } from "./ui";
-
-const sentences = episode.segments.flatMap((segment, segmentIndex) =>
-  sentenceWords(segment.words).map((words, sentenceIndex) => ({
-    segment,
-    words,
-    translation: translations[segmentIndex][sentenceIndex],
-  })),
-);
 
 export function FocusReader({
   visible,
@@ -45,7 +36,7 @@ export function FocusReader({
   const insets = useSafeAreaInsets();
   const index = Math.max(
     0,
-    sentences.findLastIndex(({ words }) => words[0].startMs <= positionMs),
+    phrases.findLastIndex(({ words }) => words[0].startMs <= positionMs),
   );
   const [opacity] = useState(() => new Animated.Value(1));
   const [reduceMotion, setReduceMotion] = useState(true);
@@ -64,7 +55,7 @@ export function FocusReader({
     };
   }, []);
   useLayoutEffect(() => {
-    // Replace the sentence immediately at its audio boundary. Only its
+    // Replace the phrase immediately at its audio boundary. Only its
     // presentation fades; neither timestamps nor word selection are delayed.
     opacity.stopAnimation();
     if (!visible || reduceMotion) {
@@ -81,7 +72,7 @@ export function FocusReader({
     fade.start();
     return () => fade.stop();
   }, [index, visible, reduceMotion, opacity]);
-  const current = sentences[index].words.findLastIndex(
+  const current = phrases[index].words.findLastIndex(
     (word) => word.startMs <= positionMs,
   );
   return (
@@ -164,7 +155,7 @@ export function FocusReader({
             }}
             keyboardShouldPersistTaps="handled"
           >
-            {sentences
+            {phrases
               .slice(index, index + 1)
               .map(({ segment, words, translation }, offset) => (
                 <Animated.View key={words[0].id} style={{ gap: 8, opacity }}>
@@ -185,7 +176,7 @@ export function FocusReader({
                           playing={playing}
                           current={
                             offset === 0 &&
-                            word.id === sentences[index].words[current]?.id
+                            word.id === phrases[index].words[current]?.id
                           }
                           onPress={() => onWord(word, segment)}
                         />
@@ -232,7 +223,7 @@ export function FocusReader({
               <Text style={s.note}>
                 {playing
                   ? replayEndMs
-                    ? "Replaying sentence"
+                    ? "Replaying phrase"
                     : "Following audio"
                   : "Paused"}
               </Text>
@@ -276,9 +267,9 @@ export function FocusReader({
             </View>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Replay sentence"
+              accessibilityLabel="Replay phrase"
               onPress={() => {
-                const words = sentences[index].words;
+                const words = phrases[index].words;
                 player.replay(words[0].startMs, words[words.length - 1].endMs);
               }}
               style={{
@@ -293,7 +284,7 @@ export function FocusReader({
             >
               <RotateCcw size={18} color="#007B60" />
               <Text style={{ color: "#007B60", fontWeight: "600" }}>
-                Replay sentence
+                Replay phrase
               </Text>
             </Pressable>
           </View>

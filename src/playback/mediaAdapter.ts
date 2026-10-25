@@ -21,7 +21,7 @@ export function createMediaPlayer(
   durationMs: number,
   create: () => MediaEngine,
 ) {
-  let state: PlaybackSnapshot & { error: string | null } = {
+  let state: PlaybackSnapshot & { error: string | null; loading?: boolean } = {
     positionMs: 0,
     playing: false,
     rate: 1,

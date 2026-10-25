@@ -16,12 +16,12 @@ import {
   Label,
   Page,
   s,
-  Title,
 } from "../components/ui";
 import { PlaybackControls } from "../components/PlaybackControls";
 import { episode, episodeSources, speakingPrompt } from "../data/episode";
 import { usePlayback } from "../playback/player";
-import { activeSegment, spokenSentence } from "../domain/transcript";
+import { activeSegment } from "../domain/transcript";
+import { currentPhrase } from "../data/phrases";
 import { useLibrary } from "../state/library";
 export default function Player() {
   const [selection, setSelection] = useState<{
@@ -37,13 +37,12 @@ export default function Player() {
   const wordIndex = segment.words.findLastIndex(
     (word) => word.startMs <= positionMs,
   );
-  const liveWords = spokenSentence(segment.words, positionMs);
+  const liveWords = currentPhrase(positionMs).words;
   const saved = useLibrary((s) => s.transcripts.includes(episode.id));
   const toggle = useLibrary((s) => s.toggleTranscript);
   return (
     <Page>
       <Cover compact={expanded} />
-      <Title>{episode.title}</Title>
       {!expanded && <Body>{episode.subtitle}</Body>}
       {expanded && (
         <View
@@ -52,7 +51,6 @@ export default function Player() {
             borderRadius: 20,
             padding: 16,
             gap: 10,
-            minHeight: 156,
           }}
         >
           <View style={s.row}>
@@ -76,9 +74,6 @@ export default function Player() {
                 <Text key={word.id}>{word.text} </Text>
               ),
             )}
-          </Text>
-          <Text style={{ color: colors.muted, fontSize: 12 }}>
-            Tap any word for its meaning
           </Text>
         </View>
       )}

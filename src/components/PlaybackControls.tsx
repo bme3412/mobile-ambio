@@ -9,6 +9,11 @@ export function PlaybackControls({ compact = false }: { compact?: boolean }) {
   const [width, setWidth] = useState(1);
   return (
     <View style={{ gap: compact ? 8 : 16 }}>
+      {state.loading && (
+        <Text accessibilityRole="status" style={s.note}>
+          Preparing episode…
+        </Text>
+      )}
       {state.error && (
         <Text accessibilityRole="alert" style={s.body}>
           {state.error}

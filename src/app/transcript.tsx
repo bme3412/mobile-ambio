@@ -1,3 +1,4 @@
+import { currentPhrase, episodePhrases } from "../data/phrases";
 import { FocusReader } from "../components/FocusReader";
 import { RevealWord } from "../components/RevealWord";
 import { LanguageFlag } from "../components/LanguageFlag";
@@ -60,10 +61,12 @@ export default function Transcript() {
     return () => sub.remove();
   }, []);
   const current = activeSegment(episode.segments, positionMs);
-  const currentSentence = spokenSentence(
-    episode.segments[Math.max(0, current)].words,
-    positionMs,
-  )[0]?.id;
+  const currentSentence = bilingual
+    ? currentPhrase(positionMs).words[0].id
+    : spokenSentence(
+        episode.segments[Math.max(0, current)].words,
+        positionMs,
+      )[0]?.id;
   const sentenceOffsets = useRef<Record<string, number>>({});
   const data = episode.segments.filter((x) =>
     x.words.some((w) =>
@@ -197,7 +200,9 @@ export default function Transcript() {
         <Text style={[s.note, { paddingHorizontal: 4 }]}>
           {manual || query
             ? "Browsing · playback continues"
-            : "Following the conversation"}
+            : playing
+              ? "Following the conversation"
+              : "Paused · press Play & follow to start"}
         </Text>
       </View>
       {keyPoints ? (
@@ -239,6 +244,7 @@ export default function Transcript() {
         <FlatList
           testID="transcript-list"
           ref={list}
+          style={{ flex: 1, minHeight: 0 }}
           data={data}
           keyExtractor={(x) => x.id}
           contentContainerStyle={{
@@ -251,8 +257,8 @@ export default function Transcript() {
           }}
           keyboardShouldPersistTaps="handled"
           onScrollBeginDrag={browse}
-          onTouchStart={browse}
           {...(Platform.OS === "web" ? { onWheel: browse } : {})}
+          onLayout={() => followRef.current()}
           onContentSizeChange={() => followRef.current()}
           onScrollToIndexFailed={(info) => {
             if (!manualRef.current && !query) {
@@ -309,8 +315,16 @@ export default function Transcript() {
                 >
                   {item.speaker}
                 </Text>
-                {sentenceWords(item.words).map((sentence) => (
-                  <Text
+                {(bilingual
+                  ? episodePhrases.filter(
+                      (phrase) => phrase.segment.id === item.id,
+                    )
+                  : sentenceWords(item.words).map((words) => ({
+                      words,
+                      translation: "",
+                    }))
+                ).map(({ words: sentence, translation }) => (
+                  <View
                     key={sentence[0].id}
                     onLayout={(event) => {
                       sentenceOffsets.current[sentence[0].id] =
@@ -318,33 +332,43 @@ export default function Transcript() {
                       if (sentence[0].id === currentSentence)
                         followRef.current();
                     }}
-                    style={{ fontSize: 17, lineHeight: 28, color: colors.ink }}
                   >
-                    {sentence.map((word) =>
-                      /[a-zàâéèêëîïôùûüç]/i.test(word.text) ? (
-                        <RevealWord
-                          key={word.id}
-                          word={word}
-                          positionMs={positionMs}
-                          playing={playing && !manual && !query && !selected}
-                          current={activeWord(item, positionMs) === word.id}
-                          onPress={() => {
-                            browse();
-                            setSelected({ word, segment: item });
-                          }}
-                        />
-                      ) : (
-                        <Text key={word.id}>{word.text} </Text>
-                      ),
+                    <Text
+                      key={sentence[0].id}
+
+                      style={{
+                        fontSize: 17,
+                        lineHeight: 28,
+                        color: colors.ink,
+                      }}
+                    >
+                      {sentence.map((word) =>
+                        /[a-zàâéèêëîïôùûüç]/i.test(word.text) ? (
+                          <RevealWord
+                            key={word.id}
+                            word={word}
+                            positionMs={positionMs}
+                            playing={playing && !manual && !query && !selected}
+                            current={activeWord(item, positionMs) === word.id}
+                            onPress={() => {
+                              browse();
+                              setSelected({ word, segment: item });
+                            }}
+                          />
+                        ) : (
+                          <Text key={word.id}>{word.text} </Text>
+                        ),
+                      )}
+                    </Text>
+                    {bilingual && (
+                      <Text
+                        style={[s.body, { color: colors.muted, marginTop: 4 }]}
+                      >
+                        {translation}
+                      </Text>
                     )}
-                  </Text>
-                ))}
-                {bilingual && (
-                  <View style={{ gap: 8, marginTop: 6 }}>
-                    <LanguageFlag language="en" />
-                    <Text style={s.body}>{item.translation}</Text>
                   </View>
-                )}
+                ))}
               </View>
             </View>
           )}
@@ -353,22 +377,38 @@ export default function Transcript() {
       <View
         style={{
           paddingHorizontal: 70,
-          paddingVertical: manual || query.length > 0 ? 8 : 0,
+          paddingVertical: 8,
         }}
       >
-        {(manual || query.length > 0) && (
+        {
           <Button
-            label="↓ Back to Live"
+            label={
+              manual || query
+                ? "↓ Back to Live"
+                : playing
+                  ? "↓ Follow current sentence"
+                  : "▶ Play & follow"
+            }
             onPress={() => {
               manualRef.current = false;
               setManual(false);
               setQuery("");
               setLiveRequest((x) => x + 1);
+              if (!playing) player.play();
             }}
           />
-        )}
+        }
       </View>
-      <MiniPlayer always />
+      <MiniPlayer
+        always
+        onResume={() => {
+          if (!selected && !query) {
+            manualRef.current = false;
+            setManual(false);
+            setLiveRequest((x) => x + 1);
+          }
+        }}
+      />
       <FocusReader
         visible={focusMode}
         onClose={() => setFocusMode(false)}

@@ -184,10 +184,20 @@ export class VoiceConversation {
         this.update({ status: "thinking" });
         break;
       case "input_audio_buffer.committed":
-        this.turn(id, "user", "");
+        // A commit must not erase transcript fragments already received.
+        if (!this.state.turns.some((turn) => turn.id === id))
+          this.turn(id, "user", "");
+        break;
+      case "conversation.item.input_audio_transcription.delta":
+        this.turn(id, "user", String(event.delta ?? ""), true);
         break;
       case "conversation.item.input_audio_transcription.completed":
-        this.turn(id, "user", String(event.transcript ?? ""));
+        this.turn(
+          id,
+          "user",
+          String(event.transcript ?? "").trim() ||
+            "[No speech could be transcribed]",
+        );
         break;
       case "conversation.item.input_audio_transcription.failed":
         this.turn(id, "user", "[Speech could not be transcribed]");
