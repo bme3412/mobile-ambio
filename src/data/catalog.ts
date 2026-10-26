@@ -67,7 +67,10 @@ export const editions = [
   }),
   original,
 ];
-export const latestEdition = editions[0];
+export const LATEST_EPISODE_ID = "daily-fr-2026-10-26";
+export const latestEdition = editions.find(
+  ({ episode }) => episode.id === LATEST_EPISODE_ID,
+)!;
 export const findEdition = (id: string) =>
   editions.find((item) => item.episode.id === id);
 export const getEdition = (id: string) =>

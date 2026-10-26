@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "../src/app/(tabs)/index";
 import { episode } from "../src/data/episode";
@@ -21,31 +21,39 @@ async function home() {
     </QueryClientProvider>,
   );
 }
-test("selecting a story updates its details without starting audio; play seeks to that story", async () => {
+test.each([0, 1, 2])(
+  "story %i selects the featured edition and seeks to its boundary",
+  async (index) => {
+    const { latestEdition } = jest.requireActual("../src/data/catalog");
+    const { useLibrary } = jest.requireActual("../src/state/library");
+    useLibrary.setState({ activeEpisodeId: episode.id });
+    const ui = await home();
+    const story = latestEdition.episode.stories[index];
+    await fireEvent.press(
+      ui.getByLabelText(`Listen to this story · ${story.title}`),
+    );
+    expect(useLibrary.getState().activeEpisodeId).toBe(
+      latestEdition.episode.id,
+    );
+    expect(player.getSnapshot().positionMs).toBe(
+      latestEdition.episode.segments.find(
+        (s: { id: string }) => s.id === story.segmentId,
+      ).startMs,
+    );
+    expect(router.push).toHaveBeenCalledWith("/player");
+  },
+);
+test("continue listening preserves the older episode and position", async () => {
+  const { useLibrary } = jest.requireActual("../src/state/library");
+  useLibrary.setState({ activeEpisodeId: episode.id });
+  player.seek(50000);
   const ui = await home();
-  await fireEvent.press(ui.getByLabelText("Select Direction Phobos"));
-  expect(ui.getByText(episode.stories[1].description)).toBeTruthy();
-  expect(player.getSnapshot().playing).toBe(false);
-  expect(router.push).not.toHaveBeenCalled();
-  await fireEvent.press(ui.getByLabelText("▶ Play story 2"));
-  expect(player.getSnapshot().positionMs).toBe(
-    episode.segments.find((s) => s.id === episode.stories[1].segmentId)!
-      .startMs,
-  );
-  expect(router.push).toHaveBeenCalledWith("/player");
-  player.pause();
-});
-test("primary action reflects playback position and vocabulary opens its definition", async () => {
-  const ui = await home();
-  expect(ui.getByLabelText(/Play episode/)).toBeTruthy();
-  await act(async () => {
-    player.seek(50000);
+  await fireEvent.press(ui.getByLabelText("Continue listening"));
+  expect(useLibrary.getState().activeEpisodeId).toBe(episode.id);
+  expect(player.getSnapshot()).toMatchObject({
+    positionMs: 50000,
+    playing: true,
   });
-  expect(ui.getByLabelText(/Resume episode/)).toBeTruthy();
-  await fireEvent.press(ui.getByLabelText("Learn reculer"));
-  expect(
-    ui.getByText("to move back; here, to put the clocks back"),
-  ).toBeTruthy();
 });
 
 test("latest edition is featured without interrupting the current listen", async () => {
@@ -66,4 +74,21 @@ test("latest edition is featured without interrupting the current listen", async
   expect(useLibrary.getState().activeEpisodeId).toBe("daily-fr-2026-10-26");
   expect(router.push).toHaveBeenCalledWith("/player");
   player.pause();
+});
+
+test("featured transcript selection and vocabulary are independent of active playback", async () => {
+  const { useLibrary } = jest.requireActual("../src/state/library");
+  useLibrary.setState({ activeEpisodeId: episode.id });
+  const ui = await home();
+  await fireEvent.press(ui.getByLabelText("Learn Remporter,"));
+  expect(useLibrary.getState().activeEpisodeId).toBe(episode.id);
+});
+
+test("featured transcript explicitly selects October 26", async () => {
+  const { useLibrary } = jest.requireActual("../src/state/library");
+  useLibrary.setState({ activeEpisodeId: episode.id });
+  const ui = await home();
+  await fireEvent.press(ui.getByLabelText("Read transcript & vocabulary →"));
+  expect(useLibrary.getState().activeEpisodeId).toBe("daily-fr-2026-10-26");
+  expect(router.push).toHaveBeenCalledWith("/transcript");
 });

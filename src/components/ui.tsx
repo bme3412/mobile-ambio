@@ -69,12 +69,14 @@ export function Button({
   onPress,
   secondary = false,
   disabled = false,
+  tone,
 }: {
   label: string;
   accessibilityLabel?: string;
   onPress: () => void;
   secondary?: boolean;
   disabled?: boolean;
+  tone?: string;
 }) {
   const Icon = label.startsWith("▶")
     ? Play
@@ -96,6 +98,7 @@ export function Button({
       }}
       style={({ pressed }) => [
         s.button,
+        tone && !secondary ? { backgroundColor: tone } : undefined,
         secondary && s.secondary,
         { opacity: disabled ? 0.45 : pressed ? 0.7 : 1 },
       ]}
