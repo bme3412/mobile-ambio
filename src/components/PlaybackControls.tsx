@@ -1,10 +1,11 @@
+import { useEpisodeData } from "../data/catalog";
 import { IconButton } from "./IconButton";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { player, time, usePlayback } from "../playback/player";
-import { episode } from "../data/episode";
 import { colors, s } from "./ui";
 export function PlaybackControls({ compact = false }: { compact?: boolean }) {
+  const { episode } = useEpisodeData();
   const state = usePlayback();
   const [width, setWidth] = useState(1);
   return (

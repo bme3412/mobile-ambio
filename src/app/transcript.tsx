@@ -1,4 +1,4 @@
-import { currentPhrase, episodePhrases } from "../data/phrases";
+import { useEpisodeData } from "../data/catalog";
 import { FocusReader } from "../components/FocusReader";
 import { RevealWord } from "../components/RevealWord";
 import { LanguageFlag } from "../components/LanguageFlag";
@@ -14,7 +14,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { episode } from "../data/episode";
 import { Button, colors, s } from "../components/ui";
 import { MiniPlayer } from "../components/MiniPlayer";
 import { IconButton } from "../components/IconButton";
@@ -29,6 +28,7 @@ import {
 import { TranscriptSegment, WordToken } from "../domain/types";
 import { player, time, usePlayback } from "../playback/player";
 export default function Transcript() {
+  const { episode, currentPhrase, episodePhrases } = useEpisodeData();
   const { positionMs, playing } = usePlayback();
   const [focusMode, setFocusMode] = useState(false);
   const [manual, setManual] = useState(false);

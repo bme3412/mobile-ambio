@@ -1,3 +1,4 @@
+import { useEpisodeData } from "../data/catalog";
 import {
   ReactNode,
   ComponentRef,
@@ -16,10 +17,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { currentPhrase, episodePhrases } from "../data/phrases";
 import { teleprompterOffset } from "../domain/teleprompter";
-import audioTiming from "../data/audio-timing.json";
-import { episode } from "../data/episode";
 import { TranscriptSegment, WordToken } from "../domain/types";
 import { player, usePlayback } from "../playback/player";
 import { useReader } from "../state/reader";
@@ -27,7 +25,16 @@ import { PlaybackControls } from "./PlaybackControls";
 import { RevealWord } from "./RevealWord";
 import { Button, colors, s } from "./ui";
 
-export function PhraseReader({
+type ReaderProps = {
+  onWord: (word: WordToken, segment: TranscriptSegment) => void;
+  children?: ReactNode;
+  followPhrase?: boolean;
+};
+export function PhraseReader(props: ReaderProps) {
+  const { episode } = useEpisodeData();
+  return <EpisodePhraseReader key={episode.id} {...props} />;
+}
+function EpisodePhraseReader({
   onWord,
   children,
   followPhrase = true,
@@ -36,6 +43,8 @@ export function PhraseReader({
   children?: ReactNode;
   followPhrase?: boolean;
 }) {
+  const { episode, currentPhrase, episodePhrases, audioTiming } =
+    useEpisodeData();
   const { positionMs, playing, replayEndMs } = usePlayback();
   const { english, toggleEnglish } = useReader();
   const music = audioTiming.musicOnlyRanges.find(
@@ -121,6 +130,8 @@ export function PhraseReader({
     frame.current = requestAnimationFrame(step);
     return cancelScroll;
   }, [
+    episode.durationMs,
+    episodePhrases,
     readingPositionMs,
     playing,
     index,
@@ -141,6 +152,7 @@ export function PhraseReader({
           accessibilityRole="switch"
           accessibilityLabel="English translation"
           accessibilityState={{ checked: english }}
+          aria-checked={english}
           onPress={toggleEnglish}
           style={{
             minHeight: 44,
@@ -266,7 +278,11 @@ const PhraseRow = memo(function PhraseRow({
   english,
   onWord,
 }: {
-  phrase: (typeof episodePhrases)[number];
+  phrase: {
+    segment: TranscriptSegment;
+    words: WordToken[];
+    translation: string;
+  };
   active: boolean;
   past: boolean;
   currentWord?: string;

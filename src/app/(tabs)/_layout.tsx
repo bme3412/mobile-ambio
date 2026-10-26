@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { House, Bookmark, Mic } from "lucide-react-native";
+import { House, Bookmark, Mic, Library } from "lucide-react-native";
 import { colors } from "../../components/ui";
 export default function TabLayout() {
   return (
@@ -21,6 +21,15 @@ export default function TabLayout() {
           title: "Home",
           tabBarIcon: ({ color }) => (
             <House color={color} size={23} strokeWidth={1.8} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="library"
+        options={{
+          title: "Episodes",
+          tabBarIcon: ({ color }) => (
+            <Library color={color} size={23} strokeWidth={1.8} />
           ),
         }}
       />

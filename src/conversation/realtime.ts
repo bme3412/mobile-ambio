@@ -73,7 +73,7 @@ export class VoiceConversation {
     this.release();
     this.update({ status: "error", error: message, microphone: false });
   }
-  async start(microphone = true) {
+  async start(microphone = true, episodeId?: string) {
     this.release();
     const generation = this.generation;
     this.update({
@@ -94,10 +94,18 @@ export class VoiceConversation {
       const health = await this.request("/api/voice/health", {
         signal: this.abort.signal,
       });
-      if (!health.ok || !(await health.json()).available)
+      const capabilities = health.ok ? await health.json() : null;
+      if (!capabilities?.available)
         throw Error(
           "Voice is unavailable. Check your connection, sign in if prompted, and try again.",
         );
+      if (
+        episodeId &&
+        !(Array.isArray(capabilities.episodeIds)
+          ? capabilities.episodeIds.includes(episodeId)
+          : episodeId === "daily-fr-2026-10-24")
+      )
+        throw Error("Talk for this edition needs the updated voice service.");
       if (generation !== this.generation) return;
       const transport = this.createTransport({
         open: () => {
@@ -147,12 +155,15 @@ export class VoiceConversation {
       this.transport = transport;
       const offer = await transport.offer(microphone);
       if (generation !== this.generation) return;
-      const response = await this.request("/api/voice/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/sdp" },
-        body: offer,
-        signal: this.abort.signal,
-      });
+      const response = await this.request(
+        `/api/voice/session${episodeId ? `?episodeId=${encodeURIComponent(episodeId)}` : ""}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/sdp" },
+          body: offer,
+          signal: this.abort.signal,
+        },
+      );
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
         throw Error(data.error || "Could not start voice conversation.");

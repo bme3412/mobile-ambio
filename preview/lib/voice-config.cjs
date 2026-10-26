@@ -1,5 +1,13 @@
-const editorial = require("./editorial.json");
-function sessionConfig() {
+const originalEditorial = require("./editorial.json");
+const editions = {
+  "daily-fr-2026-10-26": require("./editorial-2026-10-26.json"),
+  "daily-fr-2026-10-24": originalEditorial,
+  "daily-fr-2026-10-25": require("./editorial-2026-10-25.json"),
+};
+function sessionConfig(episodeId = "daily-fr-2026-10-24") {
+  if (!Object.prototype.hasOwnProperty.call(editions, episodeId))
+    throw new Error("Unknown episode");
+  const editorial = editions[episodeId];
   return {
     type: "realtime",
     model: "gpt-realtime-2.1",
@@ -46,4 +54,4 @@ DATED EPISODE: ${editorial.edition}\nTITLE: ${editorial.title}\n${editorial.turn
     tool_choice: "auto",
   };
 }
-module.exports = { sessionConfig };
+module.exports = { sessionConfig, episodeIds: Object.keys(editions) };

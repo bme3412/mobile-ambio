@@ -1,5 +1,12 @@
+import { useEpisodeData } from "../../data/catalog";
 import { AudioLines } from "lucide-react-native";
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import {
   Platform,
   Switch,
@@ -20,13 +27,14 @@ import {
   Title,
 } from "../../components/ui";
 import { useLibrary } from "../../state/library";
-import { episode } from "../../data/episode";
 import { player } from "../../playback/player";
 import { voiceApi } from "../../conversation/api";
 import { stopPronunciation } from "../../playback/pronunciation";
 import { VoiceConversation } from "../../conversation/realtime";
 
 export default function Conversation() {
+  const { episode } = useEpisodeData();
+  const sessionEpisode = useRef(episode.id);
   const [voice] = useState(() => new VoiceConversation(voiceApi.request));
   const state = useSyncExternalStore(
     voice.subscribe,
@@ -56,8 +64,15 @@ export default function Conversation() {
         setNeedsSignIn(voiceApi.native && response.status === 401);
         const data = response.ok ? await response.json() : null;
         if (mounted) {
-          setAvailable(Boolean(data?.available));
-          setServiceError(null);
+          const supportsEpisode = Array.isArray(data?.episodeIds)
+            ? data.episodeIds.includes(episode.id)
+            : episode.id === "daily-fr-2026-10-24";
+          setAvailable(Boolean(data?.available) && supportsEpisode);
+          setServiceError(
+            data?.available && !supportsEpisode
+              ? "Talk for this edition needs the updated voice service. Listening and word practice are ready."
+              : null,
+          );
         }
       })
       .catch((error) => {
@@ -76,7 +91,7 @@ export default function Conversation() {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [healthCheck]);
+  }, [healthCheck, episode.id]);
   const signIn = async () => {
     setSigningIn(true);
     setServiceError(null);
@@ -124,7 +139,8 @@ export default function Conversation() {
     player.pause();
     stopPronunciation();
     setDraft("");
-    void voice.start(microphone).then(() => {
+    sessionEpisode.current = episode.id;
+    void voice.start(microphone, episode.id).then(() => {
       if (voice.getSnapshot().status === "error")
         setHealthCheck((value) => value + 1);
     });
@@ -135,7 +151,7 @@ export default function Conversation() {
     const id = `voice-${Date.now()}`;
     save({
       id,
-      episodeId: episode.id,
+      episodeId: sessionEpisode.current,
       createdAt: new Date().toISOString(),
       isMock: false,
       turns: snapshot.turns.filter((t) => t.text.trim()),

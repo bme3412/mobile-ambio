@@ -1,3 +1,4 @@
+import { useEpisodeData } from "../data/catalog";
 import { useState } from "react";
 import { Linking, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -5,14 +6,14 @@ import { router } from "expo-router";
 import { PhraseReader } from "../components/PhraseReader";
 import { WordSheet } from "../components/WordSheet";
 import { Body, Button, DemoNote, colors, Label, s } from "../components/ui";
-import { episode, episodeSources, speakingPrompt } from "../data/episode";
-import { vocabulary } from "../data/vocabulary";
 import { normalizeWord } from "../data/dictionary";
 import { WordToken, TranscriptSegment } from "../domain/types";
 import { player } from "../playback/player";
 import { useLibrary } from "../state/library";
 
 export default function Player() {
+  const { episode, episodeSources, speakingPrompt, vocabulary, verifiedAt } =
+    useEpisodeData();
   const [selection, setSelection] = useState<{
     word: WordToken;
     segment: TranscriptSegment;
@@ -116,6 +117,11 @@ export default function Player() {
                 })}
               </View>
               <Label>SOURCES · DATED STORIES, NOT A LIVE NEWS BULLETIN</Label>
+              {verifiedAt && (
+                <Text style={s.note}>
+                  Sources checked · {new Date(verifiedAt).toLocaleString()}
+                </Text>
+              )}
               {episodeSources.map((source) => (
                 <Pressable
                   key={source.url}

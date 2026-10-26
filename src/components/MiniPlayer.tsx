@@ -1,7 +1,7 @@
+import { useEpisodeData } from "../data/catalog";
 import { cafeArtwork } from "../data/artwork";
 import { Image, Pressable, Text, View } from "react-native";
 import { router } from "expo-router";
-import { episode } from "../data/episode";
 import { player, time, usePlayback } from "../playback/player";
 import { IconButton } from "./IconButton";
 export function MiniPlayer({
@@ -11,6 +11,7 @@ export function MiniPlayer({
   always?: boolean;
   onResume?: () => void;
 }) {
+  const { episode } = useEpisodeData();
   const p = usePlayback();
   if (!always && !p.playing && p.positionMs === 0) return null;
   return (

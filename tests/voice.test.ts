@@ -231,3 +231,15 @@ test("an empty completed speech transcript does not stay in the transcribing sta
     "[No speech could be transcribed]",
   );
 });
+
+test("an older voice server cannot silently discuss the wrong episode", async () => {
+  const request = jest.fn(async () => ({
+    ok: true,
+    json: async () => ({ available: true }),
+  })) as unknown as typeof fetch;
+  const transport = jest.fn();
+  const voice = new VoiceConversation(request, transport);
+  await voice.start(false, "daily-fr-2026-10-25");
+  expect(transport).not.toHaveBeenCalled();
+  expect(voice.getSnapshot().error).toContain("updated voice service");
+});

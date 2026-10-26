@@ -84,7 +84,14 @@ server.listen(0, "127.0.0.1", async () => {
     );
     assert.deepEqual(
       await (await fetch(base + "/api/voice/health", { headers })).json(),
-      { available: false },
+      {
+        available: false,
+        episodeIds: [
+          "daily-fr-2026-10-26",
+          "daily-fr-2026-10-24",
+          "daily-fr-2026-10-25",
+        ],
+      },
     );
     process.env.OPENAI_API_KEY = "test-only-key";
     assert.equal(

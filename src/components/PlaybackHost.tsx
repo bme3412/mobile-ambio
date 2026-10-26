@@ -4,14 +4,16 @@ import { useEffect } from "react";
 import { AppState, Platform } from "react-native";
 import { player } from "../playback/player";
 import { useLibrary } from "../state/library";
-import { episode } from "../data/episode";
+
 export function PlaybackHost() {
   useEffect(() => {
     if (Platform.OS !== "web")
       void setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
     const restore = () => {
-      const p = useLibrary.getState().progress;
-      if (p?.episodeId === episode.id) {
+      const state = useLibrary.getState();
+      const p =
+        state.progressByEpisode[state.activeEpisodeId] ?? state.progress;
+      if (p?.episodeId === useLibrary.getState().activeEpisodeId) {
         player.seek(p.positionMs);
         player.setRate(p.rate);
       }
@@ -22,7 +24,7 @@ export function PlaybackHost() {
       if (!useLibrary.persist.hasHydrated()) return;
       const p = player.getSnapshot();
       useLibrary.getState().saveProgress({
-        episodeId: episode.id,
+        episodeId: useLibrary.getState().activeEpisodeId,
         positionMs: p.positionMs,
         rate: p.rate,
       });

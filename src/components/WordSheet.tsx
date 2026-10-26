@@ -1,8 +1,8 @@
-import { vocabulary } from "../data/vocabulary";
+import { editionForSegment } from "../data/catalog";
 import { normalizeWord } from "../data/dictionary";
 import { pronounce, hasPronunciation } from "../playback/pronunciation";
 import { LanguageFlag } from "./LanguageFlag";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bookmark,
   BookmarkCheck,
@@ -16,7 +16,7 @@ import { TranscriptSegment, WordToken } from "../domain/types";
 import { Body, colors, s } from "./ui";
 import { IconButton } from "./IconButton";
 import { useLibrary } from "../state/library";
-import { episode } from "../data/episode";
+
 import { player } from "../playback/player";
 
 export function WordSheet({
@@ -43,10 +43,14 @@ function WordDetails({
   selection: { word: WordToken; segment: TranscriptSegment };
   onClose: () => void;
 }) {
+  useEffect(() => {
+    player.pause();
+  }, []);
   const bookmarks = useLibrary((x) => x.bookmarks);
   const toggle = useLibrary((x) => x.toggle);
   const [exampleOpen, setExampleOpen] = useState(false);
   const { word, segment } = selection;
+  const { episode, vocabulary } = editionForSegment(segment.id);
   const entry = vocabulary[normalizeWord(word.text)];
   const saved = bookmarks.some((b) => b.id === word.id);
   const SaveIcon = saved ? BookmarkCheck : Bookmark;
@@ -151,7 +155,10 @@ function WordDetails({
                   icon="volume"
                   onPress={() => {
                     if (hasPronunciation(word.text)) pronounce(word.text);
-                    else player.replay(segment.startMs, segment.endMs);
+                    else {
+                      useLibrary.getState().selectEpisode(episode.id);
+                      player.replay(segment.startMs, segment.endMs);
+                    }
                     onClose();
                   }}
                 />
@@ -181,7 +188,10 @@ function WordDetails({
                   label="Replay sentence"
                   icon="play"
                   onPress={() => {
-                    player.replay(segment.startMs, segment.endMs);
+                    {
+                      useLibrary.getState().selectEpisode(episode.id);
+                      player.replay(segment.startMs, segment.endMs);
+                    }
                     onClose();
                   }}
                 />

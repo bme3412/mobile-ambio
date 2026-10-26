@@ -1,0 +1,58 @@
+{
+  "gravité": {
+    "meaning": "gravity",
+    "pronunciation": "/ɡʁa.vi.te/",
+    "kind": "noun · feminine",
+    "example": "Il faut se réhabituer à la gravité terrestre.",
+    "translation": "You have to readjust to Earth’s gravity."
+  },
+  "réadaptation": {
+    "meaning": "readjustment",
+    "pronunciation": "/ʁe.a.dap.ta.sjɔ̃/",
+    "kind": "noun · feminine",
+    "example": "Le retour demande une période de réadaptation.",
+    "translation": "Returning requires a period of readjustment."
+  },
+  "curiosité": {
+    "meaning": "curiosity",
+    "pronunciation": "/ky.ʁjo.zi.te/",
+    "kind": "noun · feminine",
+    "example": "La curiosité nous aide à apprendre.",
+    "translation": "Curiosity helps us learn."
+  },
+  "portée": {
+    "meaning": "reach; à portée de main: within reach",
+    "pronunciation": "/pɔʁ.te/",
+    "kind": "noun · feminine",
+    "example": "Mon café est à portée de main.",
+    "translation": "My coffee is within reach."
+  },
+  "rencontre": {
+    "meaning": "meeting / encounter",
+    "pronunciation": "/ʁɑ̃.kɔ̃tʁ/",
+    "kind": "noun · feminine",
+    "example": "Une rencontre avec un astronaute.",
+    "translation": "A meeting with an astronaut."
+  },
+  "exposition": {
+    "meaning": "exhibition",
+    "pronunciation": "/ɛk.spo.zi.sjɔ̃/",
+    "kind": "noun · feminine",
+    "example": "Je visite une exposition au Louvre.",
+    "translation": "I am visiting an exhibition at the Louvre."
+  },
+  "regard": {
+    "meaning": "gaze / look",
+    "pronunciation": "/ʁə.ɡaʁ/",
+    "kind": "noun · masculine",
+    "example": "Ce tableau attire mon regard.",
+    "translation": "This painting catches my eye."
+  },
+  "découverte": {
+    "meaning": "discovery",
+    "pronunciation": "/de.ku.vɛʁt/",
+    "kind": "noun · feminine",
+    "example": "Une nouvelle découverte chaque semaine.",
+    "translation": "A new discovery every week."
+  }
+}

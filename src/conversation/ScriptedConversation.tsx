@@ -1,22 +1,15 @@
+import { useEpisodeData } from "../data/catalog";
 import { AudioLines } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { Switch, Text, TextInput, View } from "react-native";
 import { router } from "expo-router";
-import {
-  Body,
-  Button,
-  colors,
-  Label,
-  Page,
-  s,
-  Title,
-} from "../components/ui";
+import { Body, Button, colors, Label, Page, s, Title } from "../components/ui";
 import { useLibrary } from "../state/library";
-import { episode } from "../data/episode";
 import { player } from "../playback/player";
 import { ConversationSession } from "../domain/types";
 import { appendResponse, correction, prompts } from "../conversation/demo";
 export default function Conversation() {
+  const { episode } = useEpisodeData();
   const [started, setStarted] = useState(false),
     [captions, setCaptions] = useState(true),
     [step, setStep] = useState(0),

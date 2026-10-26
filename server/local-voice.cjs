@@ -1,9 +1,9 @@
-const { Buffer } = require('node:buffer');
+const { Buffer } = require("node:buffer");
 /* global __dirname */
 const http = require("node:http");
 const fs = require("node:fs/promises");
 const path = require("node:path");
-const { sessionConfig } = require("./voice-config.cjs");
+const { sessionConfig, episodeIds } = require("./voice-config.cjs");
 const root = path.resolve(__dirname, "../dist");
 function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
   let lastSession = 0;
@@ -20,7 +20,7 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
     try {
       const url = new URL(req.url, `http://${req.headers.host}`);
       if (url.pathname === "/api/voice/health")
-        return json(200, { available: !!apiKey });
+        return json(200, { available: !!apiKey, episodeIds });
       if (url.pathname === "/api/voice/session") {
         if (req.method !== "POST")
           return json(405, { error: "Method not allowed." });
@@ -49,9 +49,17 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
             error: "Please wait a few seconds before reconnecting.",
           });
         lastSession = Date.now();
+        let config;
+        try {
+          config = sessionConfig(
+            url.searchParams.get("episodeId") ?? undefined,
+          );
+        } catch {
+          return json(400, { error: "Unknown episode." });
+        }
         const form = new FormData();
         form.set("sdp", body);
-        form.set("session", JSON.stringify(sessionConfig()));
+        form.set("session", JSON.stringify(config));
         const upstream = await fetchImpl(
           "https://api.openai.com/v1/realtime/calls",
           {

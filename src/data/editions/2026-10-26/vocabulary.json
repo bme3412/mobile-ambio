@@ -1,0 +1,58 @@
+{
+  "remporter": {
+    "meaning": "to win",
+    "pronunciation": "/ʁɑ̃.pɔʁ.te/",
+    "kind": "verb",
+    "example": "Elle a remporté l’élection.",
+    "translation": "She won the election."
+  },
+  "majorité": {
+    "meaning": "majority",
+    "pronunciation": "/ma.ʒɔ.ʁi.te/",
+    "kind": "noun · feminine",
+    "example": "Le parti dispose d’une majorité.",
+    "translation": "The party holds a majority."
+  },
+  "revendications": {
+    "meaning": "demands",
+    "pronunciation": "/ʁə.vɑ̃.di.ka.sjɔ̃/",
+    "kind": "noun · feminine plural",
+    "example": "Ils font entendre leurs revendications.",
+    "translation": "They make their demands heard."
+  },
+  "engagements": {
+    "meaning": "commitments",
+    "pronunciation": "/ɑ̃.ɡaʒ.mɑ̃/",
+    "kind": "noun · masculine plural",
+    "example": "Il faut suivre ces engagements.",
+    "translation": "We need to follow these commitments."
+  },
+  "bénéfices": {
+    "meaning": "profits",
+    "pronunciation": "/be.ne.fis/",
+    "kind": "noun · masculine plural",
+    "example": "Les ventes ne sont pas les bénéfices.",
+    "translation": "Sales are not profits."
+  },
+  "comptable": {
+    "meaning": "accounting",
+    "pronunciation": "/kɔ̃.tab.lə/",
+    "kind": "adjective",
+    "example": "Une charge comptable exceptionnelle.",
+    "translation": "A one-time accounting charge."
+  },
+  "semestre": {
+    "meaning": "half-year; six-month period",
+    "pronunciation": "/sə.mɛstʁ/",
+    "kind": "noun · masculine",
+    "example": "Les six premiers mois forment le premier semestre.",
+    "translation": "The first six months make up the first half of the year."
+  },
+  "tenir": {
+    "meaning": "to hold; tenir compte de: take into account",
+    "pronunciation": "/tə.niʁ/",
+    "kind": "verb",
+    "example": "Il faut tenir compte du contexte.",
+    "translation": "We need to take the context into account."
+  }
+}

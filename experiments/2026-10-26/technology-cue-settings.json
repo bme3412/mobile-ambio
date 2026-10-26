@@ -1,0 +1,23 @@
+{
+  "request": {
+    "text": "A restrained podcast transition: two warm electric-piano notes answered by a soft rounded synthesizer tone, with a delicate brushed-percussion accent. Calm, curious, understated, compatible with a warm cafe signature. No vocals, no speech, no alarms, no dramatic rise. A short complete musical phrase with a gentle ending.",
+    "duration_seconds": 1.5,
+    "loop": false,
+    "prompt_influence": 0.7,
+    "model_id": "eleven_text_to_sound_v2"
+  },
+  "requestHash": "f8396e2e1800446ae2c24c5f5604adc50666172d9846acc4de6ea50f14ea12a9",
+  "gainDb": 2.7300000000000004,
+  "measurements": {
+    "input_i": "-20.68",
+    "input_tp": "-11.85",
+    "input_lra": "0.00",
+    "input_thresh": "-33.65",
+    "output_i": "-19.01",
+    "output_tp": "-10.16",
+    "output_lra": "0.00",
+    "output_thresh": "-31.97",
+    "normalization_type": "linear",
+    "target_offset": "0.01"
+  }
+}

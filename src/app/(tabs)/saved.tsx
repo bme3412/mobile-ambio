@@ -1,5 +1,5 @@
 import { hasPronunciation, pronounce } from "../../playback/pronunciation";
-import { episode } from "../../data/episode";
+import { findEdition, editions } from "../../data/catalog";
 import { IconButton } from "../../components/IconButton";
 import { useState } from "react";
 import { PracticeSheet } from "../../components/PracticeSheet";
@@ -158,7 +158,7 @@ export default function Saved() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
             >
-              {b.episodeId === episode.id && (
+              {findEdition(b.episodeId) && (
                 <View
                   style={{ backgroundColor: colors.lavender, borderRadius: 24 }}
                 >
@@ -167,9 +167,10 @@ export default function Saved() {
                     icon="volume"
                     tint={colors.purple}
                     onPress={() => {
-                      const segment = episode.segments.find(
-                        (s) => s.id === b.segmentId,
-                      );
+                      useLibrary.getState().selectEpisode(b.episodeId);
+                      const segment = findEdition(
+                        b.episodeId,
+                      )?.episode.segments.find((s) => s.id === b.segmentId);
                       if (hasPronunciation(b.word.text)) pronounce(b.word.text);
                       else if (segment)
                         player.replay(segment.startMs, segment.endMs);
@@ -219,9 +220,7 @@ export default function Saved() {
               >
                 <Body>{b.word.meaning}</Body>
                 <Text style={s.note}>
-                  {b.episodeId === episode.id
-                    ? episode.title
-                    : "Earlier edition"}{" "}
+                  {findEdition(b.episodeId)?.episode.title ?? "Earlier edition"}{" "}
                   · {b.reviewed ? "Reviewed" : "To review"}
                 </Text>
                 <Button
@@ -246,16 +245,21 @@ export default function Saved() {
       <Text style={{ fontSize: 15, fontWeight: "600", color: colors.muted }}>
         Saved transcripts
       </Text>
-      {transcripts.includes(episode.id) ? (
-        <Button
-          secondary
-          label={`${episode.title} · transcript`}
-          onPress={() => router.push("/transcript")}
-        />
-      ) : (
-        <Body>
-          Save the episode transcript from the player to keep it here.
-        </Body>
+      {editions
+        .filter(({ episode }) => transcripts.includes(episode.id))
+        .map(({ episode }) => (
+          <Button
+            key={episode.id}
+            secondary
+            label={`${episode.title} · transcript`}
+            onPress={() => {
+              useLibrary.getState().selectEpisode(episode.id);
+              router.push("/transcript");
+            }}
+          />
+        ))}
+      {transcripts.length === 0 && (
+        <Body>Save an episode transcript from the player to keep it here.</Body>
       )}
       <Text style={{ fontSize: 15, fontWeight: "600", color: colors.muted }}>
         Conversation history

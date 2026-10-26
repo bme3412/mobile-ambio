@@ -1,0 +1,77 @@
+{
+  "settings": {
+    "dataDir": "src/data/editions/2026-10-26",
+    "workDir": "experiments/2026-10-26",
+    "batchBoundaries": [
+      0,
+      2,
+      10,
+      18
+    ],
+    "introMs": 3000,
+    "introBed": "experiments/cafe-signature/music-bed.wav",
+    "outroMs": 4000,
+    "outroCue": "experiments/cafe-signature/cafe-cue.mp3",
+    "transitions": [
+      {
+        "segmentIndex": 10,
+        "durationMs": 1500,
+        "cue": "experiments/cafe-signature/cafe-cue.mp3"
+      },
+      {
+        "segmentIndex": 18,
+        "durationMs": 1500,
+        "cue": "experiments/2026-10-26/technology-cue.mp3"
+      }
+    ]
+  },
+  "timeline": {
+    "style": "warm-cafe",
+    "introMs": 3000,
+    "transitionMs": 1500,
+    "outroMs": 4000
+  },
+  "musicOnlyRanges": [
+    {
+      "startMs": 0,
+      "endMs": 3000
+    },
+    {
+      "startMs": 102760,
+      "endMs": 104260
+    },
+    {
+      "startMs": 193260,
+      "endMs": 194760
+    },
+    {
+      "startMs": 330960,
+      "endMs": 334960
+    }
+  ],
+  "gainDb": 0.05000000000000071,
+  "measurements": {
+    "input_i": "-19.15",
+    "input_tp": "-5.44",
+    "input_lra": "2.90",
+    "input_thresh": "-29.52",
+    "output_i": "-18.96",
+    "output_tp": "-4.96",
+    "output_lra": "2.80",
+    "output_thresh": "-29.33",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.04"
+  },
+  "reference": {
+    "input_i": "-18.71",
+    "input_tp": "-2.17",
+    "input_lra": "2.80",
+    "input_thresh": "-29.07",
+    "output_i": "-18.98",
+    "output_tp": "-2.34",
+    "output_lra": "2.80",
+    "output_thresh": "-29.34",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.02"
+  }
+}

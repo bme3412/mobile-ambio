@@ -1,7 +1,18 @@
+import { useLibrary } from "../../state/library";
+import { stopPronunciation } from "../../playback/pronunciation";
 import { LanguageFlag } from "../../components/LanguageFlag";
 import { cafeArtwork } from "../../data/artwork";
 import { LinearGradient } from "expo-linear-gradient";
-import { Leaf, ChevronDown, Clock3, Orbit, Cookie } from "lucide-react-native";
+import {
+  Leaf,
+  ChevronDown,
+  Clock3,
+  Orbit,
+  Cookie,
+  Globe,
+  GraduationCap,
+  Cpu,
+} from "lucide-react-native";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import {
@@ -14,15 +25,16 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { episode as fixture } from "../../data/episode";
+import { latestEdition, useEpisodeData } from "../../data/catalog";
 import { Body, Button, colors, s } from "../../components/ui";
 import { player, time, usePlayback } from "../../playback/player";
 import { WordSheet } from "../../components/WordSheet";
-import { vocabulary } from "../../data/vocabulary";
+
 import { normalizeWord } from "../../data/dictionary";
 import { WordToken, TranscriptSegment } from "../../domain/types";
-const storyIcons = [Clock3, Orbit, Cookie];
+const storyIcons = [Clock3, Orbit, Cookie, Globe, GraduationCap, Cpu];
 export default function Home() {
+  const { episode: fixture, vocabulary, date } = useEpisodeData();
   const playback = usePlayback();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selection, setSelection] = useState<{
@@ -35,7 +47,10 @@ export default function Home() {
     isPending,
     isError,
     refetch,
-  } = useQuery({ queryKey: ["episode", "demo"], queryFn: async () => fixture });
+  } = useQuery({
+    queryKey: ["episode", fixture.id],
+    queryFn: async () => fixture,
+  });
   if (isPending)
     return (
       <SafeAreaView
@@ -101,6 +116,27 @@ export default function Home() {
           paddingBottom: 24,
         }}
       >
+        <View
+          style={{ ...s.card, margin: 20, backgroundColor: colors.lavender }}
+        >
+          <Text style={s.note}>
+            LATEST EDITION · {latestEdition.date.toUpperCase()}
+          </Text>
+          <Text accessibilityRole="header" style={s.subheading}>
+            {latestEdition.episode.title}
+          </Text>
+          <Body>{latestEdition.episode.subtitle}</Body>
+          <Button
+            label={`Listen · ${time(latestEdition.episode.durationMs)}`}
+            accessibilityLabel={`Listen to latest edition · ${latestEdition.episode.title}`}
+            onPress={() => {
+              stopPronunciation();
+              useLibrary.getState().selectEpisode(latestEdition.episode.id);
+              player.play();
+              router.push("/player");
+            }}
+          />
+        </View>
         <ImageBackground
           source={cafeArtwork}
           imageStyle={{ width: "100%", height: "100%" }}
@@ -190,7 +226,7 @@ export default function Home() {
             }}
           >
             <Text style={{ color: "white", fontSize: 13, letterSpacing: 2 }}>
-              AMBIO DAILY · 24 OCTOBRE 2026
+              AMBIO DAILY · {date.toUpperCase()}
             </Text>
             <Text
               accessibilityRole="header"
@@ -243,9 +279,24 @@ export default function Home() {
             </View>
           </View>
         )}
+        <View style={{ paddingHorizontal: 20, paddingTop: 18 }}>
+          <Text style={s.subheading}>{fixture.title}</Text>
+          <Button
+            secondary
+            label="Browse episode library →"
+            onPress={() => router.push("/library")}
+          />
+        </View>
         <View style={{ flexDirection: "row", padding: 20, gap: 10 }}>
           {episode.stories.map((story, i) => {
-            const StoryIcon = storyIcons[i];
+            const StoryIcon =
+              (
+                {
+                  brazil: Globe,
+                  france: GraduationCap,
+                  anthropic: Cpu,
+                } as Record<string, typeof Globe>
+              )[story.id] ?? storyIcons[i];
             const selected = i === selectedIndex;
             const end = starts[i + 1] ?? episode.durationMs;
             const playing =

@@ -22,5 +22,15 @@ class CafeEpisodeTests(unittest.TestCase):
                 for cue in mixed['musicOnlyRanges']:
                     self.assertTrue(y['endMs'] <= cue['startMs'] or y['startMs'] >= cue['endMs'])
 
+    def test_second_edition_matches_published_timing(self):
+        source = json.loads((ROOT / 'experiments/2026-10-25/full-dry-timing.json').read_text())
+        published = json.loads((ROOT / 'src/data/editions/2026-10-25/audio-timing.json').read_text())
+        self.assertEqual(arrange_timing(source, (8, 14)), published)
+        for index, (dry, mixed) in enumerate(zip(source['segments'], published['segments'])):
+            offset = 3000 + 1500 * (index >= 8) + 1500 * (index >= 14)
+            for a, b in zip(dry['words'], mixed['words']):
+                self.assertEqual(b['startMs'] - a['startMs'], offset)
+                self.assertEqual(b['endMs'] - a['endMs'], offset)
+
 if __name__ == '__main__':
     unittest.main()

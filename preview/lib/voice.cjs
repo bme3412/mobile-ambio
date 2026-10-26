@@ -1,5 +1,5 @@
 const { Buffer } = require("node:buffer");
-const { sessionConfig } = require("./voice-config.cjs");
+const { sessionConfig, episodeIds } = require("./voice-config.cjs");
 const lastSessions = new Map();
 function allowSession(req, now = Date.now()) {
   const key =
@@ -27,7 +27,7 @@ module.exports = async (req, res, url, { native = false } = {}) => {
     res.end(JSON.stringify(body));
   };
   if (url.pathname === "/api/voice/health" && req.method === "GET")
-    return json(200, { available: !!process.env.OPENAI_API_KEY });
+    return json(200, { available: !!process.env.OPENAI_API_KEY, episodeIds });
   if (url.pathname !== "/api/voice/session")
     return json(404, { error: "Not found." });
   if (req.method !== "POST") return json(405, { error: "Method not allowed." });
@@ -61,9 +61,15 @@ module.exports = async (req, res, url, { native = false } = {}) => {
       return json(429, {
         error: "Please wait a few seconds before reconnecting.",
       });
+    let config;
+    try {
+      config = sessionConfig(url.searchParams.get("episodeId") ?? undefined);
+    } catch {
+      return json(400, { error: "Unknown episode." });
+    }
     const form = new FormData();
     form.set("sdp", body);
-    form.set("session", JSON.stringify(sessionConfig()));
+    form.set("session", JSON.stringify(config));
     const upstream = await fetch("https://api.openai.com/v1/realtime/calls", {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },

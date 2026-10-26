@@ -65,11 +65,13 @@ export function Body({ children }: PropsWithChildren) {
 }
 export function Button({
   label,
+  accessibilityLabel,
   onPress,
   secondary = false,
   disabled = false,
 }: {
   label: string;
+  accessibilityLabel?: string;
   onPress: () => void;
   secondary?: boolean;
   disabled?: boolean;
@@ -85,7 +87,7 @@ export function Button({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={() => {

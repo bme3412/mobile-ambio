@@ -1,4 +1,4 @@
-import { episode } from "../data/episode";
+import { getEdition } from "../data/catalog";
 import { useState } from "react";
 import { Modal, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +16,7 @@ export function PracticeSheet({
     [revealed, setRevealed] = useState(false);
   const review = useLibrary((x) => x.review);
   const item = items[index];
+  const episode = item ? getEdition(item.episodeId).episode : undefined;
   const next = () => {
     setIndex((i) => i + 1);
     setRevealed(false);
@@ -43,8 +44,8 @@ export function PracticeSheet({
                   <Title>{item.word.meaning ?? "In this sentence"}</Title>
                   {!item.word.meaning && (
                     <Body>
-                      {(item.episodeId === episode.id
-                        ? episode.segments.find((s) => s.id === item.segmentId)
+                      {(item.episodeId === episode?.id
+                        ? episode?.segments.find((s) => s.id === item.segmentId)
                             ?.translation
                         : undefined) ?? item.context}
                     </Body>

@@ -11,8 +11,10 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 async function home() {
-  const client = new QueryClient({ defaultOptions: { queries: { gcTime: Infinity } } });
-  client.setQueryData(["episode", "demo"], episode);
+  const client = new QueryClient({
+    defaultOptions: { queries: { gcTime: Infinity } },
+  });
+  client.setQueryData(["episode", episode.id], episode);
   return render(
     <QueryClientProvider client={client}>
       <Home />
@@ -44,4 +46,24 @@ test("primary action reflects playback position and vocabulary opens its definit
   expect(
     ui.getByText("to move back; here, to put the clocks back"),
   ).toBeTruthy();
+});
+
+test("latest edition is featured without interrupting the current listen", async () => {
+  const { useLibrary } = jest.requireActual("../src/state/library");
+  useLibrary.setState({ activeEpisodeId: episode.id });
+  player.seek(45000);
+  player.play();
+  const ui = await home();
+  expect(ui.getByText("Le monde en mouvement")).toBeTruthy();
+  expect(useLibrary.getState().activeEpisodeId).toBe(episode.id);
+  expect(player.getSnapshot()).toMatchObject({
+    positionMs: 45000,
+    playing: true,
+  });
+  await fireEvent.press(
+    ui.getByLabelText("Listen to latest edition · Le monde en mouvement"),
+  );
+  expect(useLibrary.getState().activeEpisodeId).toBe("daily-fr-2026-10-26");
+  expect(router.push).toHaveBeenCalledWith("/player");
+  player.pause();
 });

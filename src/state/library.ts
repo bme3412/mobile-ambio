@@ -7,6 +7,9 @@ import {
   PlaybackProgress,
 } from "../domain/types";
 interface Library {
+  activeEpisodeId: string;
+  selectEpisode: (id: string) => void;
+  progressByEpisode: Record<string, PlaybackProgress>;
   bookmarks: Bookmark[];
   transcripts: string[];
   toggleTranscript: (episodeId: string) => void;
@@ -21,6 +24,9 @@ interface Library {
 export const useLibrary = create<Library>()(
   persist(
     (set) => ({
+      activeEpisodeId: "daily-fr-2026-10-24",
+      selectEpisode: (activeEpisodeId) => set({ activeEpisodeId }),
+      progressByEpisode: {},
       bookmarks: [],
       transcripts: [],
       toggleTranscript: (id) =>
@@ -48,11 +54,30 @@ export const useLibrary = create<Library>()(
         set((s) => ({
           sessions: [session, ...s.sessions.filter((x) => x.id !== session.id)],
         })),
-      saveProgress: (progress) => set({ progress }),
+      saveProgress: (progress) =>
+        set((s) => ({
+          progress,
+          progressByEpisode: {
+            ...s.progressByEpisode,
+            [progress.episodeId]: progress,
+          },
+        })),
     }),
     {
       name: "ambio-library-v1",
-      version: 1,
+      version: 2,
+      migrate: (persisted) => {
+        const state = persisted as Partial<Library>;
+        return {
+          ...state,
+          activeEpisodeId: state.activeEpisodeId ?? "daily-fr-2026-10-24",
+          progressByEpisode:
+            state.progressByEpisode ??
+            (state.progress
+              ? { [state.progress.episodeId]: state.progress }
+              : {}),
+        };
+      },
       storage: createJSONStorage(() => ({
         getItem: async (key) => {
           try {
@@ -72,7 +97,16 @@ export const useLibrary = create<Library>()(
         },
         removeItem: (key) => AsyncStorage.removeItem(key),
       })),
-      partialize: ({ bookmarks, sessions, progress, transcripts }) => ({
+      partialize: ({
+        bookmarks,
+        sessions,
+        progress,
+        transcripts,
+        activeEpisodeId,
+        progressByEpisode,
+      }) => ({
+        activeEpisodeId,
+        progressByEpisode,
         bookmarks,
         transcripts,
         sessions,

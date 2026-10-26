@@ -1,4 +1,4 @@
-import { featuredPhrase } from "../data/episode";
+import { getEdition } from "../data/catalog";
 import { Text, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Body, Button, Label, Page, s, Title } from "../components/ui";
@@ -7,6 +7,7 @@ export default function Recap() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const sessions = useLibrary((x) => x.sessions);
   const session = sessions.find((x) => x.id === id);
+  const { featuredPhrase } = getEdition(session?.episodeId ?? "");
   const bookmarks = useLibrary((s) => s.bookmarks);
   const toggle = useLibrary((s) => s.toggle);
   const storageError = useLibrary((s) => s.storageError);

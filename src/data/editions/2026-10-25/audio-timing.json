@@ -1,0 +1,2008 @@
+{
+  "durationMs": 162440,
+  "provider": "elevenlabs",
+  "model": "eleven_v4",
+  "voices": {
+    "Camille": "Lucie narration",
+    "Louis": "Loïc - Engaging French Storyteller"
+  },
+  "segments": [
+    {
+      "startMs": 3000,
+      "endMs": 9720,
+      "words": [
+        {
+          "startMs": 3000,
+          "endMs": 3594
+        },
+        {
+          "startMs": 3640,
+          "endMs": 3880
+        },
+        {
+          "startMs": 3960,
+          "endMs": 4520
+        },
+        {
+          "startMs": 4560,
+          "endMs": 4680
+        },
+        {
+          "startMs": 4760,
+          "endMs": 5640
+        },
+        {
+          "startMs": 5680,
+          "endMs": 5720
+        },
+        {
+          "startMs": 5800,
+          "endMs": 5880
+        },
+        {
+          "startMs": 5960,
+          "endMs": 6280
+        },
+        {
+          "startMs": 6360,
+          "endMs": 6680
+        },
+        {
+          "startMs": 6760,
+          "endMs": 7480
+        },
+        {
+          "startMs": 7560,
+          "endMs": 7640
+        },
+        {
+          "startMs": 7720,
+          "endMs": 7880
+        },
+        {
+          "startMs": 7920,
+          "endMs": 7960
+        },
+        {
+          "startMs": 8120,
+          "endMs": 8280
+        },
+        {
+          "startMs": 8360,
+          "endMs": 8440
+        },
+        {
+          "startMs": 8520,
+          "endMs": 9000
+        },
+        {
+          "startMs": 9080,
+          "endMs": 9720
+        }
+      ]
+    },
+    {
+      "startMs": 9720,
+      "endMs": 16760,
+      "words": [
+        {
+          "startMs": 9720,
+          "endMs": 9960
+        },
+        {
+          "startMs": 10040,
+          "endMs": 10120
+        },
+        {
+          "startMs": 10200,
+          "endMs": 10493
+        },
+        {
+          "startMs": 10547,
+          "endMs": 10600
+        },
+        {
+          "startMs": 10680,
+          "endMs": 11560
+        },
+        {
+          "startMs": 11600,
+          "endMs": 12280
+        },
+        {
+          "startMs": 12360,
+          "endMs": 12440
+        },
+        {
+          "startMs": 12520,
+          "endMs": 12760
+        },
+        {
+          "startMs": 12840,
+          "endMs": 12920
+        },
+        {
+          "startMs": 13000,
+          "endMs": 13720
+        },
+        {
+          "startMs": 13840,
+          "endMs": 13960
+        },
+        {
+          "startMs": 14040,
+          "endMs": 14120
+        },
+        {
+          "startMs": 14200,
+          "endMs": 14280
+        },
+        {
+          "startMs": 14560,
+          "endMs": 14840
+        },
+        {
+          "startMs": 14920,
+          "endMs": 15000
+        },
+        {
+          "startMs": 15120,
+          "endMs": 15240
+        },
+        {
+          "startMs": 15320,
+          "endMs": 15480
+        },
+        {
+          "startMs": 15560,
+          "endMs": 15640
+        },
+        {
+          "startMs": 15800,
+          "endMs": 15960
+        },
+        {
+          "startMs": 16000,
+          "endMs": 16040
+        },
+        {
+          "startMs": 16120,
+          "endMs": 16760
+        }
+      ]
+    },
+    {
+      "startMs": 16960,
+      "endMs": 26000,
+      "words": [
+        {
+          "startMs": 16960,
+          "endMs": 17280
+        },
+        {
+          "startMs": 17360,
+          "endMs": 17680
+        },
+        {
+          "startMs": 18080,
+          "endMs": 18120
+        },
+        {
+          "startMs": 18160,
+          "endMs": 18240
+        },
+        {
+          "startMs": 18320,
+          "endMs": 18720
+        },
+        {
+          "startMs": 18800,
+          "endMs": 18880
+        },
+        {
+          "startMs": 18960,
+          "endMs": 19280
+        },
+        {
+          "startMs": 19360,
+          "endMs": 19760
+        },
+        {
+          "startMs": 20240,
+          "endMs": 20720
+        },
+        {
+          "startMs": 20800,
+          "endMs": 21280
+        },
+        {
+          "startMs": 21360,
+          "endMs": 21440
+        },
+        {
+          "startMs": 21520,
+          "endMs": 21760
+        },
+        {
+          "startMs": 21840,
+          "endMs": 21920
+        },
+        {
+          "startMs": 22080,
+          "endMs": 22240
+        },
+        {
+          "startMs": 22320,
+          "endMs": 22400
+        },
+        {
+          "startMs": 22480,
+          "endMs": 22640
+        },
+        {
+          "startMs": 22720,
+          "endMs": 23360
+        },
+        {
+          "startMs": 23560,
+          "endMs": 23760
+        },
+        {
+          "startMs": 23920,
+          "endMs": 24080
+        },
+        {
+          "startMs": 24160,
+          "endMs": 24240
+        },
+        {
+          "startMs": 24400,
+          "endMs": 24800
+        },
+        {
+          "startMs": 24880,
+          "endMs": 25040
+        },
+        {
+          "startMs": 25080,
+          "endMs": 25160
+        },
+        {
+          "startMs": 25200,
+          "endMs": 26000
+        }
+      ]
+    },
+    {
+      "startMs": 26000,
+      "endMs": 31360,
+      "words": [
+        {
+          "startMs": 26000,
+          "endMs": 26400
+        },
+        {
+          "startMs": 26560,
+          "endMs": 26720
+        },
+        {
+          "startMs": 26880,
+          "endMs": 27120
+        },
+        {
+          "startMs": 27520,
+          "endMs": 27547
+        },
+        {
+          "startMs": 27573,
+          "endMs": 27920
+        },
+        {
+          "startMs": 28040,
+          "endMs": 28160
+        },
+        {
+          "startMs": 28240,
+          "endMs": 28400
+        },
+        {
+          "startMs": 28480,
+          "endMs": 28680
+        },
+        {
+          "startMs": 28720,
+          "endMs": 28760
+        },
+        {
+          "startMs": 28800,
+          "endMs": 29360
+        },
+        {
+          "startMs": 29400,
+          "endMs": 29600
+        },
+        {
+          "startMs": 29720,
+          "endMs": 29920
+        },
+        {
+          "startMs": 30000,
+          "endMs": 30280
+        },
+        {
+          "startMs": 30320,
+          "endMs": 30400
+        },
+        {
+          "startMs": 30427,
+          "endMs": 30480
+        },
+        {
+          "startMs": 30560,
+          "endMs": 30760
+        },
+        {
+          "startMs": 30800,
+          "endMs": 30880
+        },
+        {
+          "startMs": 30960,
+          "endMs": 31360
+        }
+      ]
+    },
+    {
+      "startMs": 31360,
+      "endMs": 38160,
+      "words": [
+        {
+          "startMs": 31360,
+          "endMs": 31520
+        },
+        {
+          "startMs": 31640,
+          "endMs": 32000
+        },
+        {
+          "startMs": 32080,
+          "endMs": 32160
+        },
+        {
+          "startMs": 32240,
+          "endMs": 32480
+        },
+        {
+          "startMs": 32560,
+          "endMs": 32640
+        },
+        {
+          "startMs": 32720,
+          "endMs": 33040
+        },
+        {
+          "startMs": 33120,
+          "endMs": 33200
+        },
+        {
+          "startMs": 33240,
+          "endMs": 33520
+        },
+        {
+          "startMs": 33600,
+          "endMs": 34000
+        },
+        {
+          "startMs": 34080,
+          "endMs": 34160
+        },
+        {
+          "startMs": 34240,
+          "endMs": 35120
+        },
+        {
+          "startMs": 35160,
+          "endMs": 35200
+        },
+        {
+          "startMs": 35280,
+          "endMs": 35360
+        },
+        {
+          "startMs": 35440,
+          "endMs": 35640
+        },
+        {
+          "startMs": 35680,
+          "endMs": 35920
+        },
+        {
+          "startMs": 36000,
+          "endMs": 36640
+        },
+        {
+          "startMs": 36720,
+          "endMs": 36760
+        },
+        {
+          "startMs": 36800,
+          "endMs": 36880
+        },
+        {
+          "startMs": 36960,
+          "endMs": 37360
+        },
+        {
+          "startMs": 37440,
+          "endMs": 38160
+        }
+      ]
+    },
+    {
+      "startMs": 38160,
+      "endMs": 41200,
+      "words": [
+        {
+          "startMs": 38160,
+          "endMs": 38640
+        },
+        {
+          "startMs": 38720,
+          "endMs": 38960
+        },
+        {
+          "startMs": 39080,
+          "endMs": 39200
+        },
+        {
+          "startMs": 39240,
+          "endMs": 39600
+        },
+        {
+          "startMs": 39640,
+          "endMs": 39760
+        },
+        {
+          "startMs": 39840,
+          "endMs": 40080
+        },
+        {
+          "startMs": 40120,
+          "endMs": 40160
+        },
+        {
+          "startMs": 40240,
+          "endMs": 40480
+        },
+        {
+          "startMs": 40520,
+          "endMs": 40560
+        },
+        {
+          "startMs": 40600,
+          "endMs": 40640
+        },
+        {
+          "startMs": 40800,
+          "endMs": 40960
+        },
+        {
+          "startMs": 41080,
+          "endMs": 41200
+        }
+      ]
+    },
+    {
+      "startMs": 41200,
+      "endMs": 48080,
+      "words": [
+        {
+          "startMs": 41200,
+          "endMs": 42400
+        },
+        {
+          "startMs": 42440,
+          "endMs": 42800
+        },
+        {
+          "startMs": 42840,
+          "endMs": 43200
+        },
+        {
+          "startMs": 43320,
+          "endMs": 43840
+        },
+        {
+          "startMs": 43920,
+          "endMs": 44160
+        },
+        {
+          "startMs": 44240,
+          "endMs": 44320
+        },
+        {
+          "startMs": 44440,
+          "endMs": 44720
+        },
+        {
+          "startMs": 44800,
+          "endMs": 44880
+        },
+        {
+          "startMs": 44960,
+          "endMs": 45840
+        },
+        {
+          "startMs": 45880,
+          "endMs": 45920
+        },
+        {
+          "startMs": 46000,
+          "endMs": 46080
+        },
+        {
+          "startMs": 46160,
+          "endMs": 46480
+        },
+        {
+          "startMs": 46640,
+          "endMs": 47200
+        },
+        {
+          "startMs": 47280,
+          "endMs": 47360
+        },
+        {
+          "startMs": 47400,
+          "endMs": 48080
+        }
+      ]
+    },
+    {
+      "startMs": 48080,
+      "endMs": 54720,
+      "words": [
+        {
+          "startMs": 48080,
+          "endMs": 48320
+        },
+        {
+          "startMs": 48360,
+          "endMs": 48560
+        },
+        {
+          "startMs": 48680,
+          "endMs": 48800
+        },
+        {
+          "startMs": 49200,
+          "endMs": 49227
+        },
+        {
+          "startMs": 49253,
+          "endMs": 49840
+        },
+        {
+          "startMs": 50120,
+          "endMs": 50400
+        },
+        {
+          "startMs": 50480,
+          "endMs": 50800
+        },
+        {
+          "startMs": 50840,
+          "endMs": 50880
+        },
+        {
+          "startMs": 51000,
+          "endMs": 51840
+        },
+        {
+          "startMs": 51920,
+          "endMs": 52320
+        },
+        {
+          "startMs": 52360,
+          "endMs": 52560
+        },
+        {
+          "startMs": 52600,
+          "endMs": 52640
+        },
+        {
+          "startMs": 52720,
+          "endMs": 52800
+        },
+        {
+          "startMs": 52840,
+          "endMs": 52960
+        },
+        {
+          "startMs": 53040,
+          "endMs": 53120
+        },
+        {
+          "startMs": 53200,
+          "endMs": 53440
+        },
+        {
+          "startMs": 53480,
+          "endMs": 53600
+        },
+        {
+          "startMs": 53640,
+          "endMs": 53680
+        },
+        {
+          "startMs": 53760,
+          "endMs": 53840
+        },
+        {
+          "startMs": 53920,
+          "endMs": 54000
+        },
+        {
+          "startMs": 54040,
+          "endMs": 54080
+        },
+        {
+          "startMs": 54160,
+          "endMs": 54240
+        },
+        {
+          "startMs": 54320,
+          "endMs": 54400
+        },
+        {
+          "startMs": 54520,
+          "endMs": 54720
+        }
+      ]
+    },
+    {
+      "startMs": 56420,
+      "endMs": 66260,
+      "words": [
+        {
+          "startMs": 56420,
+          "endMs": 56820
+        },
+        {
+          "startMs": 56900,
+          "endMs": 57140
+        },
+        {
+          "startMs": 57620,
+          "endMs": 57647
+        },
+        {
+          "startMs": 57673,
+          "endMs": 57700
+        },
+        {
+          "startMs": 57860,
+          "endMs": 58500
+        },
+        {
+          "startMs": 58660,
+          "endMs": 58820
+        },
+        {
+          "startMs": 58940,
+          "endMs": 59140
+        },
+        {
+          "startMs": 59180,
+          "endMs": 59220
+        },
+        {
+          "startMs": 59300,
+          "endMs": 59540
+        },
+        {
+          "startMs": 60180,
+          "endMs": 60260
+        },
+        {
+          "startMs": 60340,
+          "endMs": 60580
+        },
+        {
+          "startMs": 60660,
+          "endMs": 61140
+        },
+        {
+          "startMs": 61180,
+          "endMs": 61940
+        },
+        {
+          "startMs": 62020,
+          "endMs": 62180
+        },
+        {
+          "startMs": 62260,
+          "endMs": 62740
+        },
+        {
+          "startMs": 62780,
+          "endMs": 62820
+        },
+        {
+          "startMs": 62980,
+          "endMs": 63420
+        },
+        {
+          "startMs": 63540,
+          "endMs": 63620
+        },
+        {
+          "startMs": 63700,
+          "endMs": 64020
+        },
+        {
+          "startMs": 64100,
+          "endMs": 64740
+        },
+        {
+          "startMs": 64780,
+          "endMs": 64820
+        },
+        {
+          "startMs": 64900,
+          "endMs": 65380
+        },
+        {
+          "startMs": 65460,
+          "endMs": 65540
+        },
+        {
+          "startMs": 65580,
+          "endMs": 66260
+        }
+      ]
+    },
+    {
+      "startMs": 66260,
+      "endMs": 70100,
+      "words": [
+        {
+          "startMs": 66260,
+          "endMs": 66420
+        },
+        {
+          "startMs": 66500,
+          "endMs": 66660
+        },
+        {
+          "startMs": 66740,
+          "endMs": 66900
+        },
+        {
+          "startMs": 66980,
+          "endMs": 67060
+        },
+        {
+          "startMs": 67100,
+          "endMs": 67620
+        },
+        {
+          "startMs": 67940,
+          "endMs": 67993
+        },
+        {
+          "startMs": 68047,
+          "endMs": 68100
+        },
+        {
+          "startMs": 68140,
+          "endMs": 68220
+        },
+        {
+          "startMs": 68260,
+          "endMs": 68420
+        },
+        {
+          "startMs": 68460,
+          "endMs": 68500
+        },
+        {
+          "startMs": 68580,
+          "endMs": 68900
+        },
+        {
+          "startMs": 68980,
+          "endMs": 69220
+        },
+        {
+          "startMs": 69247,
+          "endMs": 69273
+        },
+        {
+          "startMs": 69300,
+          "endMs": 69380
+        },
+        {
+          "startMs": 69460,
+          "endMs": 69860
+        },
+        {
+          "startMs": 70020,
+          "endMs": 70100
+        }
+      ]
+    },
+    {
+      "startMs": 70100,
+      "endMs": 77300,
+      "words": [
+        {
+          "startMs": 70100,
+          "endMs": 70420
+        },
+        {
+          "startMs": 70460,
+          "endMs": 70740
+        },
+        {
+          "startMs": 71140,
+          "endMs": 71220
+        },
+        {
+          "startMs": 71260,
+          "endMs": 71300
+        },
+        {
+          "startMs": 71380,
+          "endMs": 71700
+        },
+        {
+          "startMs": 71780,
+          "endMs": 71820
+        },
+        {
+          "startMs": 71860,
+          "endMs": 72180
+        },
+        {
+          "startMs": 72300,
+          "endMs": 72740
+        },
+        {
+          "startMs": 72820,
+          "endMs": 73220
+        },
+        {
+          "startMs": 73300,
+          "endMs": 73380
+        },
+        {
+          "startMs": 73420,
+          "endMs": 74100
+        },
+        {
+          "startMs": 74140,
+          "endMs": 74180
+        },
+        {
+          "startMs": 74340,
+          "endMs": 74580
+        },
+        {
+          "startMs": 74820,
+          "endMs": 75060
+        },
+        {
+          "startMs": 75140,
+          "endMs": 75220
+        },
+        {
+          "startMs": 75300,
+          "endMs": 75380
+        },
+        {
+          "startMs": 75500,
+          "endMs": 76020
+        },
+        {
+          "startMs": 76060,
+          "endMs": 76100
+        },
+        {
+          "startMs": 76180,
+          "endMs": 76500
+        },
+        {
+          "startMs": 76580,
+          "endMs": 77300
+        }
+      ]
+    },
+    {
+      "startMs": 77300,
+      "endMs": 81700,
+      "words": [
+        {
+          "startMs": 77300,
+          "endMs": 77700
+        },
+        {
+          "startMs": 77780,
+          "endMs": 77860
+        },
+        {
+          "startMs": 77940,
+          "endMs": 78340
+        },
+        {
+          "startMs": 78380,
+          "endMs": 78420
+        },
+        {
+          "startMs": 78500,
+          "endMs": 78580
+        },
+        {
+          "startMs": 78660,
+          "endMs": 78820
+        },
+        {
+          "startMs": 78980,
+          "endMs": 79460
+        },
+        {
+          "startMs": 79500,
+          "endMs": 79540
+        },
+        {
+          "startMs": 79620,
+          "endMs": 79700
+        },
+        {
+          "startMs": 79780,
+          "endMs": 80100
+        },
+        {
+          "startMs": 80140,
+          "endMs": 80340
+        },
+        {
+          "startMs": 80420,
+          "endMs": 80900
+        },
+        {
+          "startMs": 80940,
+          "endMs": 81140
+        },
+        {
+          "startMs": 81180,
+          "endMs": 81700
+        }
+      ]
+    },
+    {
+      "startMs": 81700,
+      "endMs": 89780,
+      "words": [
+        {
+          "startMs": 81700,
+          "endMs": 81860
+        },
+        {
+          "startMs": 81940,
+          "endMs": 82260
+        },
+        {
+          "startMs": 82340,
+          "endMs": 82420
+        },
+        {
+          "startMs": 82500,
+          "endMs": 82980
+        },
+        {
+          "startMs": 83060,
+          "endMs": 83540
+        },
+        {
+          "startMs": 83620,
+          "endMs": 84100
+        },
+        {
+          "startMs": 84140,
+          "endMs": 84180
+        },
+        {
+          "startMs": 84260,
+          "endMs": 84340
+        },
+        {
+          "startMs": 84500,
+          "endMs": 84660
+        },
+        {
+          "startMs": 84700,
+          "endMs": 85140
+        },
+        {
+          "startMs": 85220,
+          "endMs": 85700
+        },
+        {
+          "startMs": 85820,
+          "endMs": 86020
+        },
+        {
+          "startMs": 86060,
+          "endMs": 86100
+        },
+        {
+          "startMs": 86180,
+          "endMs": 87060
+        },
+        {
+          "startMs": 87140,
+          "endMs": 87220
+        },
+        {
+          "startMs": 87300,
+          "endMs": 87540
+        },
+        {
+          "startMs": 87620,
+          "endMs": 87700
+        },
+        {
+          "startMs": 87780,
+          "endMs": 87940
+        },
+        {
+          "startMs": 88060,
+          "endMs": 88420
+        },
+        {
+          "startMs": 88500,
+          "endMs": 88580
+        },
+        {
+          "startMs": 88700,
+          "endMs": 88820
+        },
+        {
+          "startMs": 88900,
+          "endMs": 88980
+        },
+        {
+          "startMs": 89020,
+          "endMs": 89140
+        },
+        {
+          "startMs": 89340,
+          "endMs": 89780
+        }
+      ]
+    },
+    {
+      "startMs": 89780,
+      "endMs": 96180,
+      "words": [
+        {
+          "startMs": 89780,
+          "endMs": 90180
+        },
+        {
+          "startMs": 90260,
+          "endMs": 90340
+        },
+        {
+          "startMs": 90460,
+          "endMs": 90900
+        },
+        {
+          "startMs": 91300,
+          "endMs": 91353
+        },
+        {
+          "startMs": 91407,
+          "endMs": 91460
+        },
+        {
+          "startMs": 91540,
+          "endMs": 91780
+        },
+        {
+          "startMs": 91860,
+          "endMs": 92020
+        },
+        {
+          "startMs": 92060,
+          "endMs": 92100
+        },
+        {
+          "startMs": 92140,
+          "endMs": 92340
+        },
+        {
+          "startMs": 92420,
+          "endMs": 92500
+        },
+        {
+          "startMs": 92580,
+          "endMs": 92900
+        },
+        {
+          "startMs": 93300,
+          "endMs": 93340
+        },
+        {
+          "startMs": 93380,
+          "endMs": 93460
+        },
+        {
+          "startMs": 93500,
+          "endMs": 93540
+        },
+        {
+          "startMs": 93620,
+          "endMs": 93860
+        },
+        {
+          "startMs": 93900,
+          "endMs": 93940
+        },
+        {
+          "startMs": 94020,
+          "endMs": 94100
+        },
+        {
+          "startMs": 94140,
+          "endMs": 94340
+        },
+        {
+          "startMs": 94420,
+          "endMs": 94580
+        },
+        {
+          "startMs": 94700,
+          "endMs": 94820
+        },
+        {
+          "startMs": 94900,
+          "endMs": 94953
+        },
+        {
+          "startMs": 95007,
+          "endMs": 95060
+        },
+        {
+          "startMs": 95140,
+          "endMs": 95460
+        },
+        {
+          "startMs": 95500,
+          "endMs": 95540
+        },
+        {
+          "startMs": 95620,
+          "endMs": 96180
+        }
+      ]
+    },
+    {
+      "startMs": 97880,
+      "endMs": 107160,
+      "words": [
+        {
+          "startMs": 97880,
+          "endMs": 98040
+        },
+        {
+          "startMs": 98160,
+          "endMs": 98760
+        },
+        {
+          "startMs": 99000,
+          "endMs": 99240
+        },
+        {
+          "startMs": 99400,
+          "endMs": 99800
+        },
+        {
+          "startMs": 100280,
+          "endMs": 100360
+        },
+        {
+          "startMs": 100440,
+          "endMs": 100840
+        },
+        {
+          "startMs": 100960,
+          "endMs": 101240
+        },
+        {
+          "startMs": 101280,
+          "endMs": 101320
+        },
+        {
+          "startMs": 101400,
+          "endMs": 101960
+        },
+        {
+          "startMs": 102040,
+          "endMs": 102520
+        },
+        {
+          "startMs": 102560,
+          "endMs": 102600
+        },
+        {
+          "startMs": 102680,
+          "endMs": 102920
+        },
+        {
+          "startMs": 103040,
+          "endMs": 103480
+        },
+        {
+          "startMs": 103640,
+          "endMs": 104600
+        },
+        {
+          "startMs": 104680,
+          "endMs": 104760
+        },
+        {
+          "startMs": 104840,
+          "endMs": 104960
+        },
+        {
+          "startMs": 105000,
+          "endMs": 105560
+        },
+        {
+          "startMs": 105640,
+          "endMs": 105720
+        },
+        {
+          "startMs": 105800,
+          "endMs": 106200
+        },
+        {
+          "startMs": 106280,
+          "endMs": 106520
+        },
+        {
+          "startMs": 106640,
+          "endMs": 107160
+        }
+      ]
+    },
+    {
+      "startMs": 107160,
+      "endMs": 111400,
+      "words": [
+        {
+          "startMs": 107160,
+          "endMs": 107320
+        },
+        {
+          "startMs": 107400,
+          "endMs": 107560
+        },
+        {
+          "startMs": 107600,
+          "endMs": 107640
+        },
+        {
+          "startMs": 107720,
+          "endMs": 108120
+        },
+        {
+          "startMs": 108160,
+          "endMs": 108360
+        },
+        {
+          "startMs": 108440,
+          "endMs": 108520
+        },
+        {
+          "startMs": 108600,
+          "endMs": 108680
+        },
+        {
+          "startMs": 108733,
+          "endMs": 109000
+        },
+        {
+          "startMs": 109040,
+          "endMs": 109080
+        },
+        {
+          "startMs": 109160,
+          "endMs": 109560
+        },
+        {
+          "startMs": 109600,
+          "endMs": 109640
+        },
+        {
+          "startMs": 109720,
+          "endMs": 110120
+        },
+        {
+          "startMs": 110360,
+          "endMs": 110520
+        },
+        {
+          "startMs": 110547,
+          "endMs": 110600
+        },
+        {
+          "startMs": 110680,
+          "endMs": 111080
+        },
+        {
+          "startMs": 111160,
+          "endMs": 111400
+        }
+      ]
+    },
+    {
+      "startMs": 111400,
+      "endMs": 116920,
+      "words": [
+        {
+          "startMs": 111400,
+          "endMs": 111480
+        },
+        {
+          "startMs": 111560,
+          "endMs": 111640
+        },
+        {
+          "startMs": 111720,
+          "endMs": 111800
+        },
+        {
+          "startMs": 111880,
+          "endMs": 112120
+        },
+        {
+          "startMs": 112160,
+          "endMs": 112200
+        },
+        {
+          "startMs": 112280,
+          "endMs": 112880
+        },
+        {
+          "startMs": 113080,
+          "endMs": 113160
+        },
+        {
+          "startMs": 113240,
+          "endMs": 113480
+        },
+        {
+          "startMs": 113560,
+          "endMs": 113960
+        },
+        {
+          "startMs": 114040,
+          "endMs": 114360
+        },
+        {
+          "startMs": 114480,
+          "endMs": 114600
+        },
+        {
+          "startMs": 114680,
+          "endMs": 114920
+        },
+        {
+          "startMs": 115000,
+          "endMs": 115040
+        },
+        {
+          "startMs": 115080,
+          "endMs": 115240
+        },
+        {
+          "startMs": 115320,
+          "endMs": 115640
+        },
+        {
+          "startMs": 115720,
+          "endMs": 115800
+        },
+        {
+          "startMs": 115840,
+          "endMs": 115880
+        },
+        {
+          "startMs": 115960,
+          "endMs": 116040
+        },
+        {
+          "startMs": 116120,
+          "endMs": 116920
+        }
+      ]
+    },
+    {
+      "startMs": 116920,
+      "endMs": 119720,
+      "words": [
+        {
+          "startMs": 116920,
+          "endMs": 117320
+        },
+        {
+          "startMs": 117400,
+          "endMs": 117480
+        },
+        {
+          "startMs": 117560,
+          "endMs": 117640
+        },
+        {
+          "startMs": 117720,
+          "endMs": 118120
+        },
+        {
+          "startMs": 118200,
+          "endMs": 118360
+        },
+        {
+          "startMs": 118400,
+          "endMs": 118440
+        },
+        {
+          "startMs": 118480,
+          "endMs": 118680
+        },
+        {
+          "startMs": 118733,
+          "endMs": 118840
+        },
+        {
+          "startMs": 118880,
+          "endMs": 118920
+        },
+        {
+          "startMs": 119000,
+          "endMs": 119560
+        },
+        {
+          "startMs": 119640,
+          "endMs": 119720
+        }
+      ]
+    },
+    {
+      "startMs": 119720,
+      "endMs": 126920,
+      "words": [
+        {
+          "startMs": 119720,
+          "endMs": 120440
+        },
+        {
+          "startMs": 120840,
+          "endMs": 120920
+        },
+        {
+          "startMs": 121000,
+          "endMs": 121160
+        },
+        {
+          "startMs": 121240,
+          "endMs": 122040
+        },
+        {
+          "startMs": 122120,
+          "endMs": 122520
+        },
+        {
+          "startMs": 122560,
+          "endMs": 122600
+        },
+        {
+          "startMs": 122680,
+          "endMs": 123400
+        },
+        {
+          "startMs": 123520,
+          "endMs": 123800
+        },
+        {
+          "startMs": 123840,
+          "endMs": 123880
+        },
+        {
+          "startMs": 123960,
+          "endMs": 124360
+        },
+        {
+          "startMs": 124440,
+          "endMs": 124520
+        },
+        {
+          "startMs": 124600,
+          "endMs": 125000
+        },
+        {
+          "startMs": 125080,
+          "endMs": 125560
+        },
+        {
+          "startMs": 125640,
+          "endMs": 125720
+        },
+        {
+          "startMs": 125800,
+          "endMs": 126280
+        },
+        {
+          "startMs": 126360,
+          "endMs": 126920
+        }
+      ]
+    },
+    {
+      "startMs": 126920,
+      "endMs": 134120,
+      "words": [
+        {
+          "startMs": 126920,
+          "endMs": 127000
+        },
+        {
+          "startMs": 127080,
+          "endMs": 127720
+        },
+        {
+          "startMs": 127760,
+          "endMs": 127800
+        },
+        {
+          "startMs": 127880,
+          "endMs": 128920
+        },
+        {
+          "startMs": 128960,
+          "endMs": 129000
+        },
+        {
+          "startMs": 129120,
+          "endMs": 129240
+        },
+        {
+          "startMs": 129360,
+          "endMs": 129480
+        },
+        {
+          "startMs": 129560,
+          "endMs": 129720
+        },
+        {
+          "startMs": 129800,
+          "endMs": 129880
+        },
+        {
+          "startMs": 130000,
+          "endMs": 130280
+        },
+        {
+          "startMs": 130360,
+          "endMs": 130440
+        },
+        {
+          "startMs": 130520,
+          "endMs": 131080
+        },
+        {
+          "startMs": 131160,
+          "endMs": 131240
+        },
+        {
+          "startMs": 131320,
+          "endMs": 131560
+        },
+        {
+          "startMs": 131600,
+          "endMs": 131640
+        },
+        {
+          "startMs": 131720,
+          "endMs": 131880
+        },
+        {
+          "startMs": 131920,
+          "endMs": 132120
+        },
+        {
+          "startMs": 132200,
+          "endMs": 132280
+        },
+        {
+          "startMs": 132360,
+          "endMs": 132680
+        },
+        {
+          "startMs": 132760,
+          "endMs": 132920
+        },
+        {
+          "startMs": 132960,
+          "endMs": 133000
+        },
+        {
+          "startMs": 133120,
+          "endMs": 133480
+        },
+        {
+          "startMs": 133520,
+          "endMs": 133560
+        },
+        {
+          "startMs": 133600,
+          "endMs": 134120
+        }
+      ]
+    },
+    {
+      "startMs": 134120,
+      "endMs": 140760,
+      "words": [
+        {
+          "startMs": 134120,
+          "endMs": 134320
+        },
+        {
+          "startMs": 134360,
+          "endMs": 134760
+        },
+        {
+          "startMs": 134840,
+          "endMs": 134920
+        },
+        {
+          "startMs": 135000,
+          "endMs": 135320
+        },
+        {
+          "startMs": 135640,
+          "endMs": 135667
+        },
+        {
+          "startMs": 135693,
+          "endMs": 135720
+        },
+        {
+          "startMs": 135880,
+          "endMs": 136200
+        },
+        {
+          "startMs": 136280,
+          "endMs": 136360
+        },
+        {
+          "startMs": 136440,
+          "endMs": 136840
+        },
+        {
+          "startMs": 137080,
+          "endMs": 137160
+        },
+        {
+          "startMs": 137240,
+          "endMs": 137720
+        },
+        {
+          "startMs": 137800,
+          "endMs": 137880
+        },
+        {
+          "startMs": 137920,
+          "endMs": 138120
+        },
+        {
+          "startMs": 138160,
+          "endMs": 138200
+        },
+        {
+          "startMs": 138280,
+          "endMs": 138520
+        },
+        {
+          "startMs": 138600,
+          "endMs": 138760
+        },
+        {
+          "startMs": 138840,
+          "endMs": 138920
+        },
+        {
+          "startMs": 139000,
+          "endMs": 139640
+        },
+        {
+          "startMs": 139760,
+          "endMs": 139960
+        },
+        {
+          "startMs": 140040,
+          "endMs": 140120
+        },
+        {
+          "startMs": 140200,
+          "endMs": 140760
+        }
+      ]
+    },
+    {
+      "startMs": 140760,
+      "endMs": 144920,
+      "words": [
+        {
+          "startMs": 140760,
+          "endMs": 140840
+        },
+        {
+          "startMs": 140920,
+          "endMs": 141000
+        },
+        {
+          "startMs": 141080,
+          "endMs": 141320
+        },
+        {
+          "startMs": 141800,
+          "endMs": 141880
+        },
+        {
+          "startMs": 141960,
+          "endMs": 142200
+        },
+        {
+          "startMs": 142320,
+          "endMs": 142440
+        },
+        {
+          "startMs": 142520,
+          "endMs": 142560
+        },
+        {
+          "startMs": 142600,
+          "endMs": 142707
+        },
+        {
+          "startMs": 142733,
+          "endMs": 142760
+        },
+        {
+          "startMs": 142800,
+          "endMs": 143400
+        },
+        {
+          "startMs": 143520,
+          "endMs": 143640
+        },
+        {
+          "startMs": 143667,
+          "endMs": 143880
+        },
+        {
+          "startMs": 143960,
+          "endMs": 144120
+        },
+        {
+          "startMs": 144200,
+          "endMs": 144280
+        },
+        {
+          "startMs": 144320,
+          "endMs": 144920
+        }
+      ]
+    },
+    {
+      "startMs": 144920,
+      "endMs": 152120,
+      "words": [
+        {
+          "startMs": 144920,
+          "endMs": 145000
+        },
+        {
+          "startMs": 145040,
+          "endMs": 145320
+        },
+        {
+          "startMs": 145400,
+          "endMs": 145640
+        },
+        {
+          "startMs": 146120,
+          "endMs": 146200
+        },
+        {
+          "startMs": 146280,
+          "endMs": 146360
+        },
+        {
+          "startMs": 146413,
+          "endMs": 146920
+        },
+        {
+          "startMs": 147000,
+          "endMs": 147560
+        },
+        {
+          "startMs": 147600,
+          "endMs": 147800
+        },
+        {
+          "startMs": 147853,
+          "endMs": 147960
+        },
+        {
+          "startMs": 148040,
+          "endMs": 148360
+        },
+        {
+          "startMs": 148760,
+          "endMs": 148800
+        },
+        {
+          "startMs": 148840,
+          "endMs": 149160
+        },
+        {
+          "startMs": 149200,
+          "endMs": 149240
+        },
+        {
+          "startMs": 149320,
+          "endMs": 149720
+        },
+        {
+          "startMs": 149920,
+          "endMs": 150120
+        },
+        {
+          "startMs": 150520,
+          "endMs": 150560
+        },
+        {
+          "startMs": 150600,
+          "endMs": 150760
+        },
+        {
+          "startMs": 150840,
+          "endMs": 151400
+        },
+        {
+          "startMs": 151600,
+          "endMs": 152120
+        }
+      ]
+    },
+    {
+      "startMs": 152120,
+      "endMs": 158440,
+      "words": [
+        {
+          "startMs": 152120,
+          "endMs": 152280
+        },
+        {
+          "startMs": 152360,
+          "endMs": 152840
+        },
+        {
+          "startMs": 152920,
+          "endMs": 153080
+        },
+        {
+          "startMs": 153160,
+          "endMs": 153640
+        },
+        {
+          "startMs": 153720,
+          "endMs": 153800
+        },
+        {
+          "startMs": 153960,
+          "endMs": 154840
+        },
+        {
+          "startMs": 154960,
+          "endMs": 155160
+        },
+        {
+          "startMs": 155200,
+          "endMs": 155480
+        },
+        {
+          "startMs": 155600,
+          "endMs": 155880
+        },
+        {
+          "startMs": 155960,
+          "endMs": 156040
+        },
+        {
+          "startMs": 156160,
+          "endMs": 156280
+        },
+        {
+          "startMs": 156400,
+          "endMs": 156520
+        },
+        {
+          "startMs": 156600,
+          "endMs": 156920
+        },
+        {
+          "startMs": 157040,
+          "endMs": 157160
+        },
+        {
+          "startMs": 157200,
+          "endMs": 157240
+        },
+        {
+          "startMs": 157320,
+          "endMs": 157640
+        },
+        {
+          "startMs": 157680,
+          "endMs": 157800
+        },
+        {
+          "startMs": 157880,
+          "endMs": 158120
+        },
+        {
+          "startMs": 158240,
+          "endMs": 158440
+        }
+      ]
+    }
+  ],
+  "generation": {
+    "requestHashes": [
+      "1862efd379b4c5752eabd63481d2b78a4de949a18a8102b3600665e905c21083",
+      "4e13a6051a57ab715dbedfd2fabe7fa8bebdbfb142c40bebc2f7deb4ce7310df",
+      "5fd7409cd483764795be16c31a2cf7cf88e9b3ebbe1365c174c42cb0766bb014",
+      "8d30835c0b917517e32639a1a6b09e7abf070da8091b7b26b2beba7cdda20ba4"
+    ],
+    "chunkGapMs": 200
+  },
+  "musicOnlyRanges": [
+    {
+      "startMs": 0,
+      "endMs": 3000
+    },
+    {
+      "startMs": 54920,
+      "endMs": 56420
+    },
+    {
+      "startMs": 96380,
+      "endMs": 97880
+    },
+    {
+      "startMs": 158440,
+      "endMs": 162440
+    }
+  ],
+  "production": {
+    "style": "warm-cafe",
+    "introMs": 3000,
+    "transitionMs": 1500,
+    "outroMs": 4000
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "2026-10-24": {
+    "dataDir": "src/data",
+    "workDir": "experiments/cafe-signature",
+    "batchBoundaries": [
+      0,
+      4,
+      12,
+      28
+    ],
+    "introMs": 3000,
+    "introBed": "experiments/cafe-signature/music-bed.wav",
+    "outroMs": 4000,
+    "outroCue": "experiments/cafe-signature/cafe-cue.mp3",
+    "transitions": [
+      {
+        "segmentIndex": 12,
+        "durationMs": 1500,
+        "cue": "experiments/cafe-signature/cafe-cue.mp3"
+      },
+      {
+        "segmentIndex": 28,
+        "durationMs": 1500,
+        "cue": "experiments/cafe-signature/cafe-cue.mp3"
+      }
+    ]
+  },
+  "2026-10-25": {
+    "dataDir": "src/data/editions/2026-10-25",
+    "workDir": "experiments/2026-10-25",
+    "batchBoundaries": [
+      0,
+      2,
+      8,
+      14
+    ],
+    "introMs": 3000,
+    "introBed": "experiments/cafe-signature/music-bed.wav",
+    "outroMs": 4000,
+    "outroCue": "experiments/cafe-signature/cafe-cue.mp3",
+    "transitions": [
+      {
+        "segmentIndex": 8,
+        "durationMs": 1500,
+        "cue": "experiments/cafe-signature/cafe-cue.mp3"
+      },
+      {
+        "segmentIndex": 14,
+        "durationMs": 1500,
+        "cue": "experiments/cafe-signature/cafe-cue.mp3"
+      }
+    ]
+  },
+  "2026-10-26": {
+    "dataDir": "src/data/editions/2026-10-26",
+    "workDir": "experiments/2026-10-26",
+    "batchBoundaries": [
+      0,
+      2,
+      10,
+      18
+    ],
+    "introMs": 3000,
+    "introBed": "experiments/cafe-signature/music-bed.wav",
+    "outroMs": 4000,
+    "outroCue": "experiments/cafe-signature/cafe-cue.mp3",
+    "transitions": [
+      {
+        "segmentIndex": 10,
+        "durationMs": 1500,
+        "cue": "experiments/cafe-signature/cafe-cue.mp3"
+      },
+      {
+        "segmentIndex": 18,
+        "durationMs": 1500,
+        "cue": "experiments/2026-10-26/technology-cue.mp3"
+      }
+    ]
+  }
+}

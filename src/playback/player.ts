@@ -1,11 +1,13 @@
 import { useSyncExternalStore } from "react";
 import { createAudioPlayer } from "expo-audio";
-import { episode } from "../data/episode";
+import { createEpisodePlayer } from "./episodePlayer";
 import { createMediaPlayer } from "./mediaAdapter";
-export const player = createMediaPlayer(episode.durationMs, () =>
-  createAudioPlayer(require("../../assets/audio/edition-2026-10-24-cafe.mp3"), {
-    updateInterval: 100,
-  }),
+export const player = createEpisodePlayer(({ episode, audio }) =>
+  createMediaPlayer(episode.durationMs, () =>
+    createAudioPlayer(audio, {
+      updateInterval: 100,
+    }),
+  ),
 );
 export const usePlayback = () =>
   useSyncExternalStore(

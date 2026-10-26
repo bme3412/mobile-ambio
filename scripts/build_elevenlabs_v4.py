@@ -11,10 +11,13 @@ import wave
 from compare_elevenlabs_v4 import ROOT, ENDPOINT, read_env, request_json, align_turns, normalize
 
 
-def batches(turns):
+from edition_settings import SETTINGS, settings_for
+
+
+def batches(turns, boundaries=(0, 4, 12, 28)):
     # Preserve the approved opening exactly; start fresh at chapter boundaries.
     result = []
-    for start, end in [(0, 4), (4, 12), (12, 28), (28, len(turns))]:
+    for start, end in zip(boundaries, (*boundaries[1:], len(turns))):
         group, count = [], 0
         for turn in turns[start:end]:
             if len(turn[1]) > 2000:
@@ -33,7 +36,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--env-file', type=Path)
     parser.add_argument('--cached-only', action='store_true')
+    parser.add_argument('--edition', default='2026-10-24', choices=SETTINGS)
     args = parser.parse_args()
+    config = settings_for(args.edition)
+    data_dir = ROOT / config['dataDir']
     env = read_env(args.env_file)
     key = env.get('ELEVENLABS_API_KEY')
     female = env.get('ELEVENLABS_VOICE_ID')
@@ -47,8 +53,8 @@ def main():
         for voice in {female, male}:
             if request_json(f'https://api.elevenlabs.io/v1/voices/{voice}', key).get('voice_id') != voice:
                 raise ValueError('Configured voice unavailable.')
-    turns = json.loads((ROOT / 'src/data/editorial.json').read_text())['turns']
-    groups = batches(turns)
+    turns = json.loads((data_dir / 'editorial.json').read_text())['turns']
+    groups = batches(turns, tuple(config['batchBoundaries']))
     segments, chunks, hashes = [], [], []
     frames_total = 0
     with tempfile.TemporaryDirectory(prefix='ambio-full-v4-') as directory:
@@ -119,11 +125,14 @@ def main():
                   'model': 'eleven_v4', 'voices': timing['voices'], 'segments': segments,
                   'generation': {'requestHashes': hashes, 'chunkGapMs': 200}}
         # All validation and rendering finishes before publishing either output.
-        destination = ROOT / 'assets/audio/edition-2026-10-24-v4.mp3'
-        timing_destination = ROOT / 'src/data/audio-timing.json'
+        destination = ROOT / f'assets/audio/edition-{args.edition}-v4.mp3'
+        timing_destination = data_dir / 'audio-timing.json'
+        dry_destination = ROOT / config['workDir'] / 'full-dry-timing.json'
+        dry_destination.parent.mkdir(parents=True, exist_ok=True)
         backup = ROOT / '.audio-cache/pre-v4-audio-timing.json'
-        if not backup.exists():
+        if not backup.exists() and timing_destination.exists():
             backup.write_bytes(timing_destination.read_bytes())
+        dry_destination.write_text(json.dumps(timing, indent=2, ensure_ascii=False) + '\n')
         destination.with_suffix('.tmp').write_bytes(rendered.read_bytes())
         timing_destination.with_suffix('.tmp').write_text(json.dumps(timing, indent=2, ensure_ascii=False) + '\n')
         destination.with_suffix('.tmp').replace(destination)

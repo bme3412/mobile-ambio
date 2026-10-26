@@ -1,0 +1,168 @@
+{
+  "title": "Le goût de la découverte",
+  "subtitle": "Un retour de l’espace, des questions curieuses et les couleurs du Louvre.",
+  "edition": "Dimanche 25 octobre 2026",
+  "turns": [
+    [
+      "Camille",
+      "Bonjour et bienvenue dans Ambio. En ce dimanche vingt-cinq octobre, on prend le temps de regarder autrement.",
+      "Hello and welcome to Ambio. This Sunday, October twenty-fifth, we take time to see things differently."
+    ],
+    [
+      "Louis",
+      "Avec un café, si possible. Aujourd’hui, on rentre de l’espace, on pose des questions et on pousse la porte du Louvre.",
+      "With a coffee, if possible. Today, we return from space, ask questions and step inside the Louvre."
+    ],
+    [
+      "Camille",
+      "Premier arrêt : le retour de Sophie Adenot. L’astronaute française est revenue en Europe le dix octobre, après deux cent trente-sept jours dans l’espace.",
+      "First stop: Sophie Adenot’s return. The French astronaut returned to Europe on October tenth, after two hundred and thirty-seven days in space."
+    ],
+    [
+      "Louis",
+      "Presque huit mois ! Moi, après une semaine de vacances, j’ai déjà oublié où j’ai rangé mes clés.",
+      "Almost eight months! After a week’s holiday, I’ve already forgotten where I put my keys."
+    ],
+    [
+      "Camille",
+      "Pour elle, le retour ne signifie pas seulement retrouver ses affaires. Il faut aussi se réhabituer à la gravité terrestre.",
+      "For her, returning doesn’t just mean finding her belongings. She also has to readjust to Earth’s gravity."
+    ],
+    [
+      "Louis",
+      "Donc, rentrer chez soi, c’est encore une étape de la mission ?",
+      "So coming home is still a stage of the mission?"
+    ],
+    [
+      "Camille",
+      "Exactement. L’Agence spatiale européenne décrit une période de réadaptation et de suivi scientifique en Allemagne.",
+      "Exactly. The European Space Agency describes a period of readaptation and scientific follow-up in Germany."
+    ],
+    [
+      "Louis",
+      "J’aime cette idée : l’aventure continue après le voyage. Vous, qu’est-ce qui vous manque le plus quand vous êtes loin de chez vous ?",
+      "I like that idea: the adventure continues after the journey. What do you miss most when you’re far from home?"
+    ],
+    [
+      "Camille",
+      "Deuxième arrêt : la curiosité à portée de main. Les journées scientifiques d’Europa-Park étaient annoncées du vingt-deux au vingt-quatre octobre, à Rust, en Allemagne.",
+      "Second stop: curiosity within reach. Europa-Park’s Science Days were scheduled for October twenty-second to twenty-fourth, in Rust, Germany."
+    ],
+    [
+      "Louis",
+      "Dans un parc de loisirs ? On peut aimer les montagnes russes et les sciences ?",
+      "In a theme park? Can you like roller coasters and science?"
+    ],
+    [
+      "Camille",
+      "Bien sûr ! Le programme de l’agence européenne prévoyait des démonstrations de petits robots et des expériences en réalité virtuelle.",
+      "Of course! The European agency’s programme included demonstrations of small robots and virtual reality experiences."
+    ],
+    [
+      "Louis",
+      "Moi, je commencerais par le petit robot. Il me semble moins impressionnant qu’une fusée.",
+      "I would start with the little robot. It seems less intimidating than a rocket."
+    ],
+    [
+      "Camille",
+      "Une rencontre avec l’astronaute Alexander Gerst et des questions d’enfants figuraient aussi au programme. Pas besoin de tout savoir pour poser une bonne question.",
+      "A meeting with astronaut Alexander Gerst and children’s questions were also on the programme. You don’t need to know everything to ask a good question."
+    ],
+    [
+      "Louis",
+      "Alors, je demanderais : quelle erreur vous a appris le plus ? C’est une question que je pourrais aussi poser à mon professeur de français.",
+      "Then I would ask: which mistake taught you the most? That’s a question I could also ask my French teacher."
+    ],
+    [
+      "Camille",
+      "Et maintenant, direction Paris. Le Louvre présente une exposition consacrée au peintre espagnol Zurbarán, du sept octobre au vingt-cinq janvier prochain.",
+      "And now, off to Paris. The Louvre is presenting an exhibition devoted to the Spanish painter Zurbarán, from October seventh until next January twenty-fifth."
+    ],
+    [
+      "Louis",
+      "Je connais le nom, mais je ne saurais pas reconnaître un tableau. Par où commencer ?",
+      "I know the name, but I wouldn’t know how to recognise a painting. Where should I start?"
+    ],
+    [
+      "Camille",
+      "Par ce qui attire ton regard. Le musée souligne notamment la force de ses couleurs et de ses compositions.",
+      "With whatever catches your eye. The museum highlights, in particular, the power of his colours and compositions."
+    ],
+    [
+      "Louis",
+      "Donc, je peux regarder avant de lire toutes les explications ?",
+      "So I can look before reading all the explanations?"
+    ],
+    [
+      "Camille",
+      "Absolument. Une autre exposition, Sculpter la couleur, présente en parallèle des sculptures espagnoles du dix-septième siècle.",
+      "Absolutely. Another exhibition, Sculpting Colour, presents Spanish sculptures from the seventeenth century alongside it."
+    ],
+    [
+      "Louis",
+      "Des tableaux, des sculptures, et une même envie de prendre son temps. Je crois que j’ai trouvé mon programme pour un après-midi de pluie.",
+      "Paintings, sculptures, and the same desire to take our time. I think I’ve found my plan for a rainy afternoon."
+    ],
+    [
+      "Camille",
+      "Notre expression du jour : à portée de main. On l’utilise pour parler de quelque chose de proche, facile à atteindre.",
+      "Our expression of the day: within reach. We use it to talk about something nearby, easy to reach."
+    ],
+    [
+      "Louis",
+      "Comme mon café ? Et, avec un peu de pratique, une nouvelle phrase en français.",
+      "Like my coffee? And, with a little practice, a new sentence in French."
+    ],
+    [
+      "Camille",
+      "À votre tour : quelle découverte aimeriez-vous faire cette semaine ? Essayez de répondre avec : je commencerais par.",
+      "Your turn: what would you like to discover this week? Try answering with: I would start with."
+    ],
+    [
+      "Louis",
+      "Je commencerais par réécouter un passage. Merci d’avoir partagé ce moment avec nous, et à bientôt dans Ambio !",
+      "I would start by listening to a passage again. Thank you for sharing this moment with us, and see you soon in Ambio!"
+    ]
+  ],
+  "speakingPrompt": "Quelle découverte aimeriez-vous faire cette semaine ? Répondez avec « je commencerais par » et expliquez votre choix.",
+  "stories": [
+    {
+      "id": "return",
+      "category": "ESPACE · 10 OCT",
+      "title": "Revenir sur Terre",
+      "description": "Sophie Adenot’s return, and why coming home is still part of the journey.",
+      "segmentIndex": 2
+    },
+    {
+      "id": "curiosity",
+      "category": "SCIENCES · 22–24 OCT",
+      "title": "La curiosité à portée de main",
+      "description": "Robots, questions and the Science Days programme in Rust.",
+      "segmentIndex": 8
+    },
+    {
+      "id": "louvre",
+      "category": "CULTURE · CET AUTOMNE",
+      "title": "Prendre le temps de regarder",
+      "description": "Zurbarán and Spanish sculpture at the Louvre this autumn.",
+      "segmentIndex": 14
+    }
+  ],
+  "sources": [
+    {
+      "publisher": "European Space Agency",
+      "title": "Sophie Adenot returns · 10 October 2026",
+      "url": "https://www.esa.int/Newsroom/Press_Releases/ESA_astronaut_Sophie_Adenot_returns_from_her_first_mission_to_the_International_Space_Station"
+    },
+    {
+      "publisher": "European Space Agency",
+      "title": "Science Days programme · 16 October 2026",
+      "url": "https://www.esa.int/Newsroom/Press_Releases/Media_Invitation_Europa-Park_Science_Days_on_22-24_October_2026"
+    },
+    {
+      "publisher": "Musée du Louvre",
+      "title": "Autumn exhibitions · 23 June 2026",
+      "url": "https://presse.louvre.fr/expositions-temporaires-au-second-semestre-2026/?lang=fr"
+    }
+  ]
+}
