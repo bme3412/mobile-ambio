@@ -1,14 +1,18 @@
 {
   "expo": {
     "name": "Ambio Daily",
-    "slug": "ambio-daily",
+    "slug": "ambio",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ambio.daily"
+      "bundleIdentifier": "com.ambio.daily",
+      "bitcode": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -19,8 +23,22 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.ambio.daily",
-      "blockedPermissions": ["android.permission.CAMERA"],
-      "permissions": ["android.permission.BLUETOOTH_CONNECT"]
+      "blockedPermissions": [
+        "android.permission.CAMERA"
+      ],
+      "permissions": [
+        "android.permission.BLUETOOTH_CONNECT",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.CAMERA",
+        "android.permission.INTERNET",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.WAKE_LOCK",
+        "android.permission.BLUETOOTH"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -51,9 +69,9 @@
         }
       },
       "eas": {
-        "projectId": "11832366-6806-432d-82ba-4b74d5676907"
+        "projectId": "e17b2dfb-fbac-4866-80bd-33167f3eda6d"
       }
     },
-    "owner": "bme3412"
+    "owner": "bme3412s-team"
   }
 }

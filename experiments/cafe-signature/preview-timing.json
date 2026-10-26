@@ -1,0 +1,428 @@
+{
+  "durationMs": 36306,
+  "provider": "elevenlabs",
+  "model": "eleven_v4",
+  "voices": {
+    "Camille": "Lucie narration",
+    "Louis": "Lo\u00efc - Engaging French Storyteller"
+  },
+  "segments": [
+    {
+      "startMs": 3000,
+      "endMs": 15080,
+      "words": [
+        {
+          "startMs": 3000,
+          "endMs": 3880
+        },
+        {
+          "startMs": 3960,
+          "endMs": 4360
+        },
+        {
+          "startMs": 4440,
+          "endMs": 4520
+        },
+        {
+          "startMs": 4680,
+          "endMs": 5000
+        },
+        {
+          "startMs": 5200,
+          "endMs": 5720
+        },
+        {
+          "startMs": 5800,
+          "endMs": 5880
+        },
+        {
+          "startMs": 5960,
+          "endMs": 6120
+        },
+        {
+          "startMs": 6160,
+          "endMs": 6200
+        },
+        {
+          "startMs": 6280,
+          "endMs": 6600
+        },
+        {
+          "startMs": 6680,
+          "endMs": 7080
+        },
+        {
+          "startMs": 7160,
+          "endMs": 7640
+        },
+        {
+          "startMs": 7720,
+          "endMs": 7773
+        },
+        {
+          "startMs": 7800,
+          "endMs": 7880
+        },
+        {
+          "startMs": 7960,
+          "endMs": 9080
+        },
+        {
+          "startMs": 9120,
+          "endMs": 9800
+        },
+        {
+          "startMs": 9880,
+          "endMs": 10040
+        },
+        {
+          "startMs": 10120,
+          "endMs": 10360
+        },
+        {
+          "startMs": 10400,
+          "endMs": 11000
+        },
+        {
+          "startMs": 11040,
+          "endMs": 11080
+        },
+        {
+          "startMs": 11240,
+          "endMs": 11480
+        },
+        {
+          "startMs": 11560,
+          "endMs": 11720
+        },
+        {
+          "startMs": 11800,
+          "endMs": 11880
+        },
+        {
+          "startMs": 11960,
+          "endMs": 12120
+        },
+        {
+          "startMs": 12200,
+          "endMs": 12280
+        },
+        {
+          "startMs": 12360,
+          "endMs": 13080
+        },
+        {
+          "startMs": 13120,
+          "endMs": 13160
+        },
+        {
+          "startMs": 13240,
+          "endMs": 13320
+        },
+        {
+          "startMs": 13440,
+          "endMs": 13880
+        },
+        {
+          "startMs": 14000,
+          "endMs": 14120
+        },
+        {
+          "startMs": 14200,
+          "endMs": 14280
+        },
+        {
+          "startMs": 14360,
+          "endMs": 15080
+        }
+      ]
+    },
+    {
+      "startMs": 15080,
+      "endMs": 21960,
+      "words": [
+        {
+          "startMs": 15080,
+          "endMs": 15640
+        },
+        {
+          "startMs": 15760,
+          "endMs": 15880
+        },
+        {
+          "startMs": 15960,
+          "endMs": 16200
+        },
+        {
+          "startMs": 16280,
+          "endMs": 16840
+        },
+        {
+          "startMs": 16880,
+          "endMs": 16920
+        },
+        {
+          "startMs": 16960,
+          "endMs": 17000
+        },
+        {
+          "startMs": 17080,
+          "endMs": 17720
+        },
+        {
+          "startMs": 17840,
+          "endMs": 17960
+        },
+        {
+          "startMs": 18040,
+          "endMs": 18200
+        },
+        {
+          "startMs": 18280,
+          "endMs": 18440
+        },
+        {
+          "startMs": 18560,
+          "endMs": 19240
+        },
+        {
+          "startMs": 19320,
+          "endMs": 19560
+        },
+        {
+          "startMs": 19640,
+          "endMs": 19720
+        },
+        {
+          "startMs": 19800,
+          "endMs": 20600
+        },
+        {
+          "startMs": 20760,
+          "endMs": 20840
+        },
+        {
+          "startMs": 20960,
+          "endMs": 21160
+        },
+        {
+          "startMs": 21240,
+          "endMs": 21320
+        },
+        {
+          "startMs": 21400,
+          "endMs": 21960
+        }
+      ]
+    },
+    {
+      "startMs": 21960,
+      "endMs": 29640,
+      "words": [
+        {
+          "startMs": 21960,
+          "endMs": 22200
+        },
+        {
+          "startMs": 22360,
+          "endMs": 22520
+        },
+        {
+          "startMs": 22720,
+          "endMs": 22920
+        },
+        {
+          "startMs": 23480,
+          "endMs": 23507
+        },
+        {
+          "startMs": 23533,
+          "endMs": 23720
+        },
+        {
+          "startMs": 23760,
+          "endMs": 23880
+        },
+        {
+          "startMs": 23960,
+          "endMs": 24520
+        },
+        {
+          "startMs": 24600,
+          "endMs": 24760
+        },
+        {
+          "startMs": 24840,
+          "endMs": 24920
+        },
+        {
+          "startMs": 25040,
+          "endMs": 25160
+        },
+        {
+          "startMs": 25200,
+          "endMs": 25240
+        },
+        {
+          "startMs": 25400,
+          "endMs": 25560
+        },
+        {
+          "startMs": 25640,
+          "endMs": 25720
+        },
+        {
+          "startMs": 25840,
+          "endMs": 26200
+        },
+        {
+          "startMs": 26280,
+          "endMs": 26360
+        },
+        {
+          "startMs": 26440,
+          "endMs": 26680
+        },
+        {
+          "startMs": 26760,
+          "endMs": 26920
+        },
+        {
+          "startMs": 27000,
+          "endMs": 27080
+        },
+        {
+          "startMs": 27160,
+          "endMs": 27320
+        },
+        {
+          "startMs": 27360,
+          "endMs": 27560
+        },
+        {
+          "startMs": 28120,
+          "endMs": 28160
+        },
+        {
+          "startMs": 28200,
+          "endMs": 28360
+        },
+        {
+          "startMs": 28440,
+          "endMs": 28520
+        },
+        {
+          "startMs": 28640,
+          "endMs": 28840
+        },
+        {
+          "startMs": 28880,
+          "endMs": 28920
+        },
+        {
+          "startMs": 29000,
+          "endMs": 29640
+        }
+      ]
+    },
+    {
+      "startMs": 29640,
+      "endMs": 36360,
+      "words": [
+        {
+          "startMs": 29640,
+          "endMs": 30200
+        },
+        {
+          "startMs": 30600,
+          "endMs": 30760
+        },
+        {
+          "startMs": 30840,
+          "endMs": 31240
+        },
+        {
+          "startMs": 31320,
+          "endMs": 31400
+        },
+        {
+          "startMs": 31440,
+          "endMs": 31480
+        },
+        {
+          "startMs": 31560,
+          "endMs": 31800
+        },
+        {
+          "startMs": 31880,
+          "endMs": 32040
+        },
+        {
+          "startMs": 32120,
+          "endMs": 32600
+        },
+        {
+          "startMs": 33000,
+          "endMs": 33040
+        },
+        {
+          "startMs": 33080,
+          "endMs": 33240
+        },
+        {
+          "startMs": 33320,
+          "endMs": 33640
+        },
+        {
+          "startMs": 33720,
+          "endMs": 33800
+        },
+        {
+          "startMs": 33840,
+          "endMs": 34120
+        },
+        {
+          "startMs": 34200,
+          "endMs": 34280
+        },
+        {
+          "startMs": 34360,
+          "endMs": 34440
+        },
+        {
+          "startMs": 34520,
+          "endMs": 34600
+        },
+        {
+          "startMs": 34800,
+          "endMs": 35000
+        },
+        {
+          "startMs": 35160,
+          "endMs": 35240
+        },
+        {
+          "startMs": 35400,
+          "endMs": 35480
+        },
+        {
+          "startMs": 35560,
+          "endMs": 35640
+        },
+        {
+          "startMs": 35720,
+          "endMs": 35800
+        },
+        {
+          "startMs": 35840,
+          "endMs": 36040
+        },
+        {
+          "startMs": 36160,
+          "endMs": 36360
+        }
+      ]
+    }
+  ],
+  "introOffsetMs": 3000
+}

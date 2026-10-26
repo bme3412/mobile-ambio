@@ -1,0 +1,427 @@
+{
+  "durationMs": 33722,
+  "provider": "elevenlabs",
+  "model": "eleven_multilingual_v2",
+  "voices": {
+    "Camille": "Lucie narration",
+    "Louis": "Lo\u00efc - Engaging French Storyteller"
+  },
+  "segments": [
+    {
+      "startMs": 0,
+      "endMs": 11703,
+      "words": [
+        {
+          "startMs": 0,
+          "endMs": 604
+        },
+        {
+          "startMs": 639,
+          "endMs": 1091
+        },
+        {
+          "startMs": 1138,
+          "endMs": 1289
+        },
+        {
+          "startMs": 1312,
+          "endMs": 1637
+        },
+        {
+          "startMs": 1695,
+          "endMs": 2218
+        },
+        {
+          "startMs": 2543,
+          "endMs": 2705
+        },
+        {
+          "startMs": 2728,
+          "endMs": 2937
+        },
+        {
+          "startMs": 2961,
+          "endMs": 3042
+        },
+        {
+          "startMs": 3100,
+          "endMs": 3425
+        },
+        {
+          "startMs": 3483,
+          "endMs": 3913
+        },
+        {
+          "startMs": 3936,
+          "endMs": 4412
+        },
+        {
+          "startMs": 4563,
+          "endMs": 4737
+        },
+        {
+          "startMs": 4760,
+          "endMs": 4946
+        },
+        {
+          "startMs": 4981,
+          "endMs": 5793
+        },
+        {
+          "startMs": 6072,
+          "endMs": 6664
+        },
+        {
+          "startMs": 6687,
+          "endMs": 6769
+        },
+        {
+          "startMs": 6827,
+          "endMs": 7105
+        },
+        {
+          "startMs": 7129,
+          "endMs": 7454
+        },
+        {
+          "startMs": 7546,
+          "endMs": 7639
+        },
+        {
+          "startMs": 7709,
+          "endMs": 7918
+        },
+        {
+          "startMs": 7941,
+          "endMs": 8115
+        },
+        {
+          "startMs": 8139,
+          "endMs": 8231
+        },
+        {
+          "startMs": 8255,
+          "endMs": 8464
+        },
+        {
+          "startMs": 8487,
+          "endMs": 8557
+        },
+        {
+          "startMs": 8626,
+          "endMs": 9172
+        },
+        {
+          "startMs": 9451,
+          "endMs": 9590
+        },
+        {
+          "startMs": 9625,
+          "endMs": 9683
+        },
+        {
+          "startMs": 9729,
+          "endMs": 10054
+        },
+        {
+          "startMs": 10077,
+          "endMs": 10252
+        },
+        {
+          "startMs": 10310,
+          "endMs": 10391
+        },
+        {
+          "startMs": 10414,
+          "endMs": 11703
+        }
+      ]
+    },
+    {
+      "startMs": 11953,
+      "endMs": 18176,
+      "words": [
+        {
+          "startMs": 11953,
+          "endMs": 12475
+        },
+        {
+          "startMs": 12650,
+          "endMs": 12801
+        },
+        {
+          "startMs": 12835,
+          "endMs": 13137
+        },
+        {
+          "startMs": 13160,
+          "endMs": 13753
+        },
+        {
+          "startMs": 13787,
+          "endMs": 13834
+        },
+        {
+          "startMs": 13880,
+          "endMs": 13973
+        },
+        {
+          "startMs": 13996,
+          "endMs": 14333
+        },
+        {
+          "startMs": 14391,
+          "endMs": 14472
+        },
+        {
+          "startMs": 14519,
+          "endMs": 14670
+        },
+        {
+          "startMs": 14693,
+          "endMs": 14832
+        },
+        {
+          "startMs": 14867,
+          "endMs": 15297
+        },
+        {
+          "startMs": 15413,
+          "endMs": 15645
+        },
+        {
+          "startMs": 15691,
+          "endMs": 15831
+        },
+        {
+          "startMs": 15877,
+          "endMs": 16551
+        },
+        {
+          "startMs": 16934,
+          "endMs": 17027
+        },
+        {
+          "startMs": 17073,
+          "endMs": 17433
+        },
+        {
+          "startMs": 17468,
+          "endMs": 17537
+        },
+        {
+          "startMs": 17584,
+          "endMs": 18176
+        }
+      ]
+    },
+    {
+      "startMs": 18426,
+      "endMs": 25856,
+      "words": [
+        {
+          "startMs": 18426,
+          "endMs": 18693
+        },
+        {
+          "startMs": 18774,
+          "endMs": 18856
+        },
+        {
+          "startMs": 18879,
+          "endMs": 19308
+        },
+        {
+          "startMs": 19390,
+          "endMs": 19471
+        },
+        {
+          "startMs": 19982,
+          "endMs": 20214
+        },
+        {
+          "startMs": 20237,
+          "endMs": 20376
+        },
+        {
+          "startMs": 20435,
+          "endMs": 21003
+        },
+        {
+          "startMs": 21038,
+          "endMs": 21189
+        },
+        {
+          "startMs": 21259,
+          "endMs": 21305
+        },
+        {
+          "startMs": 21352,
+          "endMs": 21526
+        },
+        {
+          "startMs": 21561,
+          "endMs": 21630
+        },
+        {
+          "startMs": 21700,
+          "endMs": 21897
+        },
+        {
+          "startMs": 21921,
+          "endMs": 22002
+        },
+        {
+          "startMs": 22060,
+          "endMs": 22431
+        },
+        {
+          "startMs": 22455,
+          "endMs": 22559
+        },
+        {
+          "startMs": 22594,
+          "endMs": 22849
+        },
+        {
+          "startMs": 22873,
+          "endMs": 22977
+        },
+        {
+          "startMs": 23024,
+          "endMs": 23128
+        },
+        {
+          "startMs": 23163,
+          "endMs": 23325
+        },
+        {
+          "startMs": 23349,
+          "endMs": 23581
+        },
+        {
+          "startMs": 23639,
+          "endMs": 23685
+        },
+        {
+          "startMs": 24126,
+          "endMs": 24347
+        },
+        {
+          "startMs": 24370,
+          "endMs": 24463
+        },
+        {
+          "startMs": 24486,
+          "endMs": 24835
+        },
+        {
+          "startMs": 24858,
+          "endMs": 24928
+        },
+        {
+          "startMs": 24974,
+          "endMs": 25856
+        }
+      ]
+    },
+    {
+      "startMs": 26106,
+      "endMs": 33722,
+      "words": [
+        {
+          "startMs": 26106,
+          "endMs": 26675
+        },
+        {
+          "startMs": 26919,
+          "endMs": 27046
+        },
+        {
+          "startMs": 27070,
+          "endMs": 27488
+        },
+        {
+          "startMs": 27511,
+          "endMs": 27639
+        },
+        {
+          "startMs": 27697,
+          "endMs": 27778
+        },
+        {
+          "startMs": 27801,
+          "endMs": 28138
+        },
+        {
+          "startMs": 28184,
+          "endMs": 28358
+        },
+        {
+          "startMs": 28382,
+          "endMs": 28869
+        },
+        {
+          "startMs": 28904,
+          "endMs": 28939
+        },
+        {
+          "startMs": 29217,
+          "endMs": 29566
+        },
+        {
+          "startMs": 29612,
+          "endMs": 30030
+        },
+        {
+          "startMs": 30111,
+          "endMs": 30274
+        },
+        {
+          "startMs": 30344,
+          "endMs": 30669
+        },
+        {
+          "startMs": 30750,
+          "endMs": 30971
+        },
+        {
+          "startMs": 30994,
+          "endMs": 31145
+        },
+        {
+          "startMs": 31191,
+          "endMs": 31284
+        },
+        {
+          "startMs": 31330,
+          "endMs": 31748
+        },
+        {
+          "startMs": 32074,
+          "endMs": 32294
+        },
+        {
+          "startMs": 32445,
+          "endMs": 32608
+        },
+        {
+          "startMs": 32631,
+          "endMs": 32770
+        },
+        {
+          "startMs": 32805,
+          "endMs": 32886
+        },
+        {
+          "startMs": 32933,
+          "endMs": 33188
+        },
+        {
+          "startMs": 33258,
+          "endMs": 33722
+        }
+      ]
+    }
+  ]
+}

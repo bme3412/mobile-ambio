@@ -155,3 +155,37 @@ test("saved conversation history distinguishes live voice sessions from demo ses
   expect(ui.getByText(/Demo session ·/)).toBeTruthy();
 });
 
+test("practice respects the selected review filter", async () => {
+  const segment = episode.segments[0];
+  useLibrary.setState({
+    bookmarks: [
+      {
+        id: "pending",
+        episodeId: episode.id,
+        segmentId: segment.id,
+        word: { ...segment.words[0], text: "pending expression" },
+        context: "Pending context",
+        reviewed: false,
+      },
+      {
+        id: "done",
+        episodeId: episode.id,
+        segmentId: segment.id,
+        word: { ...segment.words[0], text: "reviewed expression" },
+        context: "Reviewed context",
+        reviewed: true,
+      },
+    ],
+  });
+  const ui = await render(<Saved />);
+  expect(ui.getByText("1 of 2 reviewed")).toBeTruthy();
+  await fireEvent.press(ui.getByText("To review", { exact: true }));
+  await fireEvent.press(ui.getByLabelText("Practice words to review"));
+  expect(ui.getByText("1 of 1")).toBeTruthy();
+  await fireEvent.press(ui.getByLabelText("Reveal meaning"));
+  await fireEvent.press(ui.getByLabelText("Got it · next"));
+  expect(ui.getByText("A little more familiar.")).toBeTruthy();
+  await fireEvent.press(ui.getByLabelText("Close practice"));
+  expect(ui.getByText("2 of 2 reviewed")).toBeTruthy();
+  expect(ui.queryByLabelText("Practice words to review")).toBeNull();
+});

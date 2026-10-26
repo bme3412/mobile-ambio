@@ -1,7 +1,9 @@
+import { useReader } from "../src/state/reader";
+import timing from "../src/data/audio-timing.json";
 import Player from "../src/app/player";
 import { FlatList } from "react-native";
 import Transcript from "../src/app/transcript";
-import { act, fireEvent, render } from "@testing-library/react-native";
+import { act, fireEvent, render, within } from "@testing-library/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { WordSheet } from "../src/components/WordSheet";
 import { PlaybackControls } from "../src/components/PlaybackControls";
@@ -11,6 +13,7 @@ import { currentPhrase } from "../src/data/phrases";
 import { useLibrary } from "../src/state/library";
 import { player } from "../src/playback/player";
 beforeEach(() => {
+  useReader.setState({ english: false });
   useLibrary.setState({ bookmarks: [] });
   player.pause();
   player.seek(0);
@@ -122,6 +125,7 @@ test("initial transcript layout follows a restored position without overriding l
 });
 
 test("player live words follow playback, seeking and word lookup by default", async () => {
+  player.seek(episode.segments[0].words[0].startMs);
   const ui = await render(<Player />);
   expect(
     ui.getByLabelText("Look up Bonjour,").props.accessibilityState.selected,
@@ -131,17 +135,29 @@ test("player live words follow playback, seeking and word lookup by default", as
     player.seek(segment.words[2].startMs);
   });
   expect(
-    ui.getByLabelText(`Look up ${segment.words[2].text}`).props
-      .accessibilityState.selected,
+    within(ui.getByTestId("reader-phrase")).getByLabelText(
+      `Look up ${segment.words[2].text}`,
+    ).props.accessibilityState.selected,
   ).toBe(true);
-  expect(ui.queryByLabelText("Look up Bonjour,")).toBeNull();
+  expect(
+    within(ui.getByTestId("reader-phrase")).queryByLabelText(
+      "Look up Bonjour,",
+    ),
+  ).toBeNull();
   const next = episode.segments[1];
   await act(async () => {
     player.seek(next.words[0].startMs);
   });
-  expect(ui.getByText(next.speaker)).toBeTruthy();
-  expect(ui.queryByLabelText("Look up Bonjour,")).toBeNull();
-  await fireEvent.press(ui.getByLabelText(`Look up ${next.words[0].text}`));
+  expect(
+    within(ui.getByTestId("reader-phrase")).queryByLabelText(
+      "Look up Bonjour,",
+    ),
+  ).toBeNull();
+  await fireEvent.press(
+    within(ui.getByTestId("reader-phrase")).getByLabelText(
+      `Look up ${next.words[0].text}`,
+    ),
+  );
   expect(ui.getByLabelText("Save expression")).toBeTruthy();
 });
 
@@ -174,23 +190,18 @@ test("focus reader opens without sentence choices and closes without stopping au
   expect(player.getSnapshot().playing).toBe(true);
 });
 
-test("player opens focus reader and returns without interrupting listening", async () => {
+test("player reads inline and keeps English across navigation", async () => {
   const ui = await render(<Player />);
-  await act(async () => {
-    player.seek(12000);
-    player.play();
-  });
-  await fireEvent.press(ui.getByLabelText("Focus reader"));
-  expect(player.getSnapshot().playing).toBe(true);
-  expect(player.getSnapshot().positionMs).toBe(12000);
-  await fireEvent.press(ui.getByLabelText("Back to player"));
-  expect(ui.queryByLabelText("Close focus reader")).toBeNull();
-  expect(player.getSnapshot().playing).toBe(true);
+  expect(ui.queryByLabelText("Focus reader")).toBeNull();
+  await fireEvent.press(ui.getByLabelText("English translation"));
+  await ui.unmount();
+  const transcript = await render(<Transcript />);
+  await fireEvent.press(transcript.getByLabelText("Focus reader"));
+  expect(transcript.getByTestId("focus-translation")).toBeTruthy();
 });
 
 test("focus English toggle follows each displayed French phrase without changing audio", async () => {
   const ui = await render(<Player />);
-  await fireEvent.press(ui.getByLabelText("Focus reader"));
   expect(ui.queryByTestId("focus-translation")).toBeNull();
   await act(async () => {
     player.play();
@@ -224,7 +235,6 @@ test("focus replay uses the current phrase boundaries and stops at its end", asy
   await act(async () => {
     player.seek(words[2].startMs);
   });
-  await fireEvent.press(ui.getByLabelText("Focus reader"));
   await fireEvent.press(ui.getByLabelText("Replay phrase"));
   expect(player.getSnapshot()).toMatchObject({
     positionMs: phrase.words[0].startMs,
@@ -267,4 +277,95 @@ test("resuming playback restores following after browsing", async () => {
   expect(ui.getByText("Following the conversation")).toBeTruthy();
   expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ index: 2 }));
   scroll.mockRestore();
+});
+
+test("reader word lookup pauses, saves, and closes at the same phrase", async () => {
+  const ui = await render(<Player />);
+  await act(async () => {
+    player.play();
+  });
+  await fireEvent.press(
+    ui.getByLabelText(`Look up ${currentPhrase(0).words[0].text}`),
+  );
+  expect(player.getSnapshot().playing).toBe(false);
+  await fireEvent.press(ui.getByLabelText("Save expression"));
+  expect(useLibrary.getState().bookmarks).toHaveLength(1);
+  await fireEvent.press(ui.getByLabelText("Close"));
+  expect(player.getSnapshot()).toMatchObject({ playing: false, positionMs: 0 });
+  expect(ui.getByTestId("reader-phrase")).toBeTruthy();
+});
+
+test("episode details start collapsed and completion can restart", async () => {
+  const ui = await render(<Player />);
+  expect(ui.queryByLabelText("Save episode transcript")).toBeNull();
+  await fireEvent.press(ui.getByLabelText("Episode details"));
+  expect(ui.getByLabelText("Save episode transcript")).toBeTruthy();
+  await act(async () => {
+    player.seek(episode.durationMs);
+  });
+  expect(ui.getByText("Episode complete")).toBeTruthy();
+  await fireEvent.press(ui.getByLabelText("▶ Play"));
+  expect(player.getSnapshot()).toMatchObject({ playing: true, positionMs: 0 });
+});
+
+test("reader keeps loading and playback errors visible", async () => {
+  const snapshot = {
+    ...player.getSnapshot(),
+    loading: true,
+    error: "Audio unavailable. Try again.",
+  };
+  const getSnapshot = jest
+    .spyOn(player, "getSnapshot")
+    .mockReturnValue(snapshot);
+  try {
+    const ui = await render(<Player />);
+    expect(ui.getByText("Preparing episode…")).toBeTruthy();
+    expect(ui.getByRole("alert").props.children).toBe(
+      "Audio unavailable. Try again.",
+    );
+    expect(ui.getByLabelText("▶ Play")).toBeTruthy();
+    await ui.unmount();
+  } finally {
+    getSnapshot.mockRestore();
+  }
+});
+
+test("teleprompter drag suspends following without pausing audio", async () => {
+  const ui = await render(<Player />);
+  await act(async () => {
+    player.play();
+  });
+  await fireEvent(ui.getByTestId("teleprompter"), "scrollBeginDrag");
+  expect(player.getSnapshot().playing).toBe(true);
+  expect(ui.getByLabelText("↓ Back to Live")).toBeTruthy();
+  await act(async () => {
+    player.seek(12000);
+  });
+  expect(ui.getByLabelText("↓ Back to Live")).toBeTruthy();
+  await fireEvent.press(ui.getByLabelText("↓ Back to Live"));
+  expect(ui.queryByLabelText("↓ Back to Live")).toBeNull();
+  expect(player.getSnapshot().positionMs).toBe(12000);
+});
+
+test("musical interludes do not highlight an unspoken word", async () => {
+  const ui = await render(<Player />);
+  for (const cue of timing.musicOnlyRanges) {
+    await act(async () => {
+      player.seek((cue.startMs + cue.endMs) / 2);
+    });
+    const words = within(ui.getByTestId("reader-phrase")).getAllByRole(
+      "button",
+    );
+    expect(words.every((word) => !word.props.accessibilityState.selected)).toBe(
+      true,
+    );
+  }
+  await act(async () => {
+    player.seek(episode.segments[12].words[0].startMs);
+  });
+  expect(
+    within(ui.getByTestId("reader-phrase"))
+      .getAllByRole("button")
+      .some((word) => word.props.accessibilityState.selected),
+  ).toBe(true);
 });

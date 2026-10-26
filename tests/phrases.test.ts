@@ -29,3 +29,14 @@ test("French and English switch together on exact word boundaries, including rew
   }
   expect(currentPhrase(0)).toBe(episodePhrases[0]);
 });
+
+test("v4 phrase replay and teleprompter positions use the new provider clock", () => {
+  for (const phrase of episodePhrases) {
+    const start = phrase.words[0].startMs;
+    const end = phrase.words.at(-1)!.endMs;
+    expect(start).toBeGreaterThanOrEqual(phrase.segment.startMs);
+    expect(end).toBeLessThanOrEqual(phrase.segment.endMs + 30);
+    expect(end).toBeGreaterThan(start);
+    expect(currentPhrase(start)).toBe(phrase);
+  }
+});

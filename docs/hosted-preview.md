@@ -105,3 +105,18 @@ Deployment `dpl_CJpyR9CubbjS86g1GGrjpMmCT4uz`, https://ambio-daily-preview-aazmy
 Pushing commit 96a3f17 triggered an empty production deployment from the repository root (`dpl_C7qHa2Zkp1wyAox3PFxai1iQ6oNA`) and reassigned the stable preview domain, producing Vercel 404 responses. Restored the alias to the verified phrase-sync deployment `dpl_CJpyR9CubbjS86g1GGrjpMmCT4uz`. Unauthenticated /player now returns the expected 401 password gate.
 
 Root vercel.json disables Git-triggered deployments. Continue deploying the explicitly packaged, password-gated web preview via CLI; ordinary source pushes must not replace it. This does not enable the still-local native backend or change preview credentials.
+
+### Home layout refresh — 25 October 2026
+
+Private alias now points to `dpl_EUfnYHQszmmDTFaL7rEKNoeuR5cb`
+(`ambio-daily-preview-em8oajxt0-bme3412.vercel.app`). Export:
+`/tmp/ambio-home-refresh`; isolated deployment: `/tmp/ambio-home-refresh-deploy`.
+Includes a shared desktop frame for content/navigation, improved hero contrast and
+spacing, selectable story details with vocabulary previews, and playback-aware
+primary actions. Existing compressed audio and private gate retained; native auth
+backend excluded. Typecheck/lint, 72 existing tests and 2 new home interaction tests
+passed. Browser verified selection, changed vocabulary, and definition opening.
+
+### Native Talk activation — 25 October 2026
+
+User explicitly authorized native backend deployment. Private alias now points to `dpl_Ci7DX8vsVX9a4kGLxUKKxSrK4uyA` (`ambio-daily-preview-8n579pob3-bme3412.vercel.app`). Staging: `/tmp/ambio-native-talk-deploy`. Current web assets preserved; native login and bearer-token dispatch enabled. Native/backend checks, lint, typecheck and 74 tests pass. Live invalid-auth checks pass and authenticated health reports available. Physical iPhone voice acceptance remains pending.

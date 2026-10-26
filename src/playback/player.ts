@@ -3,7 +3,7 @@ import { createAudioPlayer } from "expo-audio";
 import { episode } from "../data/episode";
 import { createMediaPlayer } from "./mediaAdapter";
 export const player = createMediaPlayer(episode.durationMs, () =>
-  createAudioPlayer(require("../../assets/audio/edition-2026-10-24.mp3"), {
+  createAudioPlayer(require("../../assets/audio/edition-2026-10-24-cafe.mp3"), {
     updateInterval: 100,
   }),
 );

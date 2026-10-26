@@ -1,0 +1,40 @@
+{
+  "requestHash": "52ca780c975f1e3399f72f79079470d8894c194836cd97526b2ef8b8241de17c",
+  "speechSource": "experiments/eleven-v4/B-eleven-v4.mp3",
+  "speechSHA256": "54ebb4941600807e0ff33b10a4ea8d9c072a30d5944356f3e988d3f842151409",
+  "speechOffsetMs": 3000,
+  "musicEndMs": 8000,
+  "musicDuckGain": 0.2,
+  "duckStartMs": 2500,
+  "duckEndMs": 3000,
+  "fadeStartMs": 5000,
+  "fadeEndMs": 8000,
+  "cueGainDb": -3.3299999999999983,
+  "finalGainDb": 0.060000000000002274,
+  "referenceMeasurements": {
+    "input_i": "-18.90",
+    "input_tp": "-2.29",
+    "input_lra": "2.20",
+    "input_thresh": "-29.18",
+    "output_i": "-19.38",
+    "output_tp": "-2.36",
+    "output_lra": "2.10",
+    "output_thresh": "-29.70",
+    "normalization_type": "dynamic",
+    "target_offset": "0.38"
+  },
+  "previewMeasurements": {
+    "input_i": "-19.34",
+    "input_tp": "-2.59",
+    "input_lra": "2.00",
+    "input_thresh": "-29.60",
+    "output_i": "-19.08",
+    "output_tp": "-2.12",
+    "output_lra": "2.10",
+    "output_thresh": "-29.36",
+    "normalization_type": "dynamic",
+    "target_offset": "0.08"
+  },
+  "durationSeconds": 36.310204,
+  "listeningReview": "pending"
+}

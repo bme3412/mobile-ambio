@@ -7,6 +7,7 @@ import { sentenceWords } from "../src/domain/transcript";
 
 test("new episode has complete provider word alignment and valid chapter boundaries", () => {
   expect(timing.provider).toBe("elevenlabs");
+  expect(timing.model).toBe("eleven_v4");
   expect(timing.segments).toHaveLength(editorial.turns.length);
   let previousEnd = 0;
   episode.segments.forEach((segment, index) => {

@@ -47,3 +47,6 @@ yarn-error.*
 preview/private/
 preview/.vercel/
 .preview-password.local
+
+# Python audio generation tools
+__pycache__/

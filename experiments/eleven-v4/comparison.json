@@ -1,0 +1,59 @@
+{
+  "requestHash": "c670760bb8d29367603b875354c0f29bbfd62d633e1b228f1437d64fcdb7f76c",
+  "characters": 571,
+  "turns": [
+    [
+      "Camille",
+      "Bonjour, bienvenue dans Ambio Daily. Nous sommes le samedi vingt-quatre octobre deux mille vingt-six. Aujourd’hui, on change d’heure, on part vers une lune de Mars, et on termine avec du chocolat.",
+      "Hello, welcome to Ambio Daily. Today is Saturday, October twenty-fourth, twenty twenty-six. Today, we’re changing the clocks, heading to a moon of Mars, and finishing with chocolate."
+    ],
+    [
+      "Louis",
+      "Donc, une petite modification de mon réveil, un très grand voyage, puis une récompense. Le programme me convient.",
+      "So, a small adjustment to my alarm clock, a very long trip, then a reward. That sounds like a good plan."
+    ],
+    [
+      "Camille",
+      "Avec une question : qu’est-ce qu’on découvre quand on prend le temps de regarder les choses d’un peu plus près ? Même une tablette de chocolat.",
+      "With one question: what do we discover when we take the time to look at things a little more closely? Even a bar of chocolate."
+    ],
+    [
+      "Louis",
+      "D’accord. Mais commençons par une question plus urgente : cette nuit, on dort une heure de plus ou une heure de moins ?",
+      "All right. But let’s start with a more urgent question: tonight, do we get an extra hour of sleep or one hour less?"
+    ]
+  ],
+  "durationSeconds": {
+    "A": 33.750204,
+    "B": 33.306122
+  },
+  "targetLUFS": -18,
+  "normalizationMeasurements": {
+    "A": {
+      "input_i": "-19.39",
+      "input_tp": "-2.33",
+      "input_lra": "3.40",
+      "input_thresh": "-30.08",
+      "output_i": "-18.18",
+      "output_tp": "-2.00",
+      "output_lra": "3.30",
+      "output_thresh": "-28.84",
+      "normalization_type": "dynamic",
+      "target_offset": "0.18"
+    },
+    "B": {
+      "input_i": "-21.86",
+      "input_tp": "-0.83",
+      "input_lra": "4.00",
+      "input_thresh": "-32.19",
+      "output_i": "-19.57",
+      "output_tp": "-2.00",
+      "output_lra": "2.60",
+      "output_thresh": "-29.90",
+      "normalization_type": "dynamic",
+      "target_offset": "1.57"
+    }
+  },
+  "rawResponse": ".audio-cache/v4-comparison/c670760bb8d29367603b875354c0f29bbfd62d633e1b228f1437d64fcdb7f76c/response.json",
+  "reviewStatus": "user selected B (Eleven v4) for the full episode"
+}

@@ -17,7 +17,7 @@ export const player = createDecodedPlayer(
   },
   async (context) => {
     const response = await fetch(
-      require("../../assets/audio/edition-2026-10-24.mp3"),
+      require("../../assets/audio/edition-2026-10-24-cafe.mp3"),
       { credentials: "same-origin" },
     );
     if (!response.ok) throw new Error("Episode download failed");

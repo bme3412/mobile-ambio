@@ -1,0 +1,51 @@
+{
+  "timeline": {
+    "style": "warm-cafe",
+    "introMs": 3000,
+    "transitionMs": 1500,
+    "outroMs": 4000
+  },
+  "musicOnlyRanges": [
+    {
+      "startMs": 0,
+      "endMs": 3000
+    },
+    {
+      "startMs": 93240,
+      "endMs": 94740
+    },
+    {
+      "startMs": 205700,
+      "endMs": 207200
+    },
+    {
+      "startMs": 307440,
+      "endMs": 311440
+    }
+  ],
+  "gainDb": 0.03999999999999915,
+  "measurements": {
+    "input_i": "-19.15",
+    "input_tp": "-5.25",
+    "input_lra": "2.90",
+    "input_thresh": "-29.52",
+    "output_i": "-18.84",
+    "output_tp": "-4.75",
+    "output_lra": "2.80",
+    "output_thresh": "-29.21",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.16"
+  },
+  "reference": {
+    "input_i": "-18.70",
+    "input_tp": "-1.91",
+    "input_lra": "2.80",
+    "input_thresh": "-29.07",
+    "output_i": "-18.84",
+    "output_tp": "-1.86",
+    "output_lra": "2.60",
+    "output_thresh": "-29.21",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.16"
+  }
+}

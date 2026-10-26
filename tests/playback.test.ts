@@ -29,7 +29,8 @@ test("play, pause, rate, seek and end preserve clock bounds", () => {
 });
 test("word highlight uses half-open audio timing and never selection", () => {
   const seg = episode.segments[0];
-  expect(activeSegment(episode.segments, 0)).toBe(0);
+  expect(activeSegment(episode.segments, 0)).toBe(-1);
+  expect(activeSegment(episode.segments, seg.startMs)).toBe(0);
   expect(activeWord(seg, seg.words[0].startMs)).toBe(seg.words[0].id);
   expect(activeWord(seg, seg.words[0].endMs)).not.toBe(seg.words[0].id);
   expect(activeWord(seg, seg.words[1].startMs)).toBe(seg.words[1].id);
@@ -71,9 +72,13 @@ test("curated vocabulary has definitions and matching transcript tokens", () => 
   });
 });
 test("tracking stays on the last turn during silence and at the end", () => {
-  expect(activeSegment(episode.segments, episode.segments[0].endMs + 1)).toBe(
-    0,
+  const gapIndex = episode.segments.findIndex(
+    (segment, i) => episode.segments[i + 1]?.startMs > segment.endMs + 1,
   );
+  expect(gapIndex).toBeGreaterThanOrEqual(0);
+  expect(
+    activeSegment(episode.segments, episode.segments[gapIndex].endMs + 1),
+  ).toBe(gapIndex);
   expect(activeSegment(episode.segments, episode.durationMs)).toBe(
     episode.segments.length - 1,
   );

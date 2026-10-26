@@ -16,9 +16,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { episode as fixture } from "../../data/episode";
 import { Body, Button, colors, s } from "../../components/ui";
-import { player, time } from "../../playback/player";
+import { player, time, usePlayback } from "../../playback/player";
+import { WordSheet } from "../../components/WordSheet";
+import { vocabulary } from "../../data/vocabulary";
+import { normalizeWord } from "../../data/dictionary";
+import { WordToken, TranscriptSegment } from "../../domain/types";
 const storyIcons = [Clock3, Orbit, Cookie];
 export default function Home() {
+  const playback = usePlayback();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selection, setSelection] = useState<{
+    word: WordToken;
+    segment: TranscriptSegment;
+  } | null>(null);
   const [languageOpen, setLanguageOpen] = useState(false);
   const {
     data: episode = fixture,
@@ -52,6 +62,35 @@ export default function Home() {
         />
       </SafeAreaView>
     );
+  const starts = episode.stories.map(
+    (story) =>
+      episode.segments.find((segment) => segment.id === story.segmentId)!
+        .startMs,
+  );
+  const selectedStory = episode.stories[selectedIndex];
+  const storyEnd = starts[selectedIndex + 1] ?? episode.durationMs;
+  const seen = new Set<string>();
+  const previewWords = episode.segments
+    .filter(
+      (segment) =>
+        segment.startMs >= starts[selectedIndex] && segment.startMs < storyEnd,
+    )
+    .flatMap((segment) => segment.words.map((word) => ({ word, segment })))
+    .filter(({ word }) => {
+      const key = normalizeWord(word.text);
+      if (!vocabulary[key] || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 3);
+  const finished = playback.positionMs >= episode.durationMs;
+  const playLabel = playback.playing
+    ? "Open player"
+    : finished
+      ? "Replay episode"
+      : playback.positionMs > 0
+        ? "Resume episode"
+        : "Play episode";
   return (
     <SafeAreaView edges={["top", "left", "right"]} style={s.page}>
       <ScrollView
@@ -80,7 +119,14 @@ export default function Home() {
           />
           <View style={{ ...s.row, padding: 22 }}>
             <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
+                backgroundColor: "#FFFFFFDD",
+                padding: 8,
+                borderRadius: 20,
+              }}
             >
               <View
                 style={{
@@ -139,7 +185,7 @@ export default function Home() {
             style={{
               padding: 24,
               paddingTop: 40,
-              paddingBottom: 42,
+              paddingBottom: 60,
               gap: 10,
             }}
           >
@@ -165,69 +211,138 @@ export default function Home() {
         </ImageBackground>
         <View style={{ paddingHorizontal: 20, marginTop: -18 }}>
           <Button
-            label={`▶ Play episode · ${time(episode.durationMs)}`}
+            label={`▶ ${playLabel} · ${time(episode.durationMs)}`}
             onPress={() => {
-              player.play();
+              if (finished) player.seek(0);
+              if (!playback.playing) player.play();
               router.push("/player");
             }}
           />
         </View>
+        {playback.positionMs > 0 && (
+          <View style={{ marginHorizontal: 20, marginTop: 14, gap: 6 }}>
+            <Text style={s.note}>
+              Listening position · {time(playback.positionMs)} of{" "}
+              {time(episode.durationMs)}
+            </Text>
+            <View
+              style={{
+                height: 4,
+                borderRadius: 2,
+                backgroundColor: colors.line,
+                overflow: "hidden",
+              }}
+            >
+              <View
+                style={{
+                  height: 4,
+                  backgroundColor: colors.green,
+                  width: `${Math.min(100, (playback.positionMs / episode.durationMs) * 100)}%`,
+                }}
+              />
+            </View>
+          </View>
+        )}
         <View style={{ flexDirection: "row", padding: 20, gap: 10 }}>
           {episode.stories.map((story, i) => {
             const StoryIcon = storyIcons[i];
+            const selected = i === selectedIndex;
+            const end = starts[i + 1] ?? episode.durationMs;
+            const playing =
+              playback.playing &&
+              playback.positionMs >= starts[i] &&
+              playback.positionMs < end;
             return (
               <Pressable
                 key={story.id}
                 accessibilityRole="button"
-                accessibilityLabel={`Listen to ${story.title}`}
-                onPress={() => {
-                  player.seek(
-                    episode.segments.find((s) => s.id === story.segmentId)!
-                      .startMs,
-                  );
-                  player.play();
-                  router.push("/player");
+                accessibilityLabel={`Select ${story.title}`}
+                accessibilityState={{ selected }}
+                onPress={() => setSelectedIndex(i)}
+                style={{
+                  flex: 1,
+                  gap: 7,
+                  padding: 10,
+                  borderRadius: 14,
+                  backgroundColor: selected ? colors.tint : "#F2F7F4",
+                  borderWidth: 2,
+                  borderColor: selected ? colors.green : "transparent",
                 }}
-                style={{ flex: 1, gap: 5 }}
               >
                 <View
                   style={{
-                    height: 86,
-                    borderRadius: 12,
-                    backgroundColor: colors.tint,
+                    flexDirection: "row",
+                    flexWrap: "wrap",
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
+                    gap: 4,
                   }}
                 >
-                  <StoryIcon size={32} color={colors.green} strokeWidth={1.5} />
+                  <StoryIcon size={25} color={colors.green} strokeWidth={1.5} />
+                  <Text style={s.note}>{time(end - starts[i])}</Text>
                 </View>
                 <Text
-                  style={{ fontSize: 12, fontWeight: "600", color: colors.ink }}
+                  style={{ fontSize: 13, fontWeight: "600", color: colors.ink }}
                 >
                   {i + 1} · {story.title}
                 </Text>
                 <Text style={s.note}>{story.category.toLowerCase()}</Text>
+                <Text style={{ ...s.note, color: colors.ink }}>
+                  {playing ? "Playing" : selected ? "Selected" : "View story"}
+                </Text>
               </Pressable>
             );
           })}
         </View>
-        <View style={{ paddingHorizontal: 20, gap: 12 }}>
-          <Text style={s.subheading}>{episode.title}</Text>
+        <View style={{ ...s.card, marginHorizontal: 20 }}>
+          <Text style={s.note}>
+            STORY {selectedIndex + 1} · {time(storyEnd - starts[selectedIndex])}
+          </Text>
+          <Text accessibilityRole="header" style={s.subheading}>
+            {selectedStory.title}
+          </Text>
+          <Body>{selectedStory.description}</Body>
           <Text style={s.note}>
             French B1–B2 · Real stories · Synthetic French narration
           </Text>
+          <Text style={{ color: colors.ink, fontWeight: "600" }}>
+            Words to discover
+          </Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+            {previewWords.map((item) => (
+              <Pressable
+                key={item.word.id}
+                accessibilityRole="button"
+                accessibilityLabel={`Learn ${item.word.text}`}
+                onPress={() => setSelection(item)}
+                style={{
+                  backgroundColor: colors.lavender,
+                  borderRadius: 24,
+                  paddingHorizontal: 14,
+                  paddingVertical: 12,
+                }}
+              >
+                <Text style={{ color: colors.ink }}>{item.word.text}</Text>
+              </Pressable>
+            ))}
+          </View>
           <Button
             secondary
-            label="Continue listening ↗"
-            onPress={() => router.push("/player")}
+            label={`▶ Play story ${selectedIndex + 1}`}
+            onPress={() => {
+              player.seek(starts[selectedIndex]);
+              player.play();
+              router.push("/player");
+            }}
           />
           <Button
             secondary
-            label="Start talking ↗"
-            onPress={() => router.push("/conversation")}
+            label="Read transcript & vocabulary →"
+            onPress={() => router.push("/transcript")}
           />
         </View>
       </ScrollView>
+      <WordSheet selection={selection} onClose={() => setSelection(null)} />
     </SafeAreaView>
   );
 }

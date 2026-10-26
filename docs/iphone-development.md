@@ -48,3 +48,16 @@ The build is for development testing, not TestFlight or App Store distribution. 
 Play an episode, select/save a word, manually browse and return to live, restart the app to verify bookmarks, then sign in to Talk, complete a live conversation and open the saved recap. The native voice guide lists device-specific acceptance checks.
 
 References: [Expo physical-device build guide](https://docs.expo.dev/tutorial/eas/ios-development-build-for-devices/), [SDK 58 development client](https://docs.expo.dev/versions/v58.0.0/sdk/dev-client/), [iOS Developer Mode](https://docs.expo.dev/guides/ios-developer-mode/).
+
+## TestFlight submission — 25 October 2026
+
+Team project: `bme3412s-team/ambio` (`e17b2dfb-fbac-4866-80bd-33167f3eda6d`).
+Store build `ccaca93f-da88-437c-a613-227f6a1ce3dd`, version 1.0.0 (3), uploaded successfully to App Store Connect app `6826860799`.
+Submission: https://expo.dev/accounts/bme3412s-team/projects/ambio/submissions/0acfc590-594f-41f8-9ad8-a2626ec06b67
+Apple processing remained pending at upload completion. Expo created the Team (Expo) TestFlight group and enabled access for the account owner. A user-authorized App Store Connect API key with APP_MANAGER role is stored in EAS. No public App Store release was submitted.
+
+### Build 4: Apple ITMS-90683 correction
+
+Build 3 was rejected during Apple processing because the linked WebRTC SDK includes camera APIs but the custom config plugin deleted NSCameraUsageDescription. The plugin now supplies a truthful SDK/audio-only explanation. Expo config introspection confirms camera and microphone usage strings; runtime capture remains video:false. Lint and typecheck pass.
+
+Replacement build `272ccdb3-2a5f-410f-966d-dddca26af0e8`, version 1.0.0 (4), built and uploaded successfully. Submission `31d45dae-5fde-4e7a-9b1c-122a1c6515cf`. Apple processing pending at upload completion; no public release submitted.

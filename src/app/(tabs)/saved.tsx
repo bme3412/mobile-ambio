@@ -19,6 +19,8 @@ export default function Saved() {
     transcripts,
   } = useLibrary();
   const bookmarks = allBookmarks;
+  const reviewedCount = bookmarks.filter((b) => b.reviewed).length;
+  const remainingCount = bookmarks.length - reviewedCount;
   const [practice, setPractice] = useState<Bookmark[] | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [filter, setFilter] = useState("All");
@@ -45,6 +47,51 @@ export default function Saved() {
           Local storage is unavailable. Changes may not survive a restart.
         </Body>
       )}
+      <View style={[s.card, { backgroundColor: colors.tint, gap: 14 }]}>
+        <Text style={{ ...s.note, letterSpacing: 2 }}>
+          YOUR FRENCH, COLLECTED
+        </Text>
+        <Text accessibilityRole="header" style={s.subheading}>
+          A few words. A little closer.
+        </Text>
+        <Body>
+          {bookmarks.length === 0
+            ? "Keep the expressions that catch your ear. Come back and make them your own."
+            : remainingCount > 0
+              ? `${remainingCount} ${remainingCount === 1 ? "expression is" : "expressions are"} waiting for another look. Recall the meaning, then check yourself.`
+              : "You’ve reviewed every saved expression. Revisit them whenever you want a refresher."}
+        </Body>
+        {bookmarks.length > 0 && (
+          <>
+            <Text style={{ color: colors.green, fontWeight: "600" }}>
+              {reviewedCount} of {bookmarks.length} reviewed
+            </Text>
+            <View
+              accessibilityRole="progressbar"
+              accessibilityLabel="Saved expressions reviewed"
+              accessibilityValue={{
+                min: 0,
+                max: bookmarks.length,
+                now: reviewedCount,
+              }}
+              style={{
+                height: 6,
+                backgroundColor: colors.line,
+                borderRadius: 3,
+                overflow: "hidden",
+              }}
+            >
+              <View
+                style={{
+                  height: 6,
+                  backgroundColor: colors.green,
+                  width: `${(reviewedCount / bookmarks.length) * 100}%`,
+                }}
+              />
+            </View>
+          </>
+        )}
+      </View>
       <View style={{ flexDirection: "row", gap: 8 }}>
         {["All", "To review", "Reviewed"].map((f) => (
           <Pressable
@@ -65,6 +112,25 @@ export default function Saved() {
           </Pressable>
         ))}
       </View>
+      {visible.length > 0 && (
+        <View style={{ gap: 8 }}>
+          <Button
+            label={
+              filter === "All"
+                ? "Practice saved expressions"
+                : filter === "To review"
+                  ? "Practice words to review"
+                  : "Practice reviewed words"
+            }
+            onPress={() => setPractice([...visible])}
+          />
+          <Text style={{ ...s.note, textAlign: "center" }}>
+            {visible.length}{" "}
+            {visible.length === 1 ? "expression" : "expressions"} · Recall,
+            reveal, repeat
+          </Text>
+        </View>
+      )}
       {bookmarks.length === 0 ? (
         <View style={s.card}>
           <Text style={s.subheading}>Something will stay with you.</Text>
@@ -175,12 +241,6 @@ export default function Saved() {
       )}
       {bookmarks.length > 0 && visible.length === 0 && (
         <Body>No words in this view yet.</Body>
-      )}
-      {bookmarks.length > 0 && (
-        <Button
-          label="Practice saved expressions"
-          onPress={() => setPractice([...bookmarks])}
-        />
       )}
       <View style={[s.divider, { marginTop: 12 }]} />
       <Text style={{ fontSize: 15, fontWeight: "600", color: colors.muted }}>

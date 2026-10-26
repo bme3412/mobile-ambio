@@ -1,0 +1,7 @@
+{
+  "text": "An eight-second warm cafe podcast signature, instrumental only. Warm electric piano notes, soft brushed percussion and a gentle bass motif. Relaxed, welcoming and conversational. A small memorable melody with a soft ending. No vocals, no speech, no cafe chatter, no sound effects.",
+  "duration_seconds": 8,
+  "loop": false,
+  "prompt_influence": 0.7,
+  "model_id": "eleven_text_to_sound_v2"
+}
