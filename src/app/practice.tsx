@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AppState, View, useWindowDimensions } from "react-native";
+import { AppState, View } from "react-native";
 import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { createAudioPlayer } from "expo-audio";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PracticeReader from "../practice/PracticeReader";
+import SpokenPractice from "../practice/SpokenPractice";
 import { practiceMaterial } from "../practice/model";
-import { practiceCredentials, unlockPractice } from "../practice/api";
 import { findEdition } from "../data/catalog";
 import { createMediaPlayer } from "../playback/mediaAdapter";
 import { player } from "../playback/player";
@@ -13,7 +12,6 @@ import { stopPronunciation } from "../playback/pronunciation";
 import { Body, s } from "../components/ui";
 
 export default function Practice() {
-  const { fontScale } = useWindowDimensions();
   const params = useLocalSearchParams<{
     episodeId?: string;
     storyId?: string;
@@ -82,18 +80,14 @@ export default function Practice() {
       edges={["bottom", "left", "right"]}
       style={{ flex: 1, backgroundColor: "#F5F0E6" }}
     >
-      <Stack.Screen options={{ title: "Pronunciation practice" }} />
+      <Stack.Screen options={{ title: "Spoken practice" }} />
       {focused && (
-        <PracticeReader
+        <SpokenPractice
           key={`${episodeId}:${storyId ?? "all"}:${segmentId ?? "all"}`}
-          title={material.title}
-          phrases={material.phrases}
+          material={material}
           active={active}
           referenceError={referenceError}
           referencePlaying={referencePlaying}
-          textScale={fontScale}
-          getCredentials={practiceCredentials}
-          unlock={unlockPractice}
           stopReference={async () => {
             reference.current?.pause();
           }}
@@ -103,7 +97,6 @@ export default function Practice() {
             audio.replay(start, end);
             if (audio.getSnapshot().error) throw Error("Audio unavailable");
           }}
-          dom={{ style: { flex: 1 }, scrollEnabled: true }}
         />
       )}
     </SafeAreaView>

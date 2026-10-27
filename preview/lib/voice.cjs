@@ -36,7 +36,11 @@ module.exports = async (req, res, url, { native = false } = {}) => {
       return json(403, { error: "Forbidden." });
     return require("./practice.cjs")(req, res);
   }
-  if (url.pathname !== "/api/voice/session")
+  if (
+    !["/api/voice/session", "/api/voice/practice/session"].includes(
+      url.pathname,
+    )
+  )
     return json(404, { error: "Not found." });
   if (req.method !== "POST") return json(405, { error: "Method not allowed." });
   if (
@@ -71,9 +75,15 @@ module.exports = async (req, res, url, { native = false } = {}) => {
       });
     let config;
     try {
-      config = sessionConfig(url.searchParams.get("episodeId") ?? undefined);
+      config =
+        url.pathname === "/api/voice/practice/session"
+          ? require("./coach-config.cjs").coachConfig(
+              url.searchParams.get("episodeId"),
+              url.searchParams.get("phraseId"),
+            )
+          : sessionConfig(url.searchParams.get("episodeId") ?? undefined);
     } catch {
-      return json(400, { error: "Unknown episode." });
+      return json(400, { error: "Unknown episode or practice phrase." });
     }
     const form = new FormData();
     form.set("sdp", body);

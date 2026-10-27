@@ -1,34 +1,31 @@
-# Phrase-by-phrase pronunciation practice
+# Phrase-by-phrase spoken coaching
 
-Home story actions, library edition/story actions, and transcript passage actions open `/practice` with explicit catalog IDs. Practice uses the catalog’s translated phrases and a separate bounded reference player. Entering pauses the main player; practice never selects a different listening edition or changes its saved position.
+Home, library and transcript actions open `/practice` with explicit catalog IDs. Practice pauses the main player and uses a separate bounded reference player, preserving its edition and saved position.
 
-The screen uses Expo SDK 58 DOM components to run the Azure JavaScript Speech SDK on web and inside the native app. The SDK is loaded only when an attempt starts. The native bundle export includes the DOM assets; native microphone, audio routing, lock/unlock, and Dynamic Type still need physical iPhone acceptance before release.
+## Current flow
+
+The React Native screen uses the same native WebRTC audio transport as Talk, with a dedicated single-phrase session. It no longer depends on Azure's DOM/WebView assessment result. This removes the reported “No clear speech was assessed” blocker from the active flow; the underlying Azure/iPhone NoMatch cause was not conclusively reproduced. The old Azure modules and token endpoint remain isolated for compatibility with older TestFlight builds.
+
+1. Hear the original phrase if desired.
+2. Tap **Read to my coach**, wait for **Read aloud now**, and read.
+3. After 1.4 seconds of silence, the microphone is muted and exactly one response is requested. **I’ve finished reading** can also commit the attempt.
+4. Hear one brief English tip and a French demonstration. A clear attempt gets affirmation and a model, not an invented error. Captions supplement the audio; no numerical scores are shown.
+5. After output playback ends, the connection and microphone tracks are closed. Retry or advance deliberately.
+
+The coach evaluates audio directly. Auxiliary transcription is optional to view and is not a gate for coaching. This is qualitative AI feedback, not calibrated phoneme assessment. Long hesitations can end a turn; retry if that happens. No local recording or assessment history is persisted.
+
+## Backend and access
+
+`POST /api/voice/practice/session?episodeId=…&phraseId=…` exchanges a WebRTC offer through the existing authenticated backend. `OPENAI_API_KEY` stays server-side. The coach uses the existing `gpt-realtime-2.1`/`marin` configuration. Origin checks, bounded SDP input, authentication and reconnect throttling are shared with Talk. Existing Talk behavior is unchanged.
+
+The reference text is server-owned: `node scripts/build-practice-registry.cjs` builds `preview/lib/practice-phrases.json` from all three editions. Tests check exact catalog coverage. Unknown or cross-edition IDs fail; the endpoint does not accept a client-written coaching prompt.
+
+Practice checks access before requesting the microphone. Expired sessions open the inline password form and preserve the phrase. Unlock shares the secure native session with Talk; it never automatically starts recording. Navigating away, backgrounding, changing phrases, cancellation, connection failure and timeouts close the transport and invalidate late callbacks.
 
 ## Local preview
 
-Create `.env.practice.local` (gitignored) with `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION`, then run:
-
-```sh
-npm run practice:local
-```
-
-Use the Expo web preview on port 8092. The practice-only server listens on loopback port 8086, checks Host/Origin, and allows only the two loopback 8092 origins. It does not serve the app or expose the resource key.
-
-## Hosted configuration
-
-The existing authenticated voice backend now handles `POST /api/voice/practice/token`. Configure the same two server-only Azure variables in the mobile preview project, then deploy that backend together with this code when release is approved. The reference project’s credentials are not automatically shared with the mobile project. Native requests use a shared secure session for Practice and Talk. Expired sessions open an inline unlock form in Practice without changing the current phrase. Talk refreshes access when focused. Web unlock renews the existing private-preview cookie. The password is cleared after submission or dismissal; it is never persisted by the client. Origin checks and a per-client token throttle apply. Clients receive only an expiring Azure token, never the resource key; responses are private/no-store.
-
-## Feedback semantics
-
-- Live recognition is tentative text, not a pronunciation score.
-- Azure finalizes each single-phrase attempt after a pause. Word-granularity French assessment compares it with the exact reference text.
-- Missing/invalid/no-match assessments are errors, never positive scores.
-- Word matching is conservative and ordered; unmatched contractions remain uncolored. Insertions are listed in assessment details rather than attached to an unrelated reference word.
-- Amber marks Azure omissions/mispronunciations or an accuracy score below 60. This threshold chooses a practice target, not a pass/fail grade.
-- The first target gets a short cautious explanation and bounded host-audio replay with neighboring words. There is no invented phoneme diagnosis or French prosody score.
-- Optional MediaRecorder replay stays in memory for the current phrase. Starting another attempt, changing phrase, or leaving discards it. Raw recordings and assessment results are not persisted by Ambio.
-- Attempts stop on cancellation, backgrounding, navigation, or the 30-second limit. Late permission/token/provider callbacks are invalidated.
+Place `OPENAI_API_KEY` in gitignored `.env.practice.local` and run `npm run practice:local`. The loopback service on 8086 only accepts the Expo preview origins on port 8092. Legacy Azure token testing additionally needs `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION`. Never bundle these variables in public Expo configuration.
 
 ## Validation
 
-Jest covers catalog boundaries, passage filtering, conservative score mapping, token isolation/throttling, and cancellation/late-callback microphone cleanup. Real Azure checks use a short existing host clip, including a controlled omission. Browser microphone tests use prerecorded synthetic audio, not a learner recording. They establish integration behavior, not teaching quality. Human French recordings and physical iPhone acceptance remain necessary for pronunciation quality and native microphone/audio routing.
+Unit tests cover one response per attempt, VAD/manual-finish races, auth before mic access, cancellation, silence timeout, microphone cleanup, and exact phrase registry coverage. A live browser check sends a known French host recording through WebRTC, verifies the returned audio/transcript and ended microphone tracks, and checks phone/tablet layouts. This synthetic fixture verifies integration, not coaching accuracy for human learners. Physical iPhone acceptance should check microphone pickup, speaker/headphone routing, interruptions, Dynamic Type and the usefulness of spoken corrections.

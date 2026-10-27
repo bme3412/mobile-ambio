@@ -51,3 +51,17 @@ export async function practiceCredentials(): Promise<PracticeAccess> {
     throw Error("The practice server returned an invalid session.");
   return { token: data.token, region: data.region };
 }
+
+export async function coachRequest(
+  path: string,
+  init?: RequestInit,
+): Promise<Response> {
+  const local =
+    !voiceApi.native &&
+    typeof location !== "undefined" &&
+    ["localhost", "127.0.0.1"].includes(location.hostname) &&
+    location.port === "8092";
+  return local
+    ? fetch(`http://${location.hostname}:8086${path}`, init)
+    : voiceApi.request(path, init);
+}

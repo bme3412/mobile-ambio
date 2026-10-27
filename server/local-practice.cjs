@@ -12,11 +12,21 @@ function createPracticeServer() {
     }
     res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
     res.setHeader("Vary", "Origin");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     if (req.method === "OPTIONS") {
       res.writeHead(204);
       return res.end();
+    }
+    if (
+      req.url === "/api/voice/health" ||
+      req.url.startsWith("/api/voice/practice/session?")
+    ) {
+      return require("../preview/lib/voice.cjs")(
+        req,
+        res,
+        new URL(req.url, req.headers.origin),
+      );
     }
     if (req.url !== "/api/voice/practice/token") {
       res.writeHead(404);
