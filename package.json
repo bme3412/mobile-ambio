@@ -10,6 +10,7 @@
     "expo-audio": "~58.0.10",
     "expo-constants": "~58.0.13",
     "expo-dev-client": "~58.0.15",
+    "expo-file-system": "~58.0.12",
     "expo-haptics": "~58.0.7",
     "expo-linear-gradient": "~58.0.3",
     "expo-linking": "~58.0.14",
@@ -57,11 +58,16 @@
     "voice:local": "node server/local-voice.cjs",
     "voice:check": "node server/check.cjs",
     "build:android:dev": "npx eas-cli@latest build --platform android --profile development",
-    "practice:local": "node --env-file=.env.practice.local server/local-practice.cjs"
+    "practice:local": "node --env-file=.env.practice.local server/local-practice.cjs",
+    "editions:export": "node scripts/export-editions.cjs",
+    "editions:run": "python3 -m scripts.daily.run",
+    "editions:admin": "python3 -m scripts.daily.admin",
+    "test:production": "python3 -m unittest discover -s tests -p \"test_*.py\""
   },
   "private": true,
   "jest": {
     "preset": "jest-expo",
+    "modulePathIgnorePatterns": ["<rootDir>/.edition-work/"],
     "testMatch": [
       "**/tests/**/*.test.ts?(x)"
     ],

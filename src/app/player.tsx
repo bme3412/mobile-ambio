@@ -1,3 +1,4 @@
+import { EditionGate } from "../components/EditionStatus";
 import { useEpisodeData } from "../data/catalog";
 import { useState } from "react";
 import { Linking, Pressable, Text, View } from "react-native";
@@ -11,7 +12,7 @@ import { WordToken, TranscriptSegment } from "../domain/types";
 import { player } from "../playback/player";
 import { useLibrary } from "../state/library";
 
-export default function Player() {
+function PlayerContent() {
   const { episode, episodeSources, speakingPrompt, vocabulary, verifiedAt } =
     useEpisodeData();
   const [selection, setSelection] = useState<{
@@ -147,5 +148,13 @@ export default function Player() {
         }}
       />
     </SafeAreaView>
+  );
+}
+
+export default function Player() {
+  return (
+    <EditionGate>
+      <PlayerContent />
+    </EditionGate>
   );
 }

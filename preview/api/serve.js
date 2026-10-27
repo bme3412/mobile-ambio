@@ -51,7 +51,11 @@ module.exports = async (req, res) => {
   if (url.pathname === "/api/voice/login")
     return nativeAuth.login(req, res, secret, url.origin);
   const authorization = req.headers.authorization;
-  if (url.pathname.startsWith("/api/voice/") && authorization) {
+  if (
+    (url.pathname.startsWith("/api/voice/") ||
+      url.pathname.startsWith("/api/editions")) &&
+    authorization
+  ) {
     const token = authorization.startsWith("Bearer ")
       ? authorization.slice(7)
       : "";
@@ -60,6 +64,8 @@ module.exports = async (req, res) => {
       res.setHeader("Content-Type", "application/json");
       return res.end(JSON.stringify({ error: "Please sign in again." }));
     }
+    if (url.pathname.startsWith("/api/editions"))
+      return require("../lib/editions.cjs").handler(req, res, url);
     return require("../lib/voice.cjs")(req, res, url, { native: true });
   }
   if (url.pathname === "/__preview_login" && req.method === "POST") {
@@ -123,6 +129,8 @@ module.exports = async (req, res) => {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     return res.end(page());
   }
+  if (url.pathname.startsWith("/api/editions"))
+    return require("../lib/editions.cjs").handler(req, res, url);
   if (url.pathname.startsWith("/api/voice/"))
     return require("../lib/voice.cjs")(req, res, url);
   if (!["GET", "HEAD"].includes(req.method)) {

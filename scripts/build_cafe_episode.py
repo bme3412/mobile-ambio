@@ -57,7 +57,7 @@ def main():
     if active_timing.get('generation') != source.get('generation'):
         raise ValueError('Dry timing belongs to a different speech generation.')
     timing = arrange_timing(source, config=config)
-    speech = ROOT / f'assets/audio/edition-{args.edition}-v4.mp3'
+    speech = Path(config.get('audioDir', ROOT / 'assets/audio')) / f'edition-{args.edition}-v4.mp3'
     with tempfile.TemporaryDirectory(prefix='ambio-cafe-full-') as directory:
         work = Path(directory)
         decoded = work / 'speech.wav'
@@ -104,7 +104,7 @@ def main():
             raise ValueError('Final loudness/peak check failed.')
         if abs(duration(final) * 1000 - timing['durationMs']) > 100:
             raise ValueError('Final duration mismatch.')
-        destination = ROOT / f'assets/audio/edition-{args.edition}-cafe.mp3'
+        destination = Path(config.get('audioDir', ROOT / 'assets/audio')) / f'edition-{args.edition}-cafe.mp3'
         destination.write_bytes(final.read_bytes())
         active.write_text(json.dumps(timing, indent=2, ensure_ascii=False) + '\n')
         (output / 'full-mix-settings.json').write_text(json.dumps({'settings': config, 'timeline': timing['production'], 'musicOnlyRanges': ranges, 'gainDb': gain, 'measurements': measured, 'reference': reference}, indent=2) + '\n')

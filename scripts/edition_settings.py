@@ -1,8 +1,9 @@
 """Shared, validated edition production settings for synthesis and mixing."""
 import json
+import os
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
-SETTINGS = json.loads((ROOT / 'scripts/edition-settings.json').read_text())
+SETTINGS = json.loads(Path(os.environ.get('AMBIO_EDITION_SETTINGS', ROOT / 'scripts/edition-settings.json')).read_text())
 
 def settings_for(edition):
     config = SETTINGS[edition]

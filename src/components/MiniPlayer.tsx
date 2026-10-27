@@ -1,4 +1,5 @@
-import { useEpisodeData } from "../data/catalog";
+import { useLibrary } from "../state/library";
+import { findEdition, useCatalog } from "../data/catalog";
 import { cafeArtwork } from "../data/artwork";
 import { Image, Pressable, Text, View } from "react-native";
 import { router } from "expo-router";
@@ -11,8 +12,12 @@ export function MiniPlayer({
   always?: boolean;
   onResume?: () => void;
 }) {
-  const { episode } = useEpisodeData();
+  useCatalog((s) => s.version);
+  const active = useLibrary((s) => s.activeEpisodeId);
+  const edition = findEdition(active);
   const p = usePlayback();
+  if (!edition) return null;
+  const { episode } = edition;
   if (!always && !p.playing && p.positionMs === 0) return null;
   return (
     <View

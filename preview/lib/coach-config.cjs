@@ -1,11 +1,12 @@
 const phrases = require("./practice-phrases.json");
-function coachConfig(episodeId, phraseId) {
+function coachConfig(episodeId, phraseId, publishedReference) {
   if (
-    !Object.hasOwn(phrases, episodeId ?? "") ||
-    !Object.hasOwn(phrases[episodeId], phraseId ?? "")
+    !publishedReference &&
+    (!Object.hasOwn(phrases, episodeId ?? "") ||
+      !Object.hasOwn(phrases[episodeId], phraseId ?? ""))
   )
     throw Error("Unknown practice phrase");
-  const reference = phrases[episodeId][phraseId];
+  const reference = publishedReference || phrases[episodeId][phraseId];
   return {
     type: "realtime",
     model: "gpt-realtime-2.1",

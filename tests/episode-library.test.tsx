@@ -145,13 +145,13 @@ test("word lookup saves the source edition even when another episode is selected
   });
 });
 
-test("October 26 is first and the default remains October 24", () => {
+test("October 26 is first and missing editions never substitute another episode", () => {
   expect(editions.map((item) => item.episode.id)).toEqual([
     "daily-fr-2026-10-26",
     "daily-fr-2026-10-25",
     "daily-fr-2026-10-24",
   ]);
-  expect(getEdition("unknown").episode.id).toBe("daily-fr-2026-10-24");
+  expect(() => getEdition("unknown")).toThrow("unavailable");
   const latest = editions[0];
   expect(latest.episode.durationMs).toBeGreaterThanOrEqual(300000);
   expect(latest.episode.durationMs).toBeLessThanOrEqual(360000);

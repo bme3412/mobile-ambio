@@ -1,13 +1,14 @@
-import { getEdition } from "../data/catalog";
+import { useCatalog, findEdition } from "../data/catalog";
 import { Text, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Body, Button, Label, Page, s, Title } from "../components/ui";
 import { useLibrary } from "../state/library";
 export default function Recap() {
+  useCatalog((s) => s.version);
   const { id } = useLocalSearchParams<{ id: string }>();
   const sessions = useLibrary((x) => x.sessions);
   const session = sessions.find((x) => x.id === id);
-  const { featuredPhrase } = getEdition(session?.episodeId ?? "");
+  const featuredPhrase = findEdition(session?.episodeId ?? "")?.featuredPhrase;
   const bookmarks = useLibrary((s) => s.bookmarks);
   const toggle = useLibrary((s) => s.toggle);
   const storageError = useLibrary((s) => s.storageError);
@@ -51,30 +52,39 @@ export default function Recap() {
               </View>
             ))
           )}
-          <Text style={s.subheading}>Keep this expression</Text>
-          <View style={s.card}>
-            <Text style={s.subheading}>{featuredPhrase.word.text}</Text>
-            <Body>{featuredPhrase.word.meaning}</Body>
-            <Body>{featuredPhrase.example}</Body>
-            <Button
-              secondary
-              label={
-                bookmarks.some((b) => b.id === featuredPhrase.id)
-                  ? "Unsave this expression"
-                  : "Save this expression"
-              }
-              onPress={() =>
-                toggle({
-                  id: featuredPhrase.id,
-                  episodeId: featuredPhrase.episodeId,
-                  segmentId: featuredPhrase.segmentId,
-                  context: featuredPhrase.context,
-                  word: featuredPhrase.word,
-                  reviewed: false,
-                })
-              }
-            />
-          </View>
+          {featuredPhrase ? (
+            <>
+              <Text style={s.subheading}>Keep this expression</Text>
+              <View style={s.card}>
+                <Text style={s.subheading}>{featuredPhrase.word.text}</Text>
+                <Body>{featuredPhrase.word.meaning}</Body>
+                <Body>{featuredPhrase.example}</Body>
+                <Button
+                  secondary
+                  label={
+                    bookmarks.some((b) => b.id === featuredPhrase.id)
+                      ? "Unsave this expression"
+                      : "Save this expression"
+                  }
+                  onPress={() =>
+                    toggle({
+                      id: featuredPhrase.id,
+                      episodeId: featuredPhrase.episodeId,
+                      segmentId: featuredPhrase.segmentId,
+                      context: featuredPhrase.context,
+                      word: featuredPhrase.word,
+                      reviewed: false,
+                    })
+                  }
+                />
+              </View>
+            </>
+          ) : (
+            <Body>
+              The edition for this expression is unavailable. Your conversation
+              remains saved.
+            </Body>
+          )}
           <Text style={s.subheading}>The full conversation</Text>
           {session.turns.map((t) => (
             <View key={t.id} style={s.card}>

@@ -1,4 +1,4 @@
-import { getEdition } from "../data/catalog";
+import { findEdition } from "../data/catalog";
 import { useState } from "react";
 import { Modal, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,7 +16,7 @@ export function PracticeSheet({
     [revealed, setRevealed] = useState(false);
   const review = useLibrary((x) => x.review);
   const item = items[index];
-  const episode = item ? getEdition(item.episodeId).episode : undefined;
+  const episode = item ? findEdition(item.episodeId)?.episode : undefined;
   const next = () => {
     setIndex((i) => i + 1);
     setRevealed(false);

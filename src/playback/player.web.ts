@@ -1,8 +1,10 @@
+import { resolveAudio } from "../data/catalog";
+import { releaseAudio } from "../data/downloads";
 import { useSyncExternalStore } from "react";
 import { createEpisodePlayer } from "./episodePlayer";
 import { createDecodedPlayer } from "./decodedPlayer";
 
-export const player = createEpisodePlayer(({ episode, audio }) =>
+export const player = createEpisodePlayer(({ episode }) =>
   createDecodedPlayer(
     episode.durationMs,
     () => {
@@ -17,9 +19,16 @@ export const player = createEpisodePlayer(({ episode, audio }) =>
       return new AudioContext();
     },
     async (context) => {
-      const response = await fetch(audio, { credentials: "same-origin" });
-      if (!response.ok) throw new Error("Episode download failed");
-      return context.decodeAudioData(await response.arrayBuffer());
+      const audio = await resolveAudio(episode.id);
+      try {
+        const response = await fetch(String(audio), {
+          credentials: "same-origin",
+        });
+        if (!response.ok) throw new Error("Episode download failed");
+        return await context.decodeAudioData(await response.arrayBuffer());
+      } finally {
+        if (typeof audio === "string") releaseAudio(audio);
+      }
     },
   ),
 );

@@ -9,6 +9,7 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  RefreshControl,
   StyleSheet,
   Text,
   View,
@@ -28,7 +29,14 @@ export function Page({
   children,
   scroll = true,
   mini = false,
-}: PropsWithChildren<{ scroll?: boolean; mini?: boolean }>) {
+  refreshing = false,
+  onRefresh,
+}: PropsWithChildren<{
+  scroll?: boolean;
+  mini?: boolean;
+  refreshing?: boolean;
+  onRefresh?: () => void;
+}>) {
   return (
     <SafeAreaView edges={["top", "left", "right"]} style={s.page}>
       <KeyboardAvoidingView
@@ -37,6 +45,11 @@ export function Page({
       >
         {scroll ? (
           <ScrollView
+            refreshControl={
+              onRefresh ? (
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              ) : undefined
+            }
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={s.content}
           >

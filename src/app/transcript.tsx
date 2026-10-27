@@ -1,3 +1,4 @@
+import { EditionGate } from "../components/EditionStatus";
 import { router } from "expo-router";
 import { useEpisodeData } from "../data/catalog";
 import { FocusReader } from "../components/FocusReader";
@@ -28,7 +29,7 @@ import {
 } from "../domain/transcript";
 import { TranscriptSegment, WordToken } from "../domain/types";
 import { player, time, usePlayback } from "../playback/player";
-export default function Transcript() {
+function TranscriptContent() {
   const { episode, currentPhrase, episodePhrases } = useEpisodeData();
   const { positionMs, playing } = usePlayback();
   const [focusMode, setFocusMode] = useState(false);
@@ -436,5 +437,13 @@ export default function Transcript() {
       />
       <WordSheet selection={selected} onClose={() => setSelected(null)} />
     </SafeAreaView>
+  );
+}
+
+export default function Transcript() {
+  return (
+    <EditionGate>
+      <TranscriptContent />
+    </EditionGate>
   );
 }

@@ -1,15 +1,27 @@
+import { EditionStatus, EditionDownload } from "../../components/EditionStatus";
 import { EditorialImage } from "../../components/EditorialImage";
-import { editorialArtwork } from "../../data/editorialArtwork";
+import {
+  editorialArtwork,
+  defaultEditorialArtwork,
+} from "../../data/editorialArtwork";
 import { useState } from "react";
 import { Text, TextInput, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
-import { editions, LATEST_EPISODE_ID } from "../../data/catalog";
+import {
+  visibleEditions,
+  LATEST_EPISODE_ID,
+  useCatalog,
+  refreshCatalog,
+  loadOlderEditions,
+} from "../../data/catalog";
 import { useLibrary } from "../../state/library";
 import { player, time, usePlayback } from "../../playback/player";
 import { stopPronunciation } from "../../playback/pronunciation";
 import { Body, Button, colors, Page, s, Title } from "../../components/ui";
 
 export default function Library() {
+  const { loading, nextCursor } = useCatalog();
+  const editions = visibleEditions();
   const { width, fontScale } = useWindowDimensions();
   const columns = width >= 600 && fontScale < 1.3;
   const [query, setQuery] = useState("");
@@ -35,7 +47,14 @@ export default function Library() {
     );
   });
   return (
-    <Page mini>
+    <Page
+      mini
+      refreshing={loading}
+      onRefresh={() => {
+        void refreshCatalog();
+      }}
+    >
+      <EditionStatus />
       <Text
         style={{
           color: "#36574C",
@@ -101,7 +120,12 @@ export default function Library() {
                 },
               ]}
             >
-              <EditorialImage artwork={editorialArtwork[episode.id]?.cover} />
+              <EditorialImage
+                artwork={
+                  editorialArtwork[episode.id]?.cover ?? defaultEditorialArtwork
+                }
+              />
+              <EditionDownload id={episode.id} />
               {episode.id === LATEST_EPISODE_ID && (
                 <Text
                   style={{
@@ -234,6 +258,16 @@ export default function Library() {
             }}
           />
         </View>
+      )}
+      {nextCursor && (
+        <Button
+          secondary
+          disabled={loading}
+          label="Load older editions"
+          onPress={() => {
+            void loadOlderEditions();
+          }}
+        />
       )}
     </Page>
   );

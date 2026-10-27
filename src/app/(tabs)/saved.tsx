@@ -1,5 +1,5 @@
 import { hasPronunciation, pronounce } from "../../playback/pronunciation";
-import { findEdition, editions } from "../../data/catalog";
+import { useCatalog, findEdition } from "../../data/catalog";
 import { IconButton } from "../../components/IconButton";
 import { useState } from "react";
 import { PracticeSheet } from "../../components/PracticeSheet";
@@ -10,6 +10,7 @@ import { Body, Button, colors, Page, s } from "../../components/ui";
 import { useLibrary } from "../../state/library";
 import { player } from "../../playback/player";
 export default function Saved() {
+  useCatalog((s) => s.version);
   const {
     bookmarks: allBookmarks,
     sessions,
@@ -245,19 +246,17 @@ export default function Saved() {
       <Text style={{ fontSize: 15, fontWeight: "600", color: colors.muted }}>
         Saved transcripts
       </Text>
-      {editions
-        .filter(({ episode }) => transcripts.includes(episode.id))
-        .map(({ episode }) => (
-          <Button
-            key={episode.id}
-            secondary
-            label={`${episode.title} · transcript`}
-            onPress={() => {
-              useLibrary.getState().selectEpisode(episode.id);
-              router.push("/transcript");
-            }}
-          />
-        ))}
+      {transcripts.map((id) => (
+        <Button
+          key={id}
+          secondary
+          label={`${findEdition(id)?.episode.title ?? "Unavailable edition · retry online"} · transcript`}
+          onPress={() => {
+            useLibrary.getState().selectEpisode(id);
+            router.push("/transcript");
+          }}
+        />
+      ))}
       {transcripts.length === 0 && (
         <Body>Save an episode transcript from the player to keep it here.</Body>
       )}

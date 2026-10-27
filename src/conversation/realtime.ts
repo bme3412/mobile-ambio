@@ -101,6 +101,7 @@ export class VoiceConversation {
         );
       if (
         episodeId &&
+        !capabilities.dynamicEditions &&
         !(Array.isArray(capabilities.episodeIds)
           ? capabilities.episodeIds.includes(episodeId)
           : episodeId === "daily-fr-2026-10-24")

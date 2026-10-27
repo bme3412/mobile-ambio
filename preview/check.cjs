@@ -86,6 +86,7 @@ server.listen(0, "127.0.0.1", async () => {
       await (await fetch(base + "/api/voice/health", { headers })).json(),
       {
         available: false,
+        dynamicEditions: false,
         episodeIds: [
           "daily-fr-2026-10-26",
           "daily-fr-2026-10-24",

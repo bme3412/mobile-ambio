@@ -1,3 +1,4 @@
+import { findEdition } from "../data/catalog";
 import { setAudioModeAsync } from "expo-audio";
 import { stopPronunciation } from "../playback/pronunciation";
 import { useEffect } from "react";
@@ -21,7 +22,11 @@ export function PlaybackHost() {
     const unsub = useLibrary.persist.onFinishHydration(restore);
     if (useLibrary.persist.hasHydrated()) restore();
     const save = () => {
-      if (!useLibrary.persist.hasHydrated()) return;
+      if (
+        !useLibrary.persist.hasHydrated() ||
+        !findEdition(useLibrary.getState().activeEpisodeId)
+      )
+        return;
       const p = player.getSnapshot();
       useLibrary.getState().saveProgress({
         episodeId: useLibrary.getState().activeEpisodeId,

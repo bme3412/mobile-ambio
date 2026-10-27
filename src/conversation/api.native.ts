@@ -23,7 +23,11 @@ function endpoint(path: string) {
     url.hash
   )
     throw Error("Voice server must be an HTTPS origin.");
-  if (!path.startsWith("/api/voice/")) throw Error("Invalid voice endpoint.");
+  if (
+    !path.startsWith("/api/voice/") &&
+    !/^\/api\/editions(?:\/|\?|$)/.test(path)
+  )
+    throw Error("Invalid voice endpoint.");
   return `${url.origin}${path}`;
 }
 export const voiceApi = {

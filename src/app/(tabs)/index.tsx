@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { EditionStatus, EditionDownload } from "../../components/EditionStatus";
+import { useMemo, useState } from "react";
 import {
+  RefreshControl,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -9,8 +11,16 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { getEdition, latestEdition } from "../../data/catalog";
-import { editorialArtwork } from "../../data/editorialArtwork";
+import {
+  findEdition,
+  latestEdition,
+  useCatalog,
+  refreshCatalog,
+} from "../../data/catalog";
+import {
+  editorialArtwork,
+  defaultEditorialArtwork,
+} from "../../data/editorialArtwork";
 import { EditorialImage } from "../../components/EditorialImage";
 import { Body, Button, colors, s } from "../../components/ui";
 import { WordSheet } from "../../components/WordSheet";
@@ -20,19 +30,21 @@ import { stopPronunciation } from "../../playback/pronunciation";
 import { normalizeWord } from "../../data/dictionary";
 import type { WordToken, TranscriptSegment } from "../../domain/types";
 
-const { episode, date, vocabulary } = latestEdition;
-const seen = new Set<string>();
-const previewWords = episode.segments
-  .flatMap((segment) => segment.words.map((word) => ({ word, segment })))
-  .filter(({ word }) => {
-    const key = normalizeWord(word.text);
-    if (!vocabulary[key] || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  })
-  .slice(0, 4);
-
 export default function Home() {
+  const { loading } = useCatalog();
+  const { episode, date, vocabulary } = latestEdition;
+  const previewWords = useMemo(() => {
+    const seen = new Set<string>();
+    return episode.segments
+      .flatMap((segment) => segment.words.map((word) => ({ word, segment })))
+      .filter(({ word }) => {
+        const key = normalizeWord(word.text);
+        if (!vocabulary[key] || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .slice(0, 4);
+  }, [episode, vocabulary]);
   const { activeEpisodeId, selectEpisode } = useLibrary();
   const playback = usePlayback();
   const { width, fontScale } = useWindowDimensions();
@@ -41,7 +53,7 @@ export default function Home() {
     word: WordToken;
     segment: TranscriptSegment;
   } | null>(null);
-  const active = getEdition(activeEpisodeId).episode;
+  const active = findEdition(activeEpisodeId)?.episode;
   const listen = (startMs?: number) => {
     stopPronunciation();
     selectEpisode(episode.id);
@@ -54,7 +66,18 @@ export default function Home() {
       edges={["top", "left", "right"]}
       style={[s.page, { backgroundColor: "#F5F0E6" }]}
     >
-      <ScrollView contentContainerStyle={m.page}>
+      <ScrollView
+        contentContainerStyle={m.page}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => {
+              void refreshCatalog();
+            }}
+          />
+        }
+      >
+        <EditionStatus />
         <View style={m.masthead}>
           <Text accessibilityRole="header" style={m.brand}>
             Ambio
@@ -65,10 +88,7 @@ export default function Home() {
         <Text accessibilityRole="header" style={m.headline}>
           {episode.title}
         </Text>
-        <Body>
-          Du Brésil aux salles de cours, jusqu’aux coulisses de l’IA : trois
-          histoires pour comprendre ce qui change.
-        </Body>
+        <Body>{episode.subtitle}</Body>
         <Text style={m.meta}>
           French · B1–B2 · 3 stories · {time(episode.durationMs)}
         </Text>
@@ -78,26 +98,29 @@ export default function Home() {
           accessibilityLabel={`Listen to latest edition · ${episode.title}`}
           onPress={() => listen()}
         />
-        {activeEpisodeId !== episode.id && playback.positionMs > 0 && (
-          <View style={m.resume}>
-            <Text style={m.kicker}>CONTINUE LISTENING</Text>
-            <Text style={m.smallTitle}>{active.title}</Text>
-            <Text style={m.meta}>
-              {time(playback.positionMs)} of {time(active.durationMs)} · Your
-              place is saved
-            </Text>
-            <Button
-              tone="#175745"
-              secondary
-              label="Continue listening"
-              onPress={() => {
-                stopPronunciation();
-                player.play();
-                router.push("/player");
-              }}
-            />
-          </View>
-        )}
+        {active &&
+          activeEpisodeId !== episode.id &&
+          playback.positionMs > 0 && (
+            <View style={m.resume}>
+              <Text style={m.kicker}>CONTINUE LISTENING</Text>
+              <Text style={m.smallTitle}>{active.title}</Text>
+              <Text style={m.meta}>
+                {time(playback.positionMs)} of {time(active.durationMs)} · Your
+                place is saved
+              </Text>
+              <Button
+                tone="#175745"
+                secondary
+                label="Continue listening"
+                onPress={() => {
+                  stopPronunciation();
+                  player.play();
+                  router.push("/player");
+                }}
+              />
+            </View>
+          )}
+        <EditionDownload id={episode.id} />
         <View style={m.rule}>
           <Text style={m.kicker}>DANS CETTE ÉDITION</Text>
           <Text style={m.meta}>01 — 03</Text>
@@ -115,7 +138,10 @@ export default function Home() {
               style={{ width: columns && index > 0 ? "47%" : "100%", gap: 12 }}
             >
               <EditorialImage
-                artwork={editorialArtwork[episode.id]?.stories[story.id]}
+                artwork={
+                  editorialArtwork[episode.id]?.stories[story.id] ??
+                  defaultEditorialArtwork
+                }
               />
               <Text style={m.kicker}>
                 {String(index + 1).padStart(2, "0")} / {story.category}

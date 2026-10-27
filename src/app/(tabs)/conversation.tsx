@@ -1,3 +1,4 @@
+import { EditionGate } from "../../components/EditionStatus";
 import { useEpisodeData } from "../../data/catalog";
 import { AudioLines } from "lucide-react-native";
 import {
@@ -32,7 +33,7 @@ import { voiceApi } from "../../conversation/api";
 import { stopPronunciation } from "../../playback/pronunciation";
 import { VoiceConversation } from "../../conversation/realtime";
 
-export default function Conversation() {
+function ConversationContent() {
   const { episode } = useEpisodeData();
   const sessionEpisode = useRef(episode.id);
   const [voice] = useState(() => new VoiceConversation(voiceApi.request));
@@ -444,5 +445,13 @@ export default function Conversation() {
         />
       )}
     </Page>
+  );
+}
+
+export default function Conversation() {
+  return (
+    <EditionGate>
+      <ConversationContent />
+    </EditionGate>
   );
 }

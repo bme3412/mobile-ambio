@@ -1,0 +1,1060 @@
+{
+  "editorial": {
+    "title": "Le monde en mouvement",
+    "subtitle": "Le Brésil après le vote, les annonces pour les étudiants et les comptes d’Anthropic.",
+    "edition": "Lundi 26 octobre 2026",
+    "verifiedAt": "2026-10-26T21:51:00Z",
+    "verificationNote": "Facts rechecked against current indexed source extracts; direct article access was unavailable for some sources. Figures attributed in dialogue. Commitments and disputed claims are distinguished from completed actions.",
+    "turns": [
+      [
+        "Camille",
+        "Bonjour et bienvenue dans Ambio. Nous sommes le lundi vingt-six octobre deux mille vingt-six. Aujourd’hui, trois actualités pour comprendre un monde en mouvement.",
+        "Hello and welcome to Ambio. It is Monday, October twenty-sixth, twenty twenty-six. Today, three news stories to understand a world in motion."
+      ],
+      [
+        "Louis",
+        "Au programme : une élection au Brésil, des réponses aux manifestations en France, et les comptes d’une entreprise d’intelligence artificielle. On prend le temps d’expliquer les mots derrière les titres.",
+        "On the agenda: an election in Brazil, responses to protests in France, and an artificial intelligence company’s accounts. We take time to explain the words behind the headlines."
+      ],
+      [
+        "Camille",
+        "Commençons par le Brésil. Selon Reuters, Lula a remporté dimanche le second tour de l’élection présidentielle, avec environ cinquante et un virgule huit pour cent des voix.",
+        "Let’s start with Brazil. According to Reuters, Lula won Sunday’s presidential runoff with around fifty-one point eight percent of the vote."
+      ],
+      [
+        "Louis",
+        "Son adversaire était Flavio Bolsonaro. Et quand on dit que Lula a remporté l’élection, cela veut simplement dire qu’il l’a gagnée. Remporter, c’est un verbe qu’on entend souvent dans les informations.",
+        "His opponent was Flavio Bolsonaro. And when we say Lula won the election, that simply means he was the winner. Remporter is a verb we often hear in the news."
+      ],
+      [
+        "Camille",
+        "Oui, on peut remporter une élection, une compétition ou un prix. Mais gagner une élection et gouverner ensuite, ce sont deux étapes différentes.",
+        "Yes, you can win an election, a competition or a prize. But winning an election and governing afterwards are two different stages."
+      ],
+      [
+        "Louis",
+        "Pourquoi ? Le président ne peut pas simplement appliquer son programme ? Il vient pourtant de recevoir le soutien des électeurs.",
+        "Why? Can’t the president simply carry out his programme? After all, he has just received the voters’ support."
+      ],
+      [
+        "Camille",
+        "Il doit aussi travailler avec le Parlement. Reuters souligne que la droite dispose d’une majorité dans les deux chambres du Congrès brésilien. Lula devra donc chercher des accords.",
+        "He also has to work with parliament. Reuters notes that the right holds a majority in both chambers of Brazil’s Congress. Lula will therefore have to seek agreements."
+      ],
+      [
+        "Louis",
+        "Une majorité, c’est le groupe qui rassemble plus de la moitié des voix ou des sièges, selon le contexte. On comprend mieux pourquoi le résultat présidentiel ne raconte pas toute l’histoire.",
+        "A majority is the group that accounts for more than half the votes or seats, depending on the context. It becomes clearer why the presidential result doesn’t tell the whole story."
+      ],
+      [
+        "Camille",
+        "Autre point à suivre : Flavio Bolsonaro conteste le résultat, selon les informations publiées aujourd’hui. Une contestation ne signifie pas qu’une élection a été annulée. Il faut bien distinguer une déclaration et une décision officielle.",
+        "Another point to follow: Flavio Bolsonaro disputes the result, according to reports published today. A challenge does not mean an election has been annulled. We need to distinguish a statement from an official decision."
+      ],
+      [
+        "Louis",
+        "C’est une bonne habitude quand on lit l’actualité. Qui affirme quoi, et qu’est-ce qui est confirmé ? On garde ces deux questions en tête pour notre deuxième sujet.",
+        "That’s a good habit when reading the news. Who is saying what, and what has been confirmed? Let’s keep those two questions in mind for our second story."
+      ],
+      [
+        "Camille",
+        "En France, après plusieurs semaines de mobilisation, le gouvernement présente des réponses aux lycéens et aux étudiants. Les demandes concernent notamment les études et les conditions de vie.",
+        "In France, after several weeks of protests, the government is presenting responses to school and university students. Their demands concern education and living conditions in particular."
+      ],
+      [
+        "Louis",
+        "Le mot mobilisation peut sembler abstrait. Ici, il désigne des personnes qui s’organisent pour faire entendre leurs demandes. Et ces demandes, on les appelle aussi des revendications.",
+        "The word mobilisation can sound abstract. Here, it means people organising to make their demands heard. Those demands are also called revendications."
+      ],
+      [
+        "Camille",
+        "Une annonce importante concerne Parcoursup. C’est la plateforme utilisée pour présenter des candidatures dans l’enseignement supérieur. Le ministère annonce des améliorations pour deux mille vingt-sept, puis un remplacement en deux mille vingt-huit.",
+        "One important announcement concerns Parcoursup. It is the platform used to apply for higher education courses. The ministry announces improvements for twenty twenty-seven, followed by a replacement in twenty twenty-eight."
+      ],
+      [
+        "Louis",
+        "Donc, la plateforme n’a pas disparu ce matin. On parle d’un calendrier annoncé pour les prochaines années. C’est important pour les familles qui préparent déjà la suite des études.",
+        "So the platform didn’t disappear this morning. We are talking about an announced timetable for the coming years. That matters to families already preparing for the next stage of education."
+      ],
+      [
+        "Camille",
+        "Exactement. Le gouvernement prévoit aussi quinze mille places supplémentaires dans l’enseignement supérieur entre deux mille vingt-sept et deux mille vingt-huit. Il faudra suivre la mise en œuvre de ces engagements.",
+        "Exactly. The government also plans fifteen thousand additional higher education places between twenty twenty-seven and twenty twenty-eight. We will need to follow how these commitments are put into practice."
+      ],
+      [
+        "Louis",
+        "Mettre en œuvre, cela veut dire passer d’une idée à des actions concrètes. Une annonce donne une direction. Ensuite, il faut des moyens, des personnes et un calendrier précis.",
+        "To put something into practice means moving from an idea to concrete actions. An announcement gives a direction. Then you need resources, people and a precise timetable."
+      ],
+      [
+        "Camille",
+        "Et remplacer un outil ne répond pas automatiquement à toutes les difficultés. Pour comprendre la suite, on pourra regarder les critères de sélection, les places disponibles et les explications données aux candidats.",
+        "And replacing a tool does not automatically address every difficulty. To understand what happens next, we can look at selection criteria, available places and the explanations given to applicants."
+      ],
+      [
+        "Louis",
+        "Si vous deviez choisir une amélioration pour les études, laquelle serait prioritaire ? Des classes moins chargées, davantage de places, ou des décisions plus faciles à comprendre ? Essayez de commencer par : à mes yeux.",
+        "If you had to choose one improvement to education, which would come first? Smaller classes, more places, or decisions that are easier to understand? Try beginning with: in my view."
+      ],
+      [
+        "Camille",
+        "Dernier sujet : Anthropic, l’entreprise qui développe Claude, a déposé aujourd’hui un document appelé S un. C’est une étape dans son projet d’entrée en Bourse. Ce dépôt ne signifie pas que ses actions sont déjà disponibles en Bourse.",
+        "Our final story: Anthropic, the company that develops Claude, filed a document called an S-1 today. It is a step in its proposed stock-market listing. This filing does not mean its shares are already available on the stock market."
+      ],
+      [
+        "Louis",
+        "Et ce document nous apprend quoi ? Parce que, pour moi, S un ressemble plutôt au nom d’une salle de réunion.",
+        "And what does this document tell us? Because, to me, S-1 sounds more like the name of a meeting room."
+      ],
+      [
+        "Camille",
+        "Il présente notamment l’activité de l’entreprise, ses finances et les risques pour les investisseurs. Selon les chiffres rapportés par Axios, Anthropic a réalisé environ seize virgule trois milliards de dollars de chiffre d’affaires au premier semestre.",
+        "It presents the company’s business, finances and risks for investors, among other things. According to figures reported by Axios, Anthropic generated around sixteen point three billion dollars in revenue in the first half of the year."
+      ],
+      [
+        "Louis",
+        "Le premier semestre, ce sont les six premiers mois de l’année. Mais le chiffre d’affaires, est-ce l’argent qui reste à la fin ?",
+        "The first half means the first six months of the year. But is revenue the money that is left at the end?"
+      ],
+      [
+        "Camille",
+        "Non. Le chiffre d’affaires correspond aux ventes de l’entreprise sur une période. Pour connaître son résultat, il faut aussi tenir compte des dépenses et des autres éléments comptables.",
+        "No. Revenue means the company’s sales over a period. To find its result, you also have to take expenses and other accounting items into account."
+      ],
+      [
+        "Louis",
+        "Donc, vendre beaucoup ne veut pas forcément dire faire des bénéfices. Un café peut vendre beaucoup de boissons, mais il doit aussi payer les salaires, le loyer et ses produits.",
+        "So selling a lot doesn’t necessarily mean making a profit. A café can sell lots of drinks, but it also has to pay wages, rent and for its supplies."
+      ],
+      [
+        "Camille",
+        "Voilà. Anthropic affiche une perte nette d’environ quatre-vingts virgule sept milliards de dollars sur cette même période. Mais attention : selon Associated Press, ce montant comprend une charge comptable exceptionnelle de soixante-douze virgule quatre milliards, liée à des accords de financement.",
+        "Exactly. Anthropic reports a net loss of around eighty point seven billion dollars over the same period. But note: according to Associated Press, that amount includes a one-time accounting charge of seventy-two point four billion, related to financing agreements."
+      ],
+      [
+        "Louis",
+        "Autrement dit, il ne faut pas présenter toute cette perte comme de l’argent dépensé pour faire fonctionner des ordinateurs. Une perte comptable et une sortie d’argent, ce n’est pas toujours la même chose.",
+        "In other words, we shouldn’t describe that entire loss as money spent running computers. An accounting loss and a cash outflow are not always the same thing."
+      ],
+      [
+        "Camille",
+        "Exactement. Et retirer une seule charge ne suffit pas non plus à connaître l’argent disponible. Il faut lire plusieurs parties des comptes, pas seulement un grand chiffre dans un titre.",
+        "Exactly. And removing one charge isn’t enough to tell us how much money is available either. You need to read several parts of the accounts, not just one big number in a headline."
+      ],
+      [
+        "Louis",
+        "Je retiens donc trois questions : sur quelle période, avec quelles dépenses, et avec quels éléments exceptionnels ? C’est déjà plus utile que de compter les zéros.",
+        "So I’ll remember three questions: over what period, with what expenses, and with what exceptional items? That’s already more useful than counting the zeros."
+      ],
+      [
+        "Camille",
+        "Notre expression du jour est tenir compte de. Par exemple : pour comprendre un résultat, il faut tenir compte du contexte. On peut l’utiliser pour parler d’argent, mais aussi d’une décision quotidienne.",
+        "Our expression of the day is to take into account. For example: to understand a result, you need to take the context into account. You can use it to talk about money, but also an everyday decision."
+      ],
+      [
+        "Louis",
+        "À votre tour : quelle information vous a le plus intéressé aujourd’hui, et pourquoi ? Vous pouvez répondre : à mes yeux, il faut tenir compte de…",
+        "Your turn: which piece of news interested you most today, and why? You can answer: in my view, we need to take into account…"
+      ],
+      [
+        "Camille",
+        "Merci d’avoir pris ce moment pour écouter et comprendre. Les sources de cette édition sont disponibles dans les détails de l’épisode. À bientôt dans Ambio.",
+        "Thank you for taking this time to listen and understand. The sources for this edition are available in the episode details. See you soon in Ambio."
+      ]
+    ],
+    "speakingPrompt": "Quelle information vous a le plus intéressé ? Répondez avec « à mes yeux » et « tenir compte de », puis posez une question sur un point à clarifier.",
+    "featuredPhrase": {
+      "text": "tenir compte de",
+      "meaning": "to take into account",
+      "segmentIndex": 28,
+      "startWord": 5,
+      "wordCount": 3,
+      "example": "Il faut tenir compte du contexte."
+    },
+    "stories": [
+      {
+        "id": "brazil",
+        "category": "MONDE · 26 OCT",
+        "title": "Après le vote",
+        "description": "Brazil’s election result and the challenge of governing with Congress.",
+        "segmentIndex": 2
+      },
+      {
+        "id": "france",
+        "category": "FRANCE · 26 OCT",
+        "title": "Des annonces aux actes",
+        "description": "The announced education reforms: what is promised, and what remains to happen.",
+        "segmentIndex": 10
+      },
+      {
+        "id": "anthropic",
+        "category": "TECH · 26 OCT",
+        "title": "Derrière les grands chiffres",
+        "description": "Anthropic’s S-1, explained through revenue, reported loss and accounting adjustments.",
+        "segmentIndex": 18
+      }
+    ],
+    "sources": [
+      {
+        "publisher": "Reuters via Boursorama",
+        "title": "Brazil election and Congress · 26 October 2026",
+        "url": "https://www.boursorama.com/actualite-economique/actualites-amp/lula-reelu-pour-un-dernier-mandat-qui-s-annonce-etre-le-plus-difficile-a49d3ccde1698d42731b1db34a2f2ce3"
+      },
+      {
+        "publisher": "Reuters via MarketScreener",
+        "title": "France protests and government response · 26 October 2026",
+        "url": "https://uk.marketscreener.com/news/french-minister-says-halloween-protests-could-turn-violent-ce785cdcdb8af225"
+      },
+      {
+        "publisher": "Ministère de l’Enseignement supérieur",
+        "title": "Education commitments · 26 October 2026",
+        "url": "https://www.enseignementsup-recherche.gouv.fr/fr/remplacement-de-la-plateforme-parcoursup-plafonnement-du-nombre-d-eleves-par-classe-etat-des-104451"
+      },
+      {
+        "publisher": "SEC EDGAR",
+        "title": "Anthropic S-1 filing record · 26 October 2026",
+        "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026067168/0001628280-26-067168-index.html"
+      },
+      {
+        "publisher": "Axios",
+        "title": "Anthropic revenue and net loss · 26 October 2026",
+        "url": "https://www.axios.com/2026/10/26/anthropic-ipo"
+      },
+      {
+        "publisher": "Associated Press",
+        "title": "Accounting charge in Anthropic filing · 26 October 2026",
+        "url": "https://apnews.com/article/ca2f4c282bef3201a392e59e3df2300c"
+      }
+    ]
+  },
+  "pairs": [
+    [
+      ["Bonjour et bienvenue dans Ambio.", "Hello and welcome to Ambio."],
+      [
+        "Nous sommes le lundi vingt-six octobre deux mille vingt-six.",
+        "It is Monday, October twenty-sixth, twenty twenty-six."
+      ],
+      [
+        "Aujourd’hui, trois actualités pour comprendre un monde en mouvement.",
+        "Today, three news stories to understand a world in motion."
+      ]
+    ],
+    [
+      [
+        "Au programme : une élection au Brésil, des réponses aux manifestations en France, et les comptes d’une entreprise d’intelligence artificielle.",
+        "On the agenda: an election in Brazil, responses to protests in France, and an artificial intelligence company’s accounts."
+      ],
+      [
+        "On prend le temps d’expliquer les mots derrière les titres.",
+        "We take time to explain the words behind the headlines."
+      ]
+    ],
+    [
+      ["Commençons par le Brésil.", "Let’s start with Brazil."],
+      [
+        "Selon Reuters, Lula a remporté dimanche le second tour de l’élection présidentielle, avec environ cinquante et un virgule huit pour cent des voix.",
+        "According to Reuters, Lula won Sunday’s presidential runoff with around fifty-one point eight percent of the vote."
+      ]
+    ],
+    [
+      [
+        "Son adversaire était Flavio Bolsonaro.",
+        "His opponent was Flavio Bolsonaro."
+      ],
+      [
+        "Et quand on dit que Lula a remporté l’élection, cela veut simplement dire qu’il l’a gagnée.",
+        "And when we say Lula won the election, that simply means he was the winner."
+      ],
+      [
+        "Remporter, c’est un verbe qu’on entend souvent dans les informations.",
+        "Remporter is a verb we often hear in the news."
+      ]
+    ],
+    [
+      [
+        "Oui, on peut remporter une élection, une compétition ou un prix.",
+        "Yes, you can win an election, a competition or a prize."
+      ],
+      [
+        "Mais gagner une élection et gouverner ensuite, ce sont deux étapes différentes.",
+        "But winning an election and governing afterwards are two different stages."
+      ]
+    ],
+    [
+      ["Pourquoi ?", "Why?"],
+      [
+        "Le président ne peut pas simplement appliquer son programme ?",
+        "Can’t the president simply carry out his programme?"
+      ],
+      [
+        "Il vient pourtant de recevoir le soutien des électeurs.",
+        "After all, he has just received the voters’ support."
+      ]
+    ],
+    [
+      [
+        "Il doit aussi travailler avec le Parlement.",
+        "He also has to work with parliament."
+      ],
+      [
+        "Reuters souligne que la droite dispose d’une majorité dans les deux chambres du Congrès brésilien.",
+        "Reuters notes that the right holds a majority in both chambers of Brazil’s Congress."
+      ],
+      [
+        "Lula devra donc chercher des accords.",
+        "Lula will therefore have to seek agreements."
+      ]
+    ],
+    [
+      [
+        "Une majorité, c’est le groupe qui rassemble plus de la moitié des voix ou des sièges, selon le contexte.",
+        "A majority is the group that accounts for more than half the votes or seats, depending on the context."
+      ],
+      [
+        "On comprend mieux pourquoi le résultat présidentiel ne raconte pas toute l’histoire.",
+        "It becomes clearer why the presidential result doesn’t tell the whole story."
+      ]
+    ],
+    [
+      [
+        "Autre point à suivre : Flavio Bolsonaro conteste le résultat, selon les informations publiées aujourd’hui.",
+        "Another point to follow: Flavio Bolsonaro disputes the result, according to reports published today."
+      ],
+      [
+        "Une contestation ne signifie pas qu’une élection a été annulée.",
+        "A challenge does not mean an election has been annulled."
+      ],
+      [
+        "Il faut bien distinguer une déclaration et une décision officielle.",
+        "We need to distinguish a statement from an official decision."
+      ]
+    ],
+    [
+      [
+        "C’est une bonne habitude quand on lit l’actualité.",
+        "That’s a good habit when reading the news."
+      ],
+      [
+        "Qui affirme quoi, et qu’est-ce qui est confirmé ?",
+        "Who is saying what, and what has been confirmed?"
+      ],
+      [
+        "On garde ces deux questions en tête pour notre deuxième sujet.",
+        "Let’s keep those two questions in mind for our second story."
+      ]
+    ],
+    [
+      [
+        "En France, après plusieurs semaines de mobilisation, le gouvernement présente des réponses aux lycéens et aux étudiants.",
+        "In France, after several weeks of protests, the government is presenting responses to school and university students."
+      ],
+      [
+        "Les demandes concernent notamment les études et les conditions de vie.",
+        "Their demands concern education and living conditions in particular."
+      ]
+    ],
+    [
+      [
+        "Le mot mobilisation peut sembler abstrait.",
+        "The word mobilisation can sound abstract."
+      ],
+      [
+        "Ici, il désigne des personnes qui s’organisent pour faire entendre leurs demandes.",
+        "Here, it means people organising to make their demands heard."
+      ],
+      [
+        "Et ces demandes, on les appelle aussi des revendications.",
+        "Those demands are also called revendications."
+      ]
+    ],
+    [
+      [
+        "Une annonce importante concerne Parcoursup.",
+        "One important announcement concerns Parcoursup."
+      ],
+      [
+        "C’est la plateforme utilisée pour présenter des candidatures dans l’enseignement supérieur.",
+        "It is the platform used to apply for higher education courses."
+      ],
+      [
+        "Le ministère annonce des améliorations pour deux mille vingt-sept, puis un remplacement en deux mille vingt-huit.",
+        "The ministry announces improvements for twenty twenty-seven, followed by a replacement in twenty twenty-eight."
+      ]
+    ],
+    [
+      [
+        "Donc, la plateforme n’a pas disparu ce matin.",
+        "So the platform didn’t disappear this morning."
+      ],
+      [
+        "On parle d’un calendrier annoncé pour les prochaines années.",
+        "We are talking about an announced timetable for the coming years."
+      ],
+      [
+        "C’est important pour les familles qui préparent déjà la suite des études.",
+        "That matters to families already preparing for the next stage of education."
+      ]
+    ],
+    [
+      ["Exactement.", "Exactly."],
+      [
+        "Le gouvernement prévoit aussi quinze mille places supplémentaires dans l’enseignement supérieur entre deux mille vingt-sept et deux mille vingt-huit.",
+        "The government also plans fifteen thousand additional higher education places between twenty twenty-seven and twenty twenty-eight."
+      ],
+      [
+        "Il faudra suivre la mise en œuvre de ces engagements.",
+        "We will need to follow how these commitments are put into practice."
+      ]
+    ],
+    [
+      [
+        "Mettre en œuvre, cela veut dire passer d’une idée à des actions concrètes.",
+        "To put something into practice means moving from an idea to concrete actions."
+      ],
+      [
+        "Une annonce donne une direction.",
+        "An announcement gives a direction."
+      ],
+      [
+        "Ensuite, il faut des moyens, des personnes et un calendrier précis.",
+        "Then you need resources, people and a precise timetable."
+      ]
+    ],
+    [
+      [
+        "Et remplacer un outil ne répond pas automatiquement à toutes les difficultés.",
+        "And replacing a tool does not automatically address every difficulty."
+      ],
+      [
+        "Pour comprendre la suite, on pourra regarder les critères de sélection, les places disponibles et les explications données aux candidats.",
+        "To understand what happens next, we can look at selection criteria, available places and the explanations given to applicants."
+      ]
+    ],
+    [
+      [
+        "Si vous deviez choisir une amélioration pour les études, laquelle serait prioritaire ?",
+        "If you had to choose one improvement to education, which would come first?"
+      ],
+      [
+        "Des classes moins chargées, davantage de places, ou des décisions plus faciles à comprendre ?",
+        "Smaller classes, more places, or decisions that are easier to understand?"
+      ],
+      [
+        "Essayez de commencer par : à mes yeux.",
+        "Try beginning with: in my view."
+      ]
+    ],
+    [
+      [
+        "Dernier sujet : Anthropic, l’entreprise qui développe Claude, a déposé aujourd’hui un document appelé S un.",
+        "Our final story: Anthropic, the company that develops Claude, filed a document called an S-1 today."
+      ],
+      [
+        "C’est une étape dans son projet d’entrée en Bourse.",
+        "It is a step in its proposed stock-market listing."
+      ],
+      [
+        "Ce dépôt ne signifie pas que ses actions sont déjà disponibles en Bourse.",
+        "This filing does not mean its shares are already available on the stock market."
+      ]
+    ],
+    [
+      [
+        "Et ce document nous apprend quoi ?",
+        "And what does this document tell us?"
+      ],
+      [
+        "Parce que, pour moi, S un ressemble plutôt au nom d’une salle de réunion.",
+        "Because, to me, S-1 sounds more like the name of a meeting room."
+      ]
+    ],
+    [
+      [
+        "Il présente notamment l’activité de l’entreprise, ses finances et les risques pour les investisseurs.",
+        "It presents the company’s business, finances and risks for investors, among other things."
+      ],
+      [
+        "Selon les chiffres rapportés par Axios, Anthropic a réalisé environ seize virgule trois milliards de dollars de chiffre d’affaires au premier semestre.",
+        "According to figures reported by Axios, Anthropic generated around sixteen point three billion dollars in revenue in the first half of the year."
+      ]
+    ],
+    [
+      [
+        "Le premier semestre, ce sont les six premiers mois de l’année.",
+        "The first half means the first six months of the year."
+      ],
+      [
+        "Mais le chiffre d’affaires, est-ce l’argent qui reste à la fin ?",
+        "But is revenue the money that is left at the end?"
+      ]
+    ],
+    [
+      ["Non.", "No."],
+      [
+        "Le chiffre d’affaires correspond aux ventes de l’entreprise sur une période.",
+        "Revenue means the company’s sales over a period."
+      ],
+      [
+        "Pour connaître son résultat, il faut aussi tenir compte des dépenses et des autres éléments comptables.",
+        "To find its result, you also have to take expenses and other accounting items into account."
+      ]
+    ],
+    [
+      [
+        "Donc, vendre beaucoup ne veut pas forcément dire faire des bénéfices.",
+        "So selling a lot doesn’t necessarily mean making a profit."
+      ],
+      [
+        "Un café peut vendre beaucoup de boissons, mais il doit aussi payer les salaires, le loyer et ses produits.",
+        "A café can sell lots of drinks, but it also has to pay wages, rent and for its supplies."
+      ]
+    ],
+    [
+      ["Voilà.", "Exactly."],
+      [
+        "Anthropic affiche une perte nette d’environ quatre-vingts virgule sept milliards de dollars sur cette même période.",
+        "Anthropic reports a net loss of around eighty point seven billion dollars over the same period."
+      ],
+      [
+        "Mais attention : selon Associated Press, ce montant comprend une charge comptable exceptionnelle de soixante-douze virgule quatre milliards, liée à des accords de financement.",
+        "But note: according to Associated Press, that amount includes a one-time accounting charge of seventy-two point four billion, related to financing agreements."
+      ]
+    ],
+    [
+      [
+        "Autrement dit, il ne faut pas présenter toute cette perte comme de l’argent dépensé pour faire fonctionner des ordinateurs.",
+        "In other words, we shouldn’t describe that entire loss as money spent running computers."
+      ],
+      [
+        "Une perte comptable et une sortie d’argent, ce n’est pas toujours la même chose.",
+        "An accounting loss and a cash outflow are not always the same thing."
+      ]
+    ],
+    [
+      ["Exactement.", "Exactly."],
+      [
+        "Et retirer une seule charge ne suffit pas non plus à connaître l’argent disponible.",
+        "And removing one charge isn’t enough to tell us how much money is available either."
+      ],
+      [
+        "Il faut lire plusieurs parties des comptes, pas seulement un grand chiffre dans un titre.",
+        "You need to read several parts of the accounts, not just one big number in a headline."
+      ]
+    ],
+    [
+      [
+        "Je retiens donc trois questions : sur quelle période, avec quelles dépenses, et avec quels éléments exceptionnels ?",
+        "So I’ll remember three questions: over what period, with what expenses, and with what exceptional items?"
+      ],
+      [
+        "C’est déjà plus utile que de compter les zéros.",
+        "That’s already more useful than counting the zeros."
+      ]
+    ],
+    [
+      [
+        "Notre expression du jour est tenir compte de.",
+        "Our expression of the day is to take into account."
+      ],
+      [
+        "Par exemple : pour comprendre un résultat, il faut tenir compte du contexte.",
+        "For example: to understand a result, you need to take the context into account."
+      ],
+      [
+        "On peut l’utiliser pour parler d’argent, mais aussi d’une décision quotidienne.",
+        "You can use it to talk about money, but also an everyday decision."
+      ]
+    ],
+    [
+      [
+        "À votre tour : quelle information vous a le plus intéressé aujourd’hui, et pourquoi ?",
+        "Your turn: which piece of news interested you most today, and why?"
+      ],
+      [
+        "Vous pouvez répondre : à mes yeux, il faut tenir compte de…",
+        "You can answer: in my view, we need to take into account…"
+      ]
+    ],
+    [
+      [
+        "Merci d’avoir pris ce moment pour écouter et comprendre.",
+        "Thank you for taking this time to listen and understand."
+      ],
+      [
+        "Les sources de cette édition sont disponibles dans les détails de l’épisode.",
+        "The sources for this edition are available in the episode details."
+      ],
+      ["À bientôt dans Ambio.", "See you soon in Ambio."]
+    ]
+  ],
+  "definitions": {
+    "possible": "possible",
+    "rentre": "come back / return",
+    "pose": "ask (a question) / put down",
+    "pousse": "push / open",
+    "porte": "door",
+    "louvre": "the Louvre museum",
+    "arrêt": "stop",
+    "sophie": "Sophie (first name)",
+    "adenot": "Adenot (surname)",
+    "lastronaute": "the astronaut",
+    "française": "French (feminine)",
+    "revenue": "returned / come back",
+    "europe": "Europe",
+    "cent": "hundred",
+    "trentesept": "thirty-seven",
+    "jours": "days",
+    "presque": "almost",
+    "huit": "eight",
+    "mois": "month / months",
+    "vacances": "holidays / vacation",
+    "jai": "I have",
+    "oublié": "forgotten",
+    "où": "where",
+    "rangé": "put away",
+    "mes": "my (plural)",
+    "clés": "keys",
+    "signifie": "means",
+    "affaires": "belongings / things",
+    "réhabituer": "to readjust / get used to again",
+    "gravité": "gravity",
+    "terrestre": "of the Earth / terrestrial",
+    "rentrer": "to return / go home",
+    "encore": "still / again",
+    "européenne": "European (feminine)",
+    "décrit": "describes",
+    "période": "period",
+    "réadaptation": "readaptation / readjustment",
+    "suivi": "follow-up / monitoring",
+    "allemagne": "Germany",
+    "jaime": "I like / I love",
+    "laventure": "the adventure",
+    "continue": "continues",
+    "manque": "is missing (vous manque: you miss)",
+    "êtes": "are (vous form)",
+    "loin": "far",
+    "deuxième": "second",
+    "curiosité": "curiosity",
+    "portée": "reach (à portée de main: within reach)",
+    "main": "hand",
+    "journées": "days / day-long events",
+    "scientifiques": "scientific / scientists",
+    "deuropapark": "of Europa-Park",
+    "annoncées": "announced / scheduled",
+    "vingtdeux": "twenty-two",
+    "rust": "Rust (a town in Germany)",
+    "parc": "park",
+    "loisirs": "leisure / recreation",
+    "aimer": "to like / love",
+    "montagnes": "mountains (montagnes russes: roller coasters)",
+    "russes": "Russian (montagnes russes: roller coasters)",
+    "sciences": "science / sciences",
+    "sûr": "sure (bien sûr: of course)",
+    "prévoyait": "planned / included in the programme",
+    "petits": "small / little (plural)",
+    "robots": "robots",
+    "expériences": "experiments / experiences",
+    "réalité": "reality",
+    "virtuelle": "virtual (feminine)",
+    "robot": "robot",
+    "semble": "seems",
+    "impressionnant": "impressive / intimidating",
+    "quune": "than a / that a",
+    "fusée": "rocket",
+    "rencontre": "meeting / encounter",
+    "alexander": "Alexander (first name)",
+    "gerst": "Gerst (surname)",
+    "denfants": "of children / children’s",
+    "figuraient": "appeared / were included",
+    "savoir": "to know",
+    "alors": "then / so",
+    "erreur": "mistake / error",
+    "appris": "learned / taught",
+    "pourrais": "could (conditional)",
+    "professeur": "teacher",
+    "français": "French",
+    "présente": "presents / is showing",
+    "exposition": "exhibition",
+    "consacrée": "devoted / dedicated",
+    "peintre": "painter",
+    "espagnol": "Spanish (masculine)",
+    "zurbarn": "Zurbarán (Spanish painter)",
+    "sept": "seven",
+    "janvier": "January",
+    "prochain": "next / coming",
+    "connais": "know / am familiar with",
+    "nom": "name",
+    "saurais": "would know how",
+    "reconnaître": "to recognise",
+    "tableau": "painting / picture",
+    "attire": "attracts / catches",
+    "ton": "your (informal, masculine)",
+    "regard": "gaze / look",
+    "musée": "museum",
+    "souligne": "highlights / underlines",
+    "force": "strength / power",
+    "couleurs": "colours",
+    "compositions": "compositions",
+    "peux": "can / am able to",
+    "lire": "to read",
+    "toutes": "all (feminine plural)",
+    "explications": "explanations",
+    "absolument": "absolutely",
+    "autre": "other / another",
+    "sculpter": "to sculpt",
+    "couleur": "colour",
+    "parallèle": "parallel (en parallèle: alongside)",
+    "sculptures": "sculptures",
+    "espagnoles": "Spanish (feminine plural)",
+    "dixseptième": "seventeenth",
+    "siècle": "century",
+    "tableaux": "paintings",
+    "crois": "think / believe",
+    "trouvé": "found",
+    "aprèsmidi": "afternoon",
+    "pluie": "rain",
+    "jour": "day",
+    "lutilise": "use it / uses it",
+    "parler": "to speak / talk",
+    "proche": "near / close",
+    "facile": "easy",
+    "atteindre": "to reach",
+    "pratique": "practice",
+    "phrase": "sentence / phrase",
+    "découverte": "discovery",
+    "aimeriezvous": "would you like",
+    "faire": "to do / make",
+    "répondre": "to answer",
+    "réécouter": "to listen again",
+    "passage": "passage / excerpt",
+    "partagé": "shared",
+    "moment": "moment / time",
+    "lundi": "Monday",
+    "actualités": "news / current affairs",
+    "monde": "world",
+    "mouvement": "movement",
+    "élection": "election",
+    "brésil": "Brazil",
+    "réponses": "responses / answers",
+    "aux": "to the / for the (plural)",
+    "manifestations": "protests / demonstrations",
+    "comptes": "accounts / financial statements",
+    "entreprise": "company / business",
+    "dintelligence": "of intelligence",
+    "artificielle": "artificial (feminine)",
+    "dexpliquer": "to explain",
+    "mots": "words",
+    "titres": "headlines / titles",
+    "selon": "according to",
+    "reuters": "Reuters (news agency)",
+    "lula": "Lula (Brazilian politician)",
+    "remporté": "won",
+    "second": "second",
+    "lélection": "the election",
+    "présidentielle": "presidential (feminine)",
+    "cinquante": "fifty",
+    "virgule": "point (in a decimal number) / comma",
+    "voix": "votes / voices",
+    "adversaire": "opponent",
+    "était": "was",
+    "flavio": "Flavio (first name)",
+    "bolsonaro": "Bolsonaro (surname)",
+    "dit": "says / said",
+    "cela": "that / this",
+    "veut": "wants (veut dire: means)",
+    "dire": "to say (veut dire: means)",
+    "gagnée": "won",
+    "remporter": "to win",
+    "verbe": "verb",
+    "entend": "hears / hear",
+    "souvent": "often",
+    "compétition": "competition",
+    "prix": "prize / price",
+    "gagner": "to win / earn",
+    "gouverner": "to govern",
+    "ensuite": "then / afterwards",
+    "différentes": "different (feminine plural)",
+    "président": "president",
+    "appliquer": "to apply / carry out",
+    "pourtant": "yet / nevertheless",
+    "recevoir": "to receive",
+    "soutien": "support",
+    "électeurs": "voters",
+    "travailler": "to work",
+    "parlement": "parliament",
+    "droite": "the political right / right side",
+    "dispose": "has at its disposal",
+    "majorité": "majority",
+    "chambres": "chambers / rooms",
+    "congrès": "congress",
+    "brésilien": "Brazilian (masculine)",
+    "chercher": "to seek / look for",
+    "accords": "agreements",
+    "groupe": "group",
+    "rassemble": "brings together / accounts for",
+    "moitié": "half",
+    "sièges": "seats",
+    "contexte": "context",
+    "comprend": "understands / includes",
+    "mieux": "better",
+    "présidentiel": "presidential (masculine)",
+    "toute": "all / the whole",
+    "lhistoire": "the story / history",
+    "conteste": "disputes / challenges",
+    "publiées": "published (feminine plural)",
+    "contestation": "challenge / dispute",
+    "été": "been (a été: has been)",
+    "annulée": "annulled / cancelled",
+    "distinguer": "to distinguish",
+    "déclaration": "statement / declaration",
+    "décision": "decision",
+    "officielle": "official (feminine)",
+    "habitude": "habit",
+    "lit": "reads",
+    "lactualité": "the news / current affairs",
+    "affirme": "states / claims",
+    "confirmé": "confirmed",
+    "garde": "keeps (on garde: we keep)",
+    "tête": "head (en tête: in mind)",
+    "sujet": "subject / topic",
+    "plusieurs": "several",
+    "semaines": "weeks",
+    "mobilisation": "collective action / mobilisation",
+    "gouvernement": "government",
+    "lycéens": "secondary school students",
+    "étudiants": "university students",
+    "demandes": "demands / requests",
+    "concernent": "concern / relate to",
+    "études": "studies / education",
+    "conditions": "conditions",
+    "vie": "life",
+    "mot": "word",
+    "sembler": "to seem",
+    "abstrait": "abstract",
+    "désigne": "refers to / means",
+    "personnes": "people",
+    "sorganisent": "organise themselves",
+    "entendre": "to hear (faire entendre: make heard)",
+    "appelle": "calls (on appelle: we call)",
+    "revendications": "demands / claims",
+    "importante": "important (feminine)",
+    "concerne": "concerns / relates to",
+    "parcoursup": "Parcoursup (French higher education application platform)",
+    "plateforme": "platform",
+    "utilisée": "used (feminine)",
+    "présenter": "to present / submit",
+    "candidatures": "applications",
+    "lenseignement": "education / teaching",
+    "supérieur": "higher (enseignement supérieur: higher education)",
+    "ministère": "ministry",
+    "améliorations": "improvements",
+    "vingtsept": "twenty-seven",
+    "remplacement": "replacement",
+    "na": "has not (n’a … pas)",
+    "disparu": "disappeared",
+    "parle": "talks / speaks",
+    "calendrier": "timetable / calendar",
+    "prochaines": "next / coming (feminine plural)",
+    "années": "years",
+    "important": "important",
+    "familles": "families",
+    "préparent": "prepare",
+    "suite": "what follows / next stage",
+    "prévoit": "plans / anticipates",
+    "quinze": "fifteen",
+    "places": "places / spaces",
+    "supplémentaires": "additional",
+    "faudra": "will be necessary (il faudra: we will need to)",
+    "mise": "putting (mise en œuvre: implementation)",
+    "uvre": "work (mise en œuvre: implementation)",
+    "engagements": "commitments",
+    "mettre": "to put",
+    "passer": "to move / pass",
+    "actions": "actions / shares",
+    "concrètes": "concrete / practical (feminine plural)",
+    "moyens": "resources / means",
+    "précis": "precise",
+    "remplacer": "to replace",
+    "outil": "tool",
+    "répond": "responds / answers",
+    "automatiquement": "automatically",
+    "difficultés": "difficulties",
+    "critères": "criteria",
+    "sélection": "selection",
+    "données": "given / data",
+    "candidats": "applicants / candidates",
+    "deviez": "had to (conditional clause)",
+    "choisir": "to choose",
+    "amélioration": "improvement",
+    "laquelle": "which one (feminine)",
+    "serait": "would be",
+    "prioritaire": "the priority / most urgent",
+    "classes": "classes",
+    "chargées": "crowded / full (classes chargées: large classes)",
+    "davantage": "more",
+    "décisions": "decisions",
+    "faciles": "easy",
+    "yeux": "eyes (à mes yeux: in my view)",
+    "dernier": "last / final",
+    "anthropic": "Anthropic (AI company)",
+    "lentreprise": "the company",
+    "développe": "develops",
+    "claude": "Claude (Anthropic’s AI assistant)",
+    "déposé": "filed / submitted",
+    "document": "document",
+    "appelé": "called",
+    "s": "S (letter in the form name S-1)",
+    "projet": "project / plan",
+    "dentrée": "of entry (entrée en Bourse: stock-market listing)",
+    "bourse": "stock market",
+    "dépôt": "filing / submission",
+    "apprend": "teaches / tells us",
+    "ressemble": "resembles / sounds like",
+    "salle": "room",
+    "réunion": "meeting",
+    "lactivité": "the business / activity",
+    "finances": "finances",
+    "risques": "risks",
+    "investisseurs": "investors",
+    "chiffres": "figures / numbers",
+    "rapportés": "reported",
+    "axios": "Axios (news publication)",
+    "réalisé": "generated / achieved",
+    "seize": "sixteen",
+    "milliards": "billions",
+    "dollars": "dollars",
+    "chiffre": "figure (chiffre d’affaires: revenue)",
+    "daffaires": "of business (chiffre d’affaires: revenue)",
+    "semestre": "half-year / six-month period",
+    "six": "six",
+    "premiers": "first (masculine plural)",
+    "lannée": "the year",
+    "largent": "money",
+    "correspond": "corresponds / means",
+    "ventes": "sales",
+    "connaître": "to know",
+    "tenir": "to hold (tenir compte de: take into account)",
+    "compte": "account (tenir compte de: take into account)",
+    "dépenses": "expenses / spending",
+    "autres": "other",
+    "comptables": "accounting (plural)",
+    "vendre": "to sell",
+    "forcément": "necessarily",
+    "bénéfices": "profits",
+    "boissons": "drinks",
+    "payer": "to pay",
+    "salaires": "wages / salaries",
+    "loyer": "rent",
+    "produits": "products / supplies",
+    "affiche": "reports / displays",
+    "perte": "loss",
+    "nette": "net (feminine)",
+    "denviron": "of around / approximately",
+    "quatrevingts": "eighty",
+    "associated": "Associated (in Associated Press, news agency)",
+    "press": "Press (in Associated Press, news agency)",
+    "montant": "amount",
+    "charge": "charge / expense",
+    "comptable": "accounting",
+    "exceptionnelle": "one-time / exceptional (feminine)",
+    "soixantedouze": "seventy-two",
+    "quatre": "four",
+    "liée": "linked / related (feminine)",
+    "financement": "financing",
+    "dépensé": "spent",
+    "fonctionner": "to run / operate",
+    "ordinateurs": "computers",
+    "sortie": "outflow / exit",
+    "dargent": "of money",
+    "toujours": "always",
+    "retirer": "to remove",
+    "seule": "single / only (feminine)",
+    "suffit": "is enough",
+    "disponible": "available",
+    "parties": "parts / sections",
+    "titre": "headline / title",
+    "retiens": "remember / take away",
+    "quelles": "which / what (feminine plural)",
+    "quels": "which / what (masculine plural)",
+    "exceptionnels": "exceptional / one-time (masculine plural)",
+    "utile": "useful",
+    "compter": "to count",
+    "zéros": "zeros",
+    "lutiliser": "to use it",
+    "quotidienne": "everyday (feminine)",
+    "information": "piece of news / information",
+    "intéressé": "interested",
+    "pris": "taken",
+    "écouter": "to listen",
+    "sources": "sources",
+    "détails": "details",
+    "lépisode": "the episode"
+  },
+  "vocabulary": {
+    "remporter": {
+      "meaning": "to win",
+      "pronunciation": "/ʁɑ̃.pɔʁ.te/",
+      "kind": "verb",
+      "example": "Elle a remporté l’élection.",
+      "translation": "She won the election."
+    },
+    "majorité": {
+      "meaning": "majority",
+      "pronunciation": "/ma.ʒɔ.ʁi.te/",
+      "kind": "noun · feminine",
+      "example": "Le parti dispose d’une majorité.",
+      "translation": "The party holds a majority."
+    },
+    "revendications": {
+      "meaning": "demands",
+      "pronunciation": "/ʁə.vɑ̃.di.ka.sjɔ̃/",
+      "kind": "noun · feminine plural",
+      "example": "Ils font entendre leurs revendications.",
+      "translation": "They make their demands heard."
+    },
+    "engagements": {
+      "meaning": "commitments",
+      "pronunciation": "/ɑ̃.ɡaʒ.mɑ̃/",
+      "kind": "noun · masculine plural",
+      "example": "Il faut suivre ces engagements.",
+      "translation": "We need to follow these commitments."
+    },
+    "bénéfices": {
+      "meaning": "profits",
+      "pronunciation": "/be.ne.fis/",
+      "kind": "noun · masculine plural",
+      "example": "Les ventes ne sont pas les bénéfices.",
+      "translation": "Sales are not profits."
+    },
+    "comptable": {
+      "meaning": "accounting",
+      "pronunciation": "/kɔ̃.tab.lə/",
+      "kind": "adjective",
+      "example": "Une charge comptable exceptionnelle.",
+      "translation": "A one-time accounting charge."
+    },
+    "semestre": {
+      "meaning": "half-year; six-month period",
+      "pronunciation": "/sə.mɛstʁ/",
+      "kind": "noun · masculine",
+      "example": "Les six premiers mois forment le premier semestre.",
+      "translation": "The first six months make up the first half of the year."
+    },
+    "tenir": {
+      "meaning": "to hold; tenir compte de: take into account",
+      "pronunciation": "/tə.niʁ/",
+      "kind": "verb",
+      "example": "Il faut tenir compte du contexte.",
+      "translation": "We need to take the context into account."
+    }
+  },
+  "featured": {
+    "id": "phrase-tenir-compte-de-20261026",
+    "text": "tenir compte de",
+    "meaning": "to take into account",
+    "segmentIndex": 28,
+    "startWord": 5,
+    "wordCount": 3,
+    "example": "Il faut tenir compte du contexte."
+  }
+}

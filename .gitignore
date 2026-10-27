@@ -50,3 +50,6 @@ preview/.vercel/
 
 # Python audio generation tools
 __pycache__/
+
+# Daily production scratch files
+.edition-work/

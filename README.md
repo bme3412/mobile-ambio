@@ -55,7 +55,7 @@ Bundled episode audio, artwork and the local library work offline. Live conversa
 - Only French is included; the language selector explains this limitation.
 - Every selectable word in the mock episode has an authored definition. Punctuation is not selectable.
 - Email delivery is not implemented. Native voice activation and device testing are tracked in the setup guide.
-- The episode is a dated bundled edition; it does not update automatically.
+- Daily remote editions, downloads and the production pipeline are implemented. Cloud credentials, staging review and schedule activation are still required; see [daily edition rollout](docs/daily-editions.md).
 - Native Dynamic Type and accessibility labels are enabled. Scroll animation respects Reduce Motion. VoiceOver, largest text sizes, and native gestures still require simulator/device testing.
 - On the build machine, Xcode and `simctl` are absent. iOS bundle export is verified; simulator launch cannot be verified here.
 - `npm audit` reports five high-severity entries affecting Expo CLI’s transitive node-forge/Zod tooling chain. The proposed automatic resolution downgrades Expo to SDK 44; it was not applied. Recheck upstream patched releases before distribution.

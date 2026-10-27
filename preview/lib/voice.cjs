@@ -27,7 +27,11 @@ module.exports = async (req, res, url, { native = false } = {}) => {
     res.end(JSON.stringify(body));
   };
   if (url.pathname === "/api/voice/health" && req.method === "GET")
-    return json(200, { available: !!process.env.OPENAI_API_KEY, episodeIds });
+    return json(200, {
+      available: !!process.env.OPENAI_API_KEY,
+      episodeIds,
+      dynamicEditions: require("./editions.cjs").configured(),
+    });
   if (url.pathname === "/api/voice/practice/token") {
     if (
       (!native && req.headers.origin !== url.origin) ||
@@ -75,13 +79,29 @@ module.exports = async (req, res, url, { native = false } = {}) => {
       });
     let config;
     try {
+      const id = url.searchParams.get("episodeId");
+      const editions = require("./editions.cjs");
+      const published =
+        id && editions.configured() ? await editions.bundle(id) : null;
+      if (id && !published && !episodeIds.includes(id))
+        throw Error("Unknown edition");
+      const reference = published
+        ? require("./published-phrases.cjs").referenceFor(
+            published,
+            url.searchParams.get("phraseId"),
+          )
+        : undefined;
       config =
         url.pathname === "/api/voice/practice/session"
           ? require("./coach-config.cjs").coachConfig(
               url.searchParams.get("episodeId"),
               url.searchParams.get("phraseId"),
+              reference,
             )
-          : sessionConfig(url.searchParams.get("episodeId") ?? undefined);
+          : sessionConfig(
+              url.searchParams.get("episodeId") ?? undefined,
+              published?.editorial,
+            );
     } catch {
       return json(400, { error: "Unknown episode or practice phrase." });
     }

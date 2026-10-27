@@ -1,3 +1,4 @@
+import { EditionHost } from "../components/EditionStatus";
 import { Platform, View, useWindowDimensions } from "react-native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -16,6 +17,7 @@ export default function Root() {
     <SafeAreaProvider>
       <QueryClientProvider client={client}>
         <StatusBar style="dark" />
+        <EditionHost />
         <PlaybackHost />
         <View
           style={{

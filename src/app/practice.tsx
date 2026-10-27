@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AppState, View } from "react-native";
 import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
-import { createAudioPlayer } from "expo-audio";
+import { createEditionMedia } from "../playback/editionMedia";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SpokenPractice from "../practice/SpokenPractice";
 import { practiceMaterial } from "../practice/model";
-import { findEdition } from "../data/catalog";
-import { createMediaPlayer } from "../playback/mediaAdapter";
+import { findEdition, useCatalog } from "../data/catalog";
+
 import { player } from "../playback/player";
 import { stopPronunciation } from "../playback/pronunciation";
 import { Body, s } from "../components/ui";
 
 export default function Practice() {
+  useCatalog((s) => s.version);
   const params = useLocalSearchParams<{
     episodeId?: string;
     storyId?: string;
@@ -23,13 +24,14 @@ export default function Practice() {
     typeof params.storyId === "string" ? params.storyId : undefined;
   const segmentId =
     typeof params.segmentId === "string" ? params.segmentId : undefined;
+  const edition = findEdition(episodeId);
   const material = useMemo(
-    () => practiceMaterial(episodeId, storyId, segmentId),
-    [episodeId, storyId, segmentId],
+    () => (edition ? practiceMaterial(episodeId, storyId, segmentId) : null),
+    [edition, episodeId, storyId, segmentId],
   );
   const [referenceError, setReferenceError] = useState<string | null>(null);
   const [referencePlaying, setReferencePlaying] = useState(false);
-  const reference = useRef<ReturnType<typeof createMediaPlayer> | null>(null);
+  const reference = useRef<ReturnType<typeof createEditionMedia> | null>(null);
   const [active, setActive] = useState(true);
   const [focused, setFocused] = useState(true);
   useFocusEffect(
@@ -44,11 +46,8 @@ export default function Practice() {
     }, []),
   );
   useEffect(() => {
-    const edition = findEdition(episodeId);
     if (!edition) return;
-    const audio = createMediaPlayer(edition.episode.durationMs, () =>
-      createAudioPlayer(edition.audio, { updateInterval: 50 }),
-    );
+    const audio = createEditionMedia(edition);
     reference.current = audio;
     const unsubscribe = audio.subscribe(() => {
       const state = audio.getSnapshot();
@@ -65,7 +64,7 @@ export default function Practice() {
       audio.dispose();
       reference.current = null;
     };
-  }, [episodeId]);
+  }, [edition]);
   if (!material?.phrases.length)
     return (
       <View style={s.content}>

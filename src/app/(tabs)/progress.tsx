@@ -5,9 +5,15 @@ import { Body, Button, Label, Page, Title, s } from "../../components/ui";
 import { useActivity } from "../../state/activity";
 import { useLibrary } from "../../state/library";
 import { practiceSummary } from "../../activity/model";
-import { editions, findEdition, latestEdition } from "../../data/catalog";
+import {
+  useCatalog,
+  editions,
+  findEdition,
+  latestEdition,
+} from "../../data/catalog";
 
 export default function Progress() {
+  useCatalog((s) => s.version);
   const attempts = useActivity((state) => state.attempts);
   const storageError = useActivity((state) => state.storageError);
   const bookmarks = useLibrary((state) => state.bookmarks);

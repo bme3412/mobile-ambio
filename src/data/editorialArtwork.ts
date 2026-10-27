@@ -55,3 +55,9 @@ export const editorialArtwork: Record<
     stories: {},
   },
 };
+
+// Neutral existing artwork for editions without a dedicated illustration.
+export const defaultEditorialArtwork = art(
+  require("../../assets/paris-cafe-hero.png"),
+  "Ambio café illustration.",
+);

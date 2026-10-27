@@ -50,7 +50,7 @@ function WordDetails({
   const toggle = useLibrary((x) => x.toggle);
   const [exampleOpen, setExampleOpen] = useState(false);
   const { word, segment } = selection;
-  const { episode, vocabulary } = editionForSegment(segment.id);
+  const { episode, vocabulary } = editionForSegment(segment.id)!;
   const entry = vocabulary[normalizeWord(word.text)];
   const saved = bookmarks.some((b) => b.id === word.id);
   const SaveIcon = saved ? BookmarkCheck : Bookmark;

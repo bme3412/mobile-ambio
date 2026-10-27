@@ -1,0 +1,81 @@
+name: Daily Ambio edition
+on:
+  schedule:
+    - cron: "17 * * * *"
+    # 7 AM Eastern in either DST offset; the date/time guard makes the other run harmless.
+    - cron: "0 11,12 * * *"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Publication environment
+        type: choice
+        options: [staging, production]
+        default: staging
+      date:
+        description: Edition date (YYYY-MM-DD), blank for today
+        type: string
+      revision:
+        description: Immutable revision number
+        type: string
+        default: "1"
+permissions:
+  contents: read
+concurrency:
+  group: daily-edition-${{ inputs.environment || vars.EDITION_SCHEDULE_ENVIRONMENT || 'staging' }}
+  cancel-in-progress: false
+jobs:
+  produce:
+    if: github.event_name == 'workflow_dispatch' || vars.EDITION_SCHEDULE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    environment: ${{ inputs.environment || vars.EDITION_SCHEDULE_ENVIRONMENT || 'staging' }}
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+      ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
+      ELEVENLABS_MALE_VOICE_ID: ${{ secrets.ELEVENLABS_MALE_VOICE_ID }}
+      EDITION_OPENAI_MODEL: ${{ vars.EDITION_OPENAI_MODEL }}
+      OPENAI_INPUT_USD_PER_MILLION: ${{ vars.OPENAI_INPUT_USD_PER_MILLION }}
+      OPENAI_OUTPUT_USD_PER_MILLION: ${{ vars.OPENAI_OUTPUT_USD_PER_MILLION }}
+      ELEVENLABS_USD_PER_1000_CHARS: ${{ vars.ELEVENLABS_USD_PER_1000_CHARS }}
+      FIRECRAWL_SEARCH_MAX_USD: ${{ vars.FIRECRAWL_SEARCH_MAX_USD }}
+      EDITION_DAILY_BUDGET_USD: ${{ vars.EDITION_DAILY_BUDGET_USD || '10' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify production rollout gate
+        if: (inputs.environment || vars.EDITION_SCHEDULE_ENVIRONMENT || 'staging') == 'production'
+        env:
+          SUPABASE_URL: ${{ secrets.STAGING_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.STAGING_SUPABASE_SERVICE_ROLE_KEY }}
+        run: python3 -m scripts.daily.admin check-staging
+      - name: Install audio tools
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Produce or publish edition
+        env:
+          REQUEST_DATE: ${{ inputs.date }}
+          REQUEST_REVISION: ${{ inputs.revision || '1' }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          args=()
+          if [ "$EVENT_NAME" = schedule ]; then args+=(--scheduled); fi
+          if [ -n "$REQUEST_DATE" ]; then args+=(--date "$REQUEST_DATE"); fi
+          python3 -m scripts.daily.run "${args[@]}" --revision "$REQUEST_REVISION"
+      - name: Run summary
+        if: always()
+        env:
+          RUN_STATUS: ${{ job.status }}
+        run: |
+          python3 - <<'PY'
+          import os
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('## Daily edition\n\nResult: '+os.environ['RUN_STATUS']+'\n\nStage, error, and reserved spend are recorded in edition_runs. Provider results and intermediate work remain in the private edition-work bucket.\n')
+          PY

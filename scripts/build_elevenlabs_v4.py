@@ -125,7 +125,7 @@ def main():
                   'model': 'eleven_v4', 'voices': timing['voices'], 'segments': segments,
                   'generation': {'requestHashes': hashes, 'chunkGapMs': 200}}
         # All validation and rendering finishes before publishing either output.
-        destination = ROOT / f'assets/audio/edition-{args.edition}-v4.mp3'
+        destination = Path(config.get('audioDir', ROOT / 'assets/audio')) / f'edition-{args.edition}-v4.mp3'
         timing_destination = data_dir / 'audio-timing.json'
         dry_destination = ROOT / config['workDir'] / 'full-dry-timing.json'
         dry_destination.parent.mkdir(parents=True, exist_ok=True)

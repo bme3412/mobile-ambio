@@ -4,10 +4,13 @@ const editions = {
   "daily-fr-2026-10-24": originalEditorial,
   "daily-fr-2026-10-25": require("./editorial-2026-10-25.json"),
 };
-function sessionConfig(episodeId = "daily-fr-2026-10-24") {
-  if (!Object.prototype.hasOwnProperty.call(editions, episodeId))
+function sessionConfig(episodeId = "daily-fr-2026-10-24", publishedEditorial) {
+  if (
+    !publishedEditorial &&
+    !Object.prototype.hasOwnProperty.call(editions, episodeId)
+  )
     throw new Error("Unknown episode");
-  const editorial = editions[episodeId];
+  const editorial = publishedEditorial || editions[episodeId];
   return {
     type: "realtime",
     model: "gpt-realtime-2.1",
