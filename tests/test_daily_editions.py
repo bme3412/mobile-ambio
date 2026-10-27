@@ -48,7 +48,7 @@ class DailyTests(unittest.TestCase):
     def test_editorial_failure_allows_only_one_repair(self):
         class Checkpoint(dict):
             def save(self):pass
-        with patch('scripts.daily.providers.generate',return_value=json.loads(Path('scripts/daily/example.json').read_text())),patch('scripts.daily.providers.from_wire',side_effect=lambda x:x),patch('scripts.daily.providers.validate_draft',side_effect=ValueError('bad translation')) as validate:
+        with patch('scripts.daily.providers.generate',return_value=json.loads(Path('scripts/daily/example.json').read_text())),patch('scripts.daily.providers.from_wire',side_effect=lambda x:x),patch('scripts.daily.providers.align_featured'),patch('scripts.daily.providers.validate_draft',side_effect=ValueError('bad translation')) as validate:
             with self.assertRaisesRegex(ValueError,'one repair'):write_and_review(None,'2026-10-27',[],[],{},Checkpoint())
             self.assertEqual(validate.call_count,2)
 

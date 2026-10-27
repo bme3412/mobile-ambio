@@ -14,7 +14,6 @@ DRAFT=obj({
         'sources':arr(obj({k:S for k in ('title','publisher','url')}),minItems=3)}),
     'pairs':arr(arr(arr(S,minItems=2,maxItems=2))),
     'vocabulary':arr(VOCAB,minItems=8,maxItems=12),
-    'featured':obj({**{k:S for k in ('id','text','meaning','example')},'segmentIndex':I,'startWord':I,'wordCount':{'type':'integer','minimum':1}}),
 })
 REVIEW=obj({'passed':{'type':'boolean'},'issues':arr(S),'claims':arr(obj({k:S for k in ('claim','url','evidence')}))})
 
