@@ -1,6 +1,6 @@
 # Daily editions: implementation and rollout
 
-Ambio now has a scheduled production pipeline and a downloadable edition repository. Daily publication does not rebuild the app. **Staging cloud credentials are configured.** The separate [staging app](https://ambio-daily-staging.vercel.app) uses the existing preview password and Vercel sign-in protection. Physical-device verification and three consecutive reviewed staging productions remain required before production activation. See the staging setup record below for the current scheduler state.
+Ambio now has a scheduled production pipeline and a downloadable edition repository. Daily publication does not rebuild the app. **Staging cloud credentials are configured.** The separate [staging app](https://ambio-daily-staging.vercel.app) uses the existing preview password and Vercel sign-in protection. Physical-device verification and three consecutive reviewed staging productions remain required before production activation. The GitHub schedule is enabled for staging only; today’s new draft was held by the factual checks. See the staging setup record below.
 
 ## Architecture
 
@@ -106,7 +106,7 @@ References: [Expo SDK 58 FileSystem](https://docs.expo.dev/versions/v58.0.0/sdk/
 
 ## Verification recorded during implementation
 
-The three legacy editions exported and validated without ID changes. The SQL migration and transaction tests ran against a temporary local PostgreSQL 15 instance, including a failed partial upload, duplicate publication, competing producers, budget rejection, immutable content and rollback. Browser verification used a local fixture revision: it appeared on Home, downloaded successfully, retained its offline status after reload, and played with an advancing clock. This fixture check exposed and fixed the separate web playback implementation's bundled-source assumption. Paid provider calls, real Supabase integration, cloud scheduling and physical-device behavior have not been exercised without the required credentials/devices.
+The three legacy editions exported and validated without ID changes. The SQL migration and transaction tests ran against a temporary local PostgreSQL 15 instance, including a failed partial upload, duplicate publication, competing producers, budget rejection, immutable content and rollback. Browser verification used a local fixture revision: it appeared on Home, downloaded successfully, retained its offline status after reload, and played with an advancing clock. This fixture check exposed and fixed the separate web playback implementation's bundled-source assumption. These were the initial local checks. Subsequent cloud and provider verification is recorded below; physical-device behavior remains unverified.
 
 ## Staging setup — 27 October 2026
 
@@ -117,4 +117,18 @@ The three legacy editions exported and validated without ID changes. The SQL mig
 - Conservative reservations: $0.30 per 1,000 ElevenLabs characters and $0.10 per Firecrawl search including scraped results; total daily limit $10. These exceed the published API base prices checked during setup. Both configured voices are accessible. The restricted ElevenLabs key does not allow subscription inspection.
 - All three legacy editions are published in private staging storage. Deployed login, catalog, bundle retrieval, signed audio checksum, and dynamic Talk health were verified.
 - Live integration fixes cover Supabase's HTTP 400/NoSuchKey response, stale checkpoint caching, the Responses API input JSON keyword, and malformed draft fields entering the repair pass.
-- Scheduler remains disabled until the first controlled production run completes. Production publishing remains gated by three consecutive staging reviews.
+- Scheduler is enabled: `EDITION_SCHEDULE_ENABLED=true`, `EDITION_SCHEDULE_ENVIRONMENT=staging`. Its next eligible start is 4:17 AM Eastern; publication targets 7 AM. Production publishing remains gated by three consecutive staging reviews.
+- The [controlled GitHub Actions run](https://github.com/bme3412/mobile-ambio/actions/runs/40587573273) reached source-backed factual review. The repaired October 27 revision 3 was held because it still contained unsupported interpretations and a repeated story without enough novelty. No new audio was generated or published. The latest available edition remains October 26 with its real date.
+- Today’s setup attempts reserved $2.0568865 against the shared $10 cap; this is conservative reservation accounting, not an invoice total. Source retrieval, writing, dictionary generation, expression selection, checkpoint resume and review ran against live providers. New audio synthesis/mixing/upload still needs a draft that clears review.
+- Structured writing now has an API-enforced schema. A separate dictionary call requires every normalized transcript token. Featured expressions are selected from exact transcript candidates and their offsets are calculated from the text. One editorial rewrite remains the limit; a rejected repaired draft stays held.
+- Browser checks passed for sign-in, the hosted catalog, offline download status and playback advancing with synchronized transcript controls. All 142 JavaScript tests and 24 Python tests passed; lint and typecheck passed. Physical iOS/Android checks and three reviewed daily successes remain outstanding.
+
+To inspect or manually resume a staging revision:
+
+```sh
+gh run list --repo bme3412/mobile-ambio --workflow daily-edition.yml
+gh workflow run daily-edition.yml --repo bme3412/mobile-ambio --ref master \
+  -f environment=staging -f date=YYYY-MM-DD -f revision=1
+```
+
+A resume uses cached outputs. A held draft does not receive unlimited automatic rewrites. To suspend staging generation, set `EDITION_SCHEDULE_ENABLED=false`; the staged catalog remains readable.
