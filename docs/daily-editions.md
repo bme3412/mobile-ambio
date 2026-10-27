@@ -138,3 +138,20 @@ A resume uses cached outputs. A held draft does not receive unlimited automatic 
 Source retrieval now searches three topic groups using the French edition date. A structured brief selects exact evidence paragraphs on the server, avoiding invented quotations. The writer uses those supported facts and hypothetical learning examples. Reviews distinguish actual draft claims from unrelated source text, accept clearly attributed secondary reporting and dated cultural listings, and assess normalized glossary keys by meaning. Reviews still block substantive factual and translation errors.
 
 Featured-expression selection now extracts the expression explicitly named by the hosts. Review caches are keyed by both the complete draft/evidence and reviewer instructions, so a changed draft cannot reuse an older approval. The corrected October 27 staging draft also fixes chapter boundaries, two pronunciation entries, the household definition, and the cultural event’s announced timing.
+
+### Staging generation follow-up — 27 October
+
+The next live attempt reached an account-level OpenAI error, `credit_balance_exhausted`, before final review and speech. Revision `daily-fr-2026-10-27@r9` is checkpointed in private storage with corrected editorial, glossary, featured expression and chapter metadata. It is not published. Restore credit on the API project before resuming; do not mark the draft approved to bypass review.
+
+The repair pass now forwards review feedback to the dictionary and featured-expression generators, rather than only to the dialogue writer. Review citations resolve server-side from source paragraph IDs. The provider client records safe error codes, honors rate-limit retry delays, and stops immediately for exhausted account credit.
+
+Migration `202610270002_settle_edition_cost.sql` retains original cost reservations and permits an idempotent settlement of completed, verified calls. `python3 -m scripts.daily.reconcile --date YYYY-MM-DD` previews reconciliation; add `--apply` to release unused reservations. It checks cached response model and token usage, uses conservative undiscounted rates, and never releases uncertain or rejected requests. The October 27 reconciliation released $3.94939750 of unused reservations; its repeat/conflict behavior was verified against staging.
+
+The user authorized up to $15 for October 27 only. A workflow-dispatch `budget` input applies to that invocation; scheduled runs still use the $10 environment default. After restoring API credit, resume the same revision to retain cached work:
+
+```sh
+gh workflow run daily-edition.yml --repo bme3412/mobile-ambio --ref master \
+  -f environment=staging -f date=2026-10-27 -f revision=9 -f budget=15
+```
+
+All 142 JavaScript tests and 32 Python tests pass, alongside lint and typecheck. New-edition audio generation, publication and browser verification remain pending the provider-credit unblock. Production publishing remains gated.

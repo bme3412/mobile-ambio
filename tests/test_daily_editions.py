@@ -175,3 +175,21 @@ class CostSettlementTests(unittest.TestCase):
         self.assertIsNone(verified_cost(event,{**response,'model':'unknown'}))
         self.assertIsNone(verified_cost(event,{**response,'usage':{'input_tokens':1,'output_tokens':1}}))
         self.assertIsNone(verified_cost({**event,'reserved_usd':0.001},response))
+
+class ProviderRateLimitTests(unittest.TestCase):
+    def test_quota_failure_is_not_retried(self):
+        import io,urllib.error
+        error=urllib.error.HTTPError('https://api.example',429,'limited',{},io.BytesIO(b'{"error":{"code":"credit_balance_exhausted"}}'))
+        storage=MemoryStorage()
+        with patch('urllib.request.urlopen',side_effect=error) as call,patch('time.sleep') as sleep:
+            with self.assertRaisesRegex(RuntimeError,'credit_balance_exhausted'):PaidClient(storage,'2026-10-27','owner').call('https://api.example',{}, {},1)
+            self.assertEqual(call.call_count,1);sleep.assert_not_called()
+    def test_rate_limit_waits_for_retry_after(self):
+        import io,urllib.error
+        error=urllib.error.HTTPError('https://api.example',429,'limited',{'retry-after':'45'},io.BytesIO(b'{"error":{"code":"rate_limit_exceeded"}}'))
+        with patch('urllib.request.urlopen') as call,patch('time.sleep') as sleep:
+            response=call.return_value
+            response.__enter__.return_value.read.return_value=b'{"ok":true}'
+            call.side_effect=[error,response]
+            self.assertEqual(PaidClient(MemoryStorage(),'2026-10-27','owner').call('https://api.example',{}, {},1),{'ok':True})
+            sleep.assert_called_once_with(45)
