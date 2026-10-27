@@ -39,7 +39,12 @@ export const voiceApi = {
       headers,
       credentials: "omit",
     });
-    if (response.status === 401) await SecureStore.deleteItemAsync(key);
+    // A request started before a successful unlock must not erase its newer session.
+    if (
+      response.status === 401 &&
+      (await SecureStore.getItemAsync(key)) === token
+    )
+      await SecureStore.deleteItemAsync(key);
     return response;
   }) as typeof fetch,
   async signIn(password: string) {

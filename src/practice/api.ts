@@ -1,6 +1,22 @@
 import { voiceApi } from "../conversation/api";
 import type { Credentials } from "./engine";
-export async function practiceCredentials(): Promise<Credentials> {
+export type PracticeAccess = Credentials | { requiresSignIn: true };
+export async function unlockPractice(
+  password: string,
+): Promise<{ error?: string }> {
+  try {
+    await voiceApi.signIn(password);
+    return {};
+  } catch (error) {
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Could not unlock practice. Please try again.",
+    };
+  }
+}
+export async function practiceCredentials(): Promise<PracticeAccess> {
   const path = "/api/voice/practice/token";
   const local =
     !voiceApi.native &&
@@ -18,8 +34,7 @@ export async function practiceCredentials(): Promise<Credentials> {
       "Could not reach pronunciation practice. Check your connection and try again.",
     );
   }
-  if (response.status === 401)
-    throw Error("Sign in on the Talk tab, then return to practice.");
+  if (response.status === 401) return { requiresSignIn: true };
   if (!response.ok)
     throw Error(
       response.status === 429

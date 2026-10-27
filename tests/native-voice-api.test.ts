@@ -56,3 +56,16 @@ test("incorrect passwords never enter secure storage", async () => {
   await expect(voiceApi.signIn("wrong")).rejects.toThrow("didn’t match");
   expect(SecureStore.setItemAsync).not.toHaveBeenCalled();
 });
+
+test("a late unauthorized response cannot delete a newly unlocked shared session", async () => {
+  jest
+    .mocked(SecureStore.getItemAsync)
+    .mockResolvedValueOnce("old-session")
+    .mockResolvedValueOnce("new-session");
+  global.fetch = jest.fn(async () => ({
+    ok: false,
+    status: 401,
+  })) as unknown as typeof fetch;
+  await voiceApi.request("/api/voice/practice/token", { method: "POST" });
+  expect(SecureStore.deleteItemAsync).not.toHaveBeenCalled();
+});

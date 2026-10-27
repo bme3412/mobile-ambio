@@ -16,7 +16,7 @@ Use the Expo web preview on port 8092. The practice-only server listens on loopb
 
 ## Hosted configuration
 
-The existing authenticated voice backend now handles `POST /api/voice/practice/token`. Configure the same two server-only Azure variables in the mobile preview project, then deploy that backend together with this code when release is approved. The reference project’s credentials are not automatically shared with the mobile project. Native requests use the existing secure Talk sign-in; web uses the existing private-preview authentication. Origin checks and a per-client token throttle apply. Clients receive only an expiring Azure token, never the resource key; responses are private/no-store.
+The existing authenticated voice backend now handles `POST /api/voice/practice/token`. Configure the same two server-only Azure variables in the mobile preview project, then deploy that backend together with this code when release is approved. The reference project’s credentials are not automatically shared with the mobile project. Native requests use a shared secure session for Practice and Talk. Expired sessions open an inline unlock form in Practice without changing the current phrase. Talk refreshes access when focused. Web unlock renews the existing private-preview cookie. The password is cleared after submission or dismissal; it is never persisted by the client. Origin checks and a per-client token throttle apply. Clients receive only an expiring Azure token, never the resource key; responses are private/no-store.
 
 ## Feedback semantics
 

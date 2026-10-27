@@ -1,12 +1,14 @@
 "use dom";
 import { useEffect, useRef, useState } from "react";
-import { PracticeEngine, type Credentials } from "./engine";
+import { PracticeEngine } from "./engine";
 import {
   alignAssessment,
   normalize,
   practiceTarget,
   type Assessment,
 } from "./assessment";
+
+import type { PracticeAccess } from "./api";
 
 type Phrase = {
   id: string;
@@ -18,6 +20,7 @@ export default function PracticeReader({
   title,
   phrases,
   getCredentials,
+  unlock,
   playReference,
   stopReference,
   active,
@@ -32,11 +35,60 @@ export default function PracticeReader({
   referenceError: string | null;
   referencePlaying: boolean;
   textScale: number;
-  getCredentials: () => Promise<Credentials>;
+  getCredentials: () => Promise<PracticeAccess>;
+  unlock: (password: string) => Promise<{ error?: string }>;
   playReference: (start: number, end: number) => Promise<void>;
   stopReference: () => Promise<void>;
   dom?: import("expo/dom").DOMProps;
 }) {
+  const [needsUnlock, setNeedsUnlock] = useState(false);
+  const [password, setPassword] = useState("");
+  const [unlockError, setUnlockError] = useState("");
+  const [unlocking, setUnlocking] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
+  const unlockVersion = useRef(0);
+  const passwordInput = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (needsUnlock) passwordInput.current?.focus();
+  }, [needsUnlock]);
+  useEffect(
+    () => () => {
+      unlockVersion.current++;
+    },
+    [],
+  );
+  const dismissUnlock = () => {
+    setError("");
+    unlockVersion.current++;
+    setPassword("");
+    setUnlockError("");
+    setNeedsUnlock(false);
+    setUnlocking(false);
+  };
+  const submitUnlock = async () => {
+    if (unlocking || !password) return;
+    const version = ++unlockVersion.current;
+    setUnlocking(true);
+    setUnlockError("");
+    try {
+      const result = await unlock(password);
+      if (version !== unlockVersion.current) return;
+      setPassword("");
+      if (result.error) setUnlockError(result.error);
+      else {
+        setNeedsUnlock(false);
+        setUnlocked(true);
+        setError("");
+      }
+    } catch {
+      if (version === unlockVersion.current) {
+        setPassword("");
+        setUnlockError("Could not unlock practice. Please try again.");
+      }
+    } finally {
+      if (version === unlockVersion.current) setUnlocking(false);
+    }
+  };
   const [index, setIndex] = useState(0);
   const [wasActive, setWasActive] = useState(active);
   const [status, setStatus] = useState("ready");
@@ -110,47 +162,61 @@ export default function PracticeReader({
     try {
       await stopReference();
       if (id !== attempt.current) return;
-      await engine.current.start(phrase.text, getCredentials, {
-        capture: (stream) => {
-          if (typeof MediaRecorder === "undefined") return;
-          try {
-            const recorder = new MediaRecorder(stream);
-            const chunks: BlobPart[] = [];
-            recorder.ondataavailable = (event) => {
-              if (event.data.size) chunks.push(event.data);
-            };
-            recorder.onstop = () => {
-              if (id !== attempt.current || !chunks.length) return;
-              const url = URL.createObjectURL(
-                new Blob(chunks, { type: recorder.mimeType }),
-              );
-              recordingUrl.current = url;
-              setRecording(url);
-            };
-            recorder.start();
-          } catch {
-            /* Assessment still works when local replay is unsupported. */
+      await engine.current.start(
+        phrase.text,
+        async () => {
+          const access = await getCredentials();
+          if ("requiresSignIn" in access) {
+            if (id === attempt.current) {
+              setNeedsUnlock(true);
+              setUnlocked(false);
+            }
+            throw Error("Unlock voice practice to continue.");
           }
+          return access;
         },
-        ready: () => {
-          if (id === attempt.current) setStatus("listening");
+        {
+          capture: (stream) => {
+            if (typeof MediaRecorder === "undefined") return;
+            try {
+              const recorder = new MediaRecorder(stream);
+              const chunks: BlobPart[] = [];
+              recorder.ondataavailable = (event) => {
+                if (event.data.size) chunks.push(event.data);
+              };
+              recorder.onstop = () => {
+                if (id !== attempt.current || !chunks.length) return;
+                const url = URL.createObjectURL(
+                  new Blob(chunks, { type: recorder.mimeType }),
+                );
+                recordingUrl.current = url;
+                setRecording(url);
+              };
+              recorder.start();
+            } catch {
+              /* Assessment still works when local replay is unsupported. */
+            }
+          },
+          ready: () => {
+            if (id === attempt.current) setStatus("listening");
+          },
+          partial: (text) => {
+            if (id === attempt.current) setPartial(text);
+          },
+          result: (result) => {
+            if (id === attempt.current) {
+              setAssessment(result);
+              setStatus("feedback");
+            }
+          },
+          error: (message) => {
+            if (id === attempt.current) {
+              setError(message);
+              setStatus("ready");
+            }
+          },
         },
-        partial: (text) => {
-          if (id === attempt.current) setPartial(text);
-        },
-        result: (result) => {
-          if (id === attempt.current) {
-            setAssessment(result);
-            setStatus("feedback");
-          }
-        },
-        error: (message) => {
-          if (id === attempt.current) {
-            setError(message);
-            setStatus("ready");
-          }
-        },
-      });
+      );
     } catch {
       if (id === attempt.current) {
         setError("Could not start practice. Please try again.");
@@ -178,6 +244,7 @@ export default function PracticeReader({
   const move = (next: number) => {
     clearRecording();
     cancel();
+    dismissUnlock();
     void stopReference();
     setIndex(next);
     setPartial("");
@@ -266,6 +333,73 @@ export default function PracticeReader({
         Read aloud sends your microphone audio to Azure for assessment. Your
         replay copy is kept only for this phrase.
       </p>
+      {needsUnlock && (
+        <section
+          role="region"
+          aria-labelledby="unlock-title"
+          style={{ background: "#EAE5F0", padding: 20, borderRadius: 16 }}
+        >
+          <h2
+            id="unlock-title"
+            style={{ fontFamily: "Georgia", fontWeight: 400 }}
+          >
+            Unlock voice practice
+          </h2>
+          <p>
+            Enter your beta password once to use both Practice and Talk. Your
+            access is remembered securely; listening is always available.
+          </p>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              void submitUnlock();
+            }}
+          >
+            <label htmlFor="practice-password">Beta password</label>
+            <input
+              ref={passwordInput}
+              id="practice-password"
+              type="password"
+              autoComplete="current-password"
+              maxLength={128}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              disabled={unlocking}
+              style={{
+                display: "block",
+                width: "100%",
+                font: "inherit",
+                padding: 14,
+                marginTop: 8,
+                borderRadius: 10,
+                border: "1px solid #63738F",
+              }}
+            />
+            {unlockError && <p role="alert">{unlockError}</p>}
+            <div className="actions">
+              <button
+                className="primary"
+                type="submit"
+                disabled={unlocking || !password}
+              >
+                {unlocking ? "Unlocking…" : "Unlock Practice & Talk"}
+              </button>
+              <button type="button" onClick={dismissUnlock}>
+                Not now
+              </button>
+            </div>
+          </form>
+          <p style={{ fontSize: 13 * textScale }}>
+            Forgot the password? Ask the person who invited you to this beta.
+            This is your Ambio beta password, not your Apple or Azure password.
+          </p>
+        </section>
+      )}
+      {unlocked && (
+        <p role="status">
+          Practice and Talk are unlocked. Tap Read aloud when you’re ready.
+        </p>
+      )}
       <div className="actions">
         <button onClick={() => void hear()}>Hear the phrase</button>
         {referencePlaying && (
@@ -275,7 +409,7 @@ export default function PracticeReader({
         )}
         <button
           className="primary"
-          disabled={busy || !active}
+          disabled={busy || !active || needsUnlock}
           onClick={() => void read()}
         >
           {assessment ? "Try again" : "Read aloud"}
@@ -300,7 +434,7 @@ export default function PracticeReader({
           </small>
         </p>
       )}
-      {(error || referenceError) && (
+      {((error && !needsUnlock) || referenceError) && (
         <p role="alert">
           {error || "The reference audio could not play. Please try again."}
         </p>

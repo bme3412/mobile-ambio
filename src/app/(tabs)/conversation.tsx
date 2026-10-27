@@ -111,6 +111,7 @@ export default function Conversation() {
   };
   useFocusEffect(
     useCallback(() => {
+      setHealthCheck((value) => value + 1);
       const leave = () => voice.end();
       const visible = () => {
         if (document.visibilityState === "visible") voice.resumeAudio();
@@ -223,7 +224,7 @@ export default function Conversation() {
           {needsSignIn ? (
             <View style={s.card}>
               <Body>
-                Sign in with your private preview password to start a
+                Unlock Practice and Talk with your beta password to start a
                 conversation in Ambio.
               </Body>
               <TextInput

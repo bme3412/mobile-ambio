@@ -5,7 +5,7 @@ import { createAudioPlayer } from "expo-audio";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PracticeReader from "../practice/PracticeReader";
 import { practiceMaterial } from "../practice/model";
-import { practiceCredentials } from "../practice/api";
+import { practiceCredentials, unlockPractice } from "../practice/api";
 import { findEdition } from "../data/catalog";
 import { createMediaPlayer } from "../playback/mediaAdapter";
 import { player } from "../playback/player";
@@ -93,6 +93,7 @@ export default function Practice() {
           referencePlaying={referencePlaying}
           textScale={fontScale}
           getCredentials={practiceCredentials}
+          unlock={unlockPractice}
           stopReference={async () => {
             reference.current?.pause();
           }}
