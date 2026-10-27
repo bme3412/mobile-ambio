@@ -121,3 +121,25 @@ class FeaturedAlignmentTests(unittest.TestCase):
         self.assertEqual((d['featured']['segmentIndex'],d['featured']['startWord'],d['featured']['wordCount']),(0,1,3))
         d['featured']['text']='une autre expression'
         with self.assertRaisesRegex(ValueError,'absent'):align_featured(d)
+
+class SourceBriefTests(unittest.TestCase):
+    def test_brief_rejects_invented_quotes_and_unretrieved_urls(self):
+        from scripts.daily.providers import validate_brief
+        fact={'claim':'A supported fact','url':'https://example.test/article','evidence':'exact quotation'}
+        brief={'stories':[{'novelty':'New development','facts':[dict(fact) for _ in range(3)]} for _ in range(3)]}
+        sources=[{'url':fact['url'],'evidence':'Before exact quotation after.'}]
+        validate_brief(brief,sources)
+        brief['stories'][0]['facts'][0]['evidence']='invented quotation'
+        with self.assertRaisesRegex(ValueError,'unsupported'):validate_brief(brief,sources)
+        brief['stories'][0]['facts'][0]=dict(fact,url='https://unretrieved.test')
+        with self.assertRaisesRegex(ValueError,'unsupported'):validate_brief(brief,sources)
+    def test_research_filters_archives_and_deduplicates_results(self):
+        from scripts.daily.providers import research
+        from unittest.mock import Mock
+        client=Mock();client.call.return_value={'data':{'web':[
+            {'url':f'https://example.test/article-{i}','title':'News','markdown':'Full article. '*70} for i in range(3)
+        ]+[{'url':'https://example.test/archives/2026','markdown':'Listing '*200}]}}
+        with patch.dict('os.environ',{'FIRECRAWL_API_KEY':'test','FIRECRAWL_SEARCH_MAX_USD':'.1'}):sources=research(client,'2026-10-27')
+        self.assertEqual(len(sources),3)
+        self.assertEqual(client.call.call_count,3)
+        self.assertTrue(all(c.args[2]['scrapeOptions']['onlyMainContent'] for c in client.call.call_args_list))

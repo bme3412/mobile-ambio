@@ -10,7 +10,7 @@ import sys
 import uuid
 from .core import schedule, identity, production_settings, json_bytes, PaidClient, required_rate
 from .storage import Storage
-from .providers import research, write_and_review
+from .providers import research, story_brief, write_and_review
 ROOT=Path(__file__).resolve().parents[2]
 
 class Checkpoint(dict):
@@ -62,9 +62,12 @@ def run(args):
                     b=json.loads(storage.get('editions',entry.pop('bundle_path')))
                     entry['stories']=b['editorial']['stories']
                 checkpoint.save()
+            still_allowed(); status('story-brief')
+            if 'brief' not in checkpoint:
+                checkpoint['brief']=story_brief(client,date,checkpoint['sources'],checkpoint['recent']);checkpoint.save()
             still_allowed(); status('write-and-review')
             example=json.loads((ROOT/'scripts/daily/example.json').read_text())
-            draft,review=write_and_review(client,date,checkpoint['sources'],checkpoint['recent'],example,checkpoint)
+            draft,review=write_and_review(client,date,checkpoint['sources'],checkpoint['recent'],example,checkpoint,checkpoint['brief'])
             for name,value in [('editorial',draft['editorial']),('phrases',draft['pairs']),('dictionary',draft['definitions']),('vocabulary',draft['vocabulary'])]:
                 (work/f'{name}.json').write_bytes(json_bytes(value))
             config=work/'settings.json';config.write_bytes(json_bytes(production_settings(date,draft['editorial'],work)))
