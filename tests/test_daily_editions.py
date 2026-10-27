@@ -143,3 +143,11 @@ class SourceBriefTests(unittest.TestCase):
         self.assertEqual(len(sources),3)
         self.assertEqual(client.call.call_count,3)
         self.assertTrue(all(c.args[2]['scrapeOptions']['onlyMainContent'] for c in client.call.call_args_list))
+
+class FeaturedCandidateTests(unittest.TestCase):
+    def test_declared_expression_excludes_introductory_sentence(self):
+        from scripts.daily.providers import featured_candidates
+        draft={'editorial':{'turns':[['Camille','Notre expression du jour est à l’aide de. Elle est utile.','English']]},'pairs':[[['Notre expression du jour est à l’aide de.','English']]]}
+        self.assertEqual(featured_candidates(draft),['à l’aide de'])
+        draft['editorial']['turns'][0][1]='Notre expression du jour est « à mes yeux ». Elle introduit une opinion.'
+        self.assertEqual(featured_candidates(draft),['à mes yeux'])
