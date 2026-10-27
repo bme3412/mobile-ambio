@@ -162,3 +162,16 @@ class ReviewEvidenceTests(unittest.TestCase):
         from scripts.daily.providers import resolve_review_evidence
         with self.assertRaisesRegex(ValueError,'Unknown review evidence'):
             resolve_review_evidence({'claims':[{'claim':'A fact','paragraphId':'invented'}]}, {})
+
+class CostSettlementTests(unittest.TestCase):
+    def test_verified_usage_releases_only_known_cost(self):
+        from scripts.daily.reconcile import verified_cost
+        from decimal import Decimal
+        usage={'input_tokens':1000,'output_tokens':100}
+        event={'provider':'api.openai.com','status':'completed','usage':usage,'reserved_usd':0.1}
+        response={'model':'gpt-5.4-2026-03-05','usage':usage}
+        self.assertEqual(verified_cost(event,response),Decimal('0.004'))
+        self.assertIsNone(verified_cost({**event,'status':'reserved'},response))
+        self.assertIsNone(verified_cost(event,{**response,'model':'unknown'}))
+        self.assertIsNone(verified_cost(event,{**response,'usage':{'input_tokens':1,'output_tokens':1}}))
+        self.assertIsNone(verified_cost({**event,'reserved_usd':0.001},response))
