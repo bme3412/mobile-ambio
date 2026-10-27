@@ -13,7 +13,6 @@ DRAFT=obj({
         'stories':arr(obj({**{k:S for k in ('id','category','title','description')},'segmentIndex':I}),minItems=3,maxItems=3),
         'sources':arr(obj({k:S for k in ('title','publisher','url')}),minItems=3)}),
     'pairs':arr(arr(arr(S,minItems=2,maxItems=2))),
-    'definitions':arr(obj({'word':S,'meaning':S})),
     'vocabulary':arr(VOCAB,minItems=8,maxItems=12),
     'featured':obj({**{k:S for k in ('id','text','meaning','example')},'segmentIndex':I,'startWord':I,'wordCount':{'type':'integer','minimum':1}}),
 })
@@ -28,7 +27,7 @@ def to_wire(draft):
 def from_wire(draft):
     d=copy.deepcopy(draft)
     for name in ('definitions','vocabulary'):
-        rows=d[name]
+        rows=d.get(name,[])
         if not isinstance(rows,list):raise ValueError(name+' must contain word entries')
         if len({r['word'] for r in rows})!=len(rows):raise ValueError('Duplicate '+name+' word')
         d[name]={r['word']:(r['meaning'] if name=='definitions' else {k:v for k,v in r.items() if k!='word'}) for r in rows}
