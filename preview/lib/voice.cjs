@@ -28,6 +28,14 @@ module.exports = async (req, res, url, { native = false } = {}) => {
   };
   if (url.pathname === "/api/voice/health" && req.method === "GET")
     return json(200, { available: !!process.env.OPENAI_API_KEY, episodeIds });
+  if (url.pathname === "/api/voice/practice/token") {
+    if (
+      (!native && req.headers.origin !== url.origin) ||
+      (native && req.headers.origin && req.headers.origin !== url.origin)
+    )
+      return json(403, { error: "Forbidden." });
+    return require("./practice.cjs")(req, res);
+  }
   if (url.pathname !== "/api/voice/session")
     return json(404, { error: "Not found." });
   if (req.method !== "POST") return json(405, { error: "Method not allowed." });

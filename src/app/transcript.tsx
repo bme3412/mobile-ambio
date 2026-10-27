@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useEpisodeData } from "../data/catalog";
 import { FocusReader } from "../components/FocusReader";
 import { RevealWord } from "../components/RevealWord";
@@ -315,6 +316,21 @@ export default function Transcript() {
                 >
                   {item.speaker}
                 </Text>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Practice passage at ${time(item.startMs)}`}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/practice",
+                      params: { episodeId: episode.id, segmentId: item.id },
+                    })
+                  }
+                  style={{ minHeight: 44, justifyContent: "center" }}
+                >
+                  <Text style={{ color: "#175745", fontWeight: "600" }}>
+                    Practise this passage ↗
+                  </Text>
+                </Pressable>
                 {(bilingual
                   ? episodePhrases.filter(
                       (phrase) => phrase.segment.id === item.id,

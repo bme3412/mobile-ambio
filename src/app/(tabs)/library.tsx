@@ -192,6 +192,31 @@ export default function Library() {
                   router.push("/transcript");
                 }}
               />
+              <Button
+                secondary
+                label="Practice this edition"
+                accessibilityLabel={`Practice this edition · ${episode.title}`}
+                onPress={() =>
+                  router.push({
+                    pathname: "/practice",
+                    params: { episodeId: episode.id },
+                  })
+                }
+              />
+              {episode.stories.map((story) => (
+                <Button
+                  key={story.id}
+                  secondary
+                  label={`Practice · ${story.title}`}
+                  accessibilityLabel={`Practice this story · ${story.title}`}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/practice",
+                      params: { episodeId: episode.id, storyId: story.id },
+                    })
+                  }
+                />
+              ))}
             </View>
           );
         })}

@@ -92,3 +92,28 @@ test("featured transcript explicitly selects October 26", async () => {
   expect(useLibrary.getState().activeEpisodeId).toBe("daily-fr-2026-10-26");
   expect(router.push).toHaveBeenCalledWith("/transcript");
 });
+
+test.each([
+  "Après le vote",
+  "Des annonces aux actes",
+  "Derrière les grands chiffres",
+])(
+  "practice action routes to %s without changing the listening edition",
+  async (title) => {
+    const { useLibrary } = jest.requireActual("../src/state/library");
+    const { latestEdition } = jest.requireActual("../src/data/catalog");
+    useLibrary.setState({ activeEpisodeId: episode.id });
+    const ui = await home();
+    await fireEvent.press(ui.getByLabelText(`Practice this story · ${title}`));
+    expect(useLibrary.getState().activeEpisodeId).toBe(episode.id);
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: "/practice",
+      params: {
+        episodeId: latestEdition.episode.id,
+        storyId: latestEdition.episode.stories.find(
+          (s: { title: string }) => s.title === title,
+        ).id,
+      },
+    });
+  },
+);

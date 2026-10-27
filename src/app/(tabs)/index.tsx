@@ -141,6 +141,19 @@ export default function Home() {
               >
                 <Text style={m.link}>Listen to this story ↗</Text>
               </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Practice this story · ${story.title}`}
+                onPress={() =>
+                  router.push({
+                    pathname: "/practice",
+                    params: { episodeId: episode.id, storyId: story.id },
+                  })
+                }
+                style={m.storyAction}
+              >
+                <Text style={m.link}>Practice this story ↗</Text>
+              </Pressable>
             </View>
           ))}
         </View>
