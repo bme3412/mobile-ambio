@@ -28,6 +28,22 @@ def production_settings(date,editorial,work):
         'outroMs':4000,'outroCue':'experiments/cafe-signature/cafe-cue.mp3',
         'transitions':[{'segmentIndex':i,'durationMs':1500,'cue':'experiments/cafe-signature/cafe-cue.mp3'} for i in boundaries[2:]]}}
 
+def align_featured(d):
+    """Derive word offsets from the text; models must not count transcript tokens."""
+    featured=d['featured']; turns=d['editorial']['turns']
+    norm=lambda s: re.sub('[^a-zàâéèêëîïôùûüç]', '', s.lower())
+    target=norm(featured['text']); count=len(featured['text'].split())
+    preferred=featured.get('segmentIndex')
+    indices=([preferred] if isinstance(preferred,int) and 0<=preferred<len(turns) else [])
+    indices += [i for i in range(len(turns)) if i not in indices]
+    for index in indices:
+        words=turns[index][1].split(' ')
+        for start in range(len(words)-count+1):
+            if target and norm(' '.join(words[start:start+count]))==target:
+                featured.update(segmentIndex=index,startWord=start,wordCount=count)
+                return
+    raise ValueError('Featured expression is absent from transcript')
+
 def validate_draft(d):
     if not isinstance(d,dict): raise ValueError('Draft must be an object')
     for key in ('editorial','definitions','vocabulary','featured'):

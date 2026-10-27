@@ -112,3 +112,12 @@ class ProviderSchemaTests(unittest.TestCase):
         self.assertEqual(from_wire(wire),d)
         wire['definitions'].append(wire['definitions'][0])
         with self.assertRaisesRegex(ValueError,'Duplicate'):from_wire(wire)
+
+class FeaturedAlignmentTests(unittest.TestCase):
+    def test_offsets_come_from_transcript_and_missing_text_is_rejected(self):
+        from scripts.daily.core import align_featured
+        d={'editorial':{'turns':[['Camille','Voici une visite délicate.','Here is a sensitive visit.']]},'featured':{'text':'une visite délicate','segmentIndex':0,'startWord':12,'wordCount':7}}
+        align_featured(d)
+        self.assertEqual((d['featured']['segmentIndex'],d['featured']['startWord'],d['featured']['wordCount']),(0,1,3))
+        d['featured']['text']='une autre expression'
+        with self.assertRaisesRegex(ValueError,'absent'):align_featured(d)
