@@ -151,3 +151,14 @@ class FeaturedCandidateTests(unittest.TestCase):
         self.assertEqual(featured_candidates(draft),['à l’aide de'])
         draft['editorial']['turns'][0][1]='Notre expression du jour est « à mes yeux ». Elle introduit une opinion.'
         self.assertEqual(featured_candidates(draft),['à mes yeux'])
+
+class ReviewEvidenceTests(unittest.TestCase):
+    def test_server_preserves_exact_evidence(self):
+        from scripts.daily.providers import resolve_review_evidence
+        paragraph={'url':'https://example.com','evidence':'Exact evidence.\nWith line breaks.'}
+        result=resolve_review_evidence({'claims':[{'claim':'A fact','paragraphId':'0:1'}]}, {'0:1':paragraph})
+        self.assertEqual(result['claims'][0],{'claim':'A fact',**paragraph})
+    def test_unknown_evidence_is_rejected(self):
+        from scripts.daily.providers import resolve_review_evidence
+        with self.assertRaisesRegex(ValueError,'Unknown review evidence'):
+            resolve_review_evidence({'claims':[{'claim':'A fact','paragraphId':'invented'}]}, {})
