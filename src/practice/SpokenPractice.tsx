@@ -13,6 +13,8 @@ import { createVoiceTransport } from "../conversation/transport";
 import { coachRequest, unlockPractice } from "./api";
 import { SpokenCoach } from "./coach";
 import { practiceMaterial } from "./model";
+import { recordPractice } from "../state/activity";
+import { localDay } from "../activity/model";
 
 type Material = NonNullable<ReturnType<typeof practiceMaterial>>;
 export default function SpokenPractice({
@@ -37,7 +39,15 @@ export default function SpokenPractice({
   const [showTranslation, setShowTranslation] = useState(false);
   const [showHeard, setShowHeard] = useState(false);
   const coach = useMemo(
-    () => new SpokenCoach(coachRequest, createVoiceTransport),
+    () =>
+      new SpokenCoach(coachRequest, createVoiceTransport, (attempt) => {
+        const now = new Date();
+        void recordPractice({
+          ...attempt,
+          completedAt: now.toISOString(),
+          day: localDay(now),
+        });
+      }),
     [],
   );
   const state = useSyncExternalStore(

@@ -29,6 +29,7 @@ const initial = (): CoachState => ({
 });
 export class SpokenCoach {
   private transport?: VoiceTransport;
+  private attempt?: { id: string; episodeId: string; phraseId: string };
   private abort?: AbortController;
   private timer?: ReturnType<typeof setTimeout>;
   private generation = 0;
@@ -39,6 +40,11 @@ export class SpokenCoach {
   constructor(
     private request: (path: string, init?: RequestInit) => Promise<Response>,
     private factory: VoiceTransportFactory,
+    private completed: (attempt: {
+      id: string;
+      episodeId: string;
+      phraseId: string;
+    }) => void = () => {},
   ) {}
   getSnapshot = () => this.state;
   subscribe = (listener: () => void) => {
@@ -57,6 +63,7 @@ export class SpokenCoach {
   }
   private release() {
     this.generation++;
+    this.attempt = undefined;
     clearTimeout(this.timer);
     this.abort?.abort();
     this.abort = undefined;
@@ -78,6 +85,11 @@ export class SpokenCoach {
   };
   async start(episodeId: string, phraseId: string) {
     this.stop();
+    this.attempt = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      episodeId,
+      phraseId,
+    };
     const generation = this.generation;
     this.responded = false;
     this.finishing = false;
@@ -217,8 +229,10 @@ export class SpokenCoach {
         break;
       case "output_audio_buffer.stopped":
         if (this.responded) {
+          const attempt = this.attempt;
           this.release();
           this.update({ status: "feedback", audioBlocked: false });
+          if (attempt) this.completed(attempt);
         }
         break;
       case "response.done":

@@ -1,5 +1,11 @@
 import { Tabs } from "expo-router";
-import { House, Bookmark, Mic, Library } from "lucide-react-native";
+import {
+  House,
+  Bookmark,
+  Mic,
+  Library,
+  ChartNoAxesColumnIncreasing,
+} from "lucide-react-native";
 import { colors } from "../../components/ui";
 export default function TabLayout() {
   return (
@@ -48,6 +54,19 @@ export default function TabLayout() {
           title: "Talk",
           tabBarIcon: ({ color }) => (
             <Mic color={color} size={23} strokeWidth={1.8} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="progress"
+        options={{
+          title: "Progress",
+          tabBarIcon: ({ color }) => (
+            <ChartNoAxesColumnIncreasing
+              color={color}
+              size={23}
+              strokeWidth={1.8}
+            />
           ),
         }}
       />

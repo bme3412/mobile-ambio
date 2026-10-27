@@ -27,9 +27,11 @@ function setup(status = 200) {
     events = e;
     return transport;
   });
-  const coach = new SpokenCoach(request, factory);
+  const completed = jest.fn();
+  const coach = new SpokenCoach(request, factory, completed);
   return {
     coach,
+    completed,
     transport,
     request,
     factory,
@@ -57,12 +59,19 @@ test("one spoken response per phrase, muted while coaching, closes after audible
   s.event("output_audio_buffer.started");
   s.event("response.done", { response: { status: "completed" } });
   expect(s.transport.close).not.toHaveBeenCalled();
+  expect(s.completed).not.toHaveBeenCalled();
   s.event("output_audio_buffer.stopped");
   expect(s.transport.close).toHaveBeenCalledTimes(1);
   expect(s.coach.getSnapshot()).toMatchObject({
     status: "feedback",
     caption: "Try this: Brésil.",
   });
+  expect(s.completed).toHaveBeenCalledTimes(1);
+  expect(s.completed).toHaveBeenCalledWith(
+    expect.objectContaining({ episodeId: "episode", phraseId: "phrase" }),
+  );
+  s.event("output_audio_buffer.stopped");
+  expect(s.completed).toHaveBeenCalledTimes(1);
   s.event("error");
   expect(s.coach.getSnapshot().status).toBe("feedback");
 });
@@ -71,6 +80,7 @@ test("locked access never opens microphone", async () => {
   await s.coach.start("episode", "phrase");
   expect(s.factory).not.toHaveBeenCalled();
   expect(s.coach.getSnapshot().status).toBe("locked");
+  expect(s.completed).not.toHaveBeenCalled();
 });
 test("manual finish commits only once and tolerates VAD race", async () => {
   const s = setup();
@@ -94,6 +104,7 @@ test("stop ignores late connection and releases microphone", async () => {
   s.open();
   s.event("input_audio_buffer.committed");
   expect(s.coach.getSnapshot().status).toBe("ready");
+  expect(s.completed).not.toHaveBeenCalled();
   expect(s.transport.send).not.toHaveBeenCalled();
 });
 test("silence has actionable timeout and releases microphone", async () => {
