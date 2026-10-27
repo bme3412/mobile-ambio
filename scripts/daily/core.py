@@ -101,7 +101,19 @@ class PaidClient:
                 self.storage.upsert('edition_cost_events',event)
                 return result
             except urllib.error.HTTPError as e:
-                if e.code not in (408,429,500,502,503,504) or attempt==3: raise RuntimeError(f'Provider HTTP {e.code}') from None
+                try: detail=json.loads(e.read()).get('error',{})
+                except (ValueError,UnicodeDecodeError): detail={}
+                code=detail.get('code') if isinstance(detail,dict) else None
+                code=code if isinstance(code,str) and re.fullmatch(r'[a-zA-Z0-9_]{1,80}',code) else 'unknown'
+                event.update(status='rejected',usage={'httpStatus':e.code,'errorCode':code})
+                self.storage.upsert('edition_cost_events',event)
+                if e.code not in (408,429,500,502,503,504) or code=='insufficient_quota' or attempt==3:
+                    raise RuntimeError(f'Provider HTTP {e.code} ({code})') from None
+                if e.code==429:
+                    try: delay=float(e.headers.get('retry-after','60'))
+                    except (TypeError,ValueError): delay=60
+                    time.sleep(min(180,max(1,delay)))
+                    continue
             except (urllib.error.URLError,TimeoutError):
                 if attempt==3: raise RuntimeError('Provider unavailable') from None
             time.sleep(2**attempt)

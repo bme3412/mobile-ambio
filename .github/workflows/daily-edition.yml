@@ -14,6 +14,9 @@ on:
       date:
         description: Edition date (YYYY-MM-DD), blank for today
         type: string
+      budget:
+        description: Optional budget for this manual run only (USD)
+        type: string
       revision:
         description: Immutable revision number
         type: string
@@ -42,7 +45,7 @@ jobs:
       OPENAI_OUTPUT_USD_PER_MILLION: ${{ vars.OPENAI_OUTPUT_USD_PER_MILLION }}
       ELEVENLABS_USD_PER_1000_CHARS: ${{ vars.ELEVENLABS_USD_PER_1000_CHARS }}
       FIRECRAWL_SEARCH_MAX_USD: ${{ vars.FIRECRAWL_SEARCH_MAX_USD }}
-      EDITION_DAILY_BUDGET_USD: ${{ vars.EDITION_DAILY_BUDGET_USD || '10' }}
+      EDITION_DAILY_BUDGET_USD: ${{ inputs.budget || vars.EDITION_DAILY_BUDGET_USD || '10' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
