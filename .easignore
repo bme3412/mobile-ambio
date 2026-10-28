@@ -49,7 +49,9 @@ preview/.vercel/
 .preview-password.local
 
 # Backend and private local artifacts are not part of the mobile build
-preview/
+preview/api/
+preview/check.cjs
+preview/vercel.json
 server/
 .env*
 .vercel/
@@ -58,3 +60,4 @@ server/
 .edition-work/
 supabase/.temp/
 __pycache__/
+
