@@ -108,6 +108,7 @@ module.exports = async (req, res, url, { native = false } = {}) => {
               published?.editorial,
               {
                 topicId,
+                autoInterrupt: !native,
                 localDate: url.searchParams.get("localDate") ?? undefined,
               },
             );

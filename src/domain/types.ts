@@ -55,7 +55,12 @@ export interface ConversationSession {
   id: string;
   episodeId: string;
   createdAt: string;
-  turns: { id: string; role: "user" | "tutor"; text: string }[];
+  turns: {
+    id: string;
+    role: "user" | "tutor";
+    text: string;
+    interrupted?: boolean;
+  }[];
   observations: LearningObservation[];
   isMock: boolean;
 }

@@ -38,6 +38,7 @@ export class VoiceConversation {
   private disconnectTimeout: ReturnType<typeof setTimeout> | null = null;
   private generation = 0;
   private generating = false;
+  private playing = false;
   private needsContinuation = false;
   private outputItem: string | null = null;
   subscribe = (listener: () => void) => {
@@ -199,10 +200,10 @@ export class VoiceConversation {
     const id = String(event.item_id ?? "");
     switch (event.type) {
       case "input_audio_buffer.speech_started":
-        this.update({ status: "listening" });
+        if (!this.playing) this.update({ status: "listening" });
         break;
       case "input_audio_buffer.speech_stopped":
-        this.update({ status: "thinking" });
+        if (!this.playing) this.update({ status: "thinking" });
         break;
       case "input_audio_buffer.committed":
         // A commit must not erase transcript fragments already received.
@@ -228,10 +229,12 @@ export class VoiceConversation {
         this.update({ status: "thinking" });
         break;
       case "output_audio_buffer.started":
+        this.playing = true;
         this.update({ status: "speaking" });
         break;
       case "output_audio_buffer.stopped":
       case "output_audio_buffer.cleared":
+        this.playing = false;
         this.update({ status: "listening" });
         break;
       case "response.output_audio_transcript.delta":
@@ -243,11 +246,7 @@ export class VoiceConversation {
         this.turn(id, "tutor", String(event.transcript ?? ""));
         break;
       case "conversation.item.truncated":
-        this.turn(
-          id,
-          "tutor",
-          "[Reply interrupted — ask me to repeat if you missed it.]",
-        );
+        this.markInterrupted(id);
         break;
       case "response.function_call_arguments.done": {
         if (event.name !== "record_correction") break;
@@ -317,6 +316,13 @@ export class VoiceConversation {
       }
     }
   }
+  private markInterrupted(id: string) {
+    this.update({
+      turns: this.state.turns.map((turn) =>
+        turn.id === id ? { ...turn, interrupted: true } : turn,
+      ),
+    });
+  }
   interrupt() {
     if (this.generating) this.send({ type: "response.cancel" });
     this.send({ type: "output_audio_buffer.clear" });
@@ -325,11 +331,8 @@ export class VoiceConversation {
       this.outputItem &&
       (this.state.status === "speaking" || this.generating)
     )
-      this.turn(
-        this.outputItem,
-        "tutor",
-        "[Reply interrupted — ask me to repeat if you missed it.]",
-      );
+      this.markInterrupted(this.outputItem);
+    this.playing = false;
     this.update({ status: "listening" });
   }
   sendText(text: string) {
@@ -375,6 +378,7 @@ export class VoiceConversation {
     this.disconnectTimeout = null;
     this.timeout = null;
     this.generating = false;
+    this.playing = false;
     this.needsContinuation = false;
     this.outputItem = null;
     this.transport?.close();

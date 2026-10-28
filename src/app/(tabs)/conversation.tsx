@@ -356,6 +356,11 @@ function ConversationContent() {
                 >
                   <Label>{turn.role === "user" ? "YOU" : "AMBIO"}</Label>
                   <Text style={s.body}>{turn.text || "Transcribing…"}</Text>
+                  {turn.interrupted && (
+                    <Text style={s.note}>
+                      Interrupted · some text may not have been spoken.
+                    </Text>
+                  )}
                 </View>
               ),
             )}

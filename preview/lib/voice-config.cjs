@@ -27,12 +27,15 @@ function sessionConfig(
     max_output_tokens: 600,
     audio: {
       input: {
+        ...(options.autoInterrupt === false
+          ? { noise_reduction: { type: "near_field" } }
+          : {}),
         transcription: { model: "gpt-4o-mini-transcribe", language: "fr" },
         turn_detection: {
           type: "semantic_vad",
           eagerness: "low",
           create_response: true,
-          interrupt_response: true,
+          interrupt_response: options.autoInterrupt !== false,
         },
       },
       output: { voice: "marin" },

@@ -60,3 +60,16 @@ test("all seven weekdays have distinct valid starters across date boundaries", (
   expect(labels.size).toBe(21);
   expect(localDate(new Date(2026, 9, 28, 23, 59))).toBe("2026-10-28");
 });
+
+test("native calls protect replies from automatic speech-triggered cancellation", () => {
+  const native = hosted.sessionConfig(undefined, undefined, {
+    topicId: "open",
+    autoInterrupt: false,
+  });
+  expect(native.audio.input.turn_detection.interrupt_response).toBe(false);
+  expect(native.audio.input.turn_detection.create_response).toBe(true);
+  expect(native.audio.input.noise_reduction).toEqual({ type: "near_field" });
+  expect(
+    hosted.sessionConfig().audio.input.turn_detection.interrupt_response,
+  ).toBe(true);
+});

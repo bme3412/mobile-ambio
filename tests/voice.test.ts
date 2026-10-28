@@ -243,3 +243,32 @@ test("an older voice server cannot silently discuss the wrong episode", async ()
   expect(transport).not.toHaveBeenCalled();
   expect(voice.getSnapshot().error).toContain("updated voice service");
 });
+
+test("false speech detection does not hide ongoing playback or its interrupt control", () => {
+  const voice = new VoiceConversation();
+  voice.handle({ type: "output_audio_buffer.started" });
+  voice.handle({ type: "input_audio_buffer.speech_started" });
+  voice.handle({ type: "input_audio_buffer.speech_stopped" });
+  expect(voice.getSnapshot().status).toBe("speaking");
+  voice.handle({ type: "output_audio_buffer.stopped" });
+  expect(voice.getSnapshot().status).toBe("listening");
+});
+test("interruption marks the existing caption without erasing it or duplicating notices", () => {
+  const voice = new VoiceConversation();
+  voice.handle({
+    type: "response.output_audio_transcript.delta",
+    item_id: "reply",
+    delta: "Bonjour ! Comment allez-vous ?",
+  });
+  voice.handle({ type: "output_audio_buffer.started" });
+  voice.interrupt();
+  voice.handle({ type: "conversation.item.truncated", item_id: "reply" });
+  expect(voice.getSnapshot().turns).toEqual([
+    {
+      id: "reply",
+      role: "tutor",
+      text: "Bonjour ! Comment allez-vous ?",
+      interrupted: true,
+    },
+  ]);
+});

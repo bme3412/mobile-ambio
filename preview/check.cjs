@@ -219,6 +219,11 @@ server.listen(0, "127.0.0.1", async () => {
         const config = JSON.parse(opts.body.get("session"));
         assert.match(config.instructions, /Something that surprised you/);
         assert.doesNotMatch(config.instructions, /DATED EPISODE:/);
+        assert.equal(
+          config.audio.input.turn_detection.interrupt_response,
+          false,
+        );
+        assert.equal(config.audio.input.noise_reduction.type, "near_field");
         return new Response("native-answer-sdp");
       }
       return realFetch(url, opts);
