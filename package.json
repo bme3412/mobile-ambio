@@ -67,7 +67,9 @@
   "private": true,
   "jest": {
     "preset": "jest-expo",
-    "modulePathIgnorePatterns": ["<rootDir>/.edition-work/"],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.edition-work/"
+    ],
     "testMatch": [
       "**/tests/**/*.test.ts?(x)"
     ],
@@ -76,6 +78,15 @@
     ],
     "moduleNameMapper": {
       "^lucide-react-native$": "<rootDir>/node_modules/lucide-react-native/dist/cjs/lucide-react-native.js"
+    }
+  },
+  "expo": {
+    "autolinking": {
+      "ios": {
+        "buildFromSource": [
+          ".*"
+        ]
+      }
     }
   }
 }
