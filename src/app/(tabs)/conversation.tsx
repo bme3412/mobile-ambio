@@ -1,20 +1,15 @@
-import { EditionGate } from "../../components/EditionStatus";
-import { useEpisodeData } from "../../data/catalog";
-import { AudioLines } from "lucide-react-native";
 import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+  localDate,
+  topicsForDate,
+} from "../../../preview/lib/conversation-topics.cjs";
+import { AudioLines } from "lucide-react-native";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import {
   Platform,
   Switch,
   Text,
   TextInput,
   View,
-  Linking,
   AppState,
 } from "react-native";
 import { router, useFocusEffect } from "expo-router";
@@ -34,8 +29,11 @@ import { stopPronunciation } from "../../playback/pronunciation";
 import { VoiceConversation } from "../../conversation/realtime";
 
 function ConversationContent() {
-  const { episode } = useEpisodeData();
-  const sessionEpisode = useRef(episode.id);
+  const [today, setToday] = useState(localDate);
+  const suggestions = topicsForDate(today);
+  const [typing, setTyping] = useState(false);
+  const [settings, setSettings] = useState(false);
+  const [sessionTopic, setSessionTopic] = useState("Just talk");
   const [voice] = useState(() => new VoiceConversation(voiceApi.request));
   const state = useSyncExternalStore(
     voice.subscribe,
@@ -62,27 +60,32 @@ function ConversationContent() {
       .request("/api/voice/health", { signal: controller.signal })
       .then(async (response) => {
         if (!mounted) return;
-        setNeedsSignIn(voiceApi.native && response.status === 401);
+        setNeedsSignIn(response.status === 401);
         const data = response.ok ? await response.json() : null;
         if (mounted) {
-          const supportsEpisode = Array.isArray(data?.episodeIds)
-            ? data.episodeIds.includes(episode.id)
-            : episode.id === "daily-fr-2026-10-24";
-          setAvailable(Boolean(data?.available) && supportsEpisode);
+          setAvailable(
+            Boolean(data?.available) && Boolean(data?.generalConversation),
+          );
           setServiceError(
-            data?.available && !supportsEpisode
-              ? "Talk for this edition needs the updated voice service. Listening and word practice are ready."
-              : null,
+            response.status === 401
+              ? null
+              : !response.ok
+                ? "Talk’s server could not respond. Please try again."
+                : !data?.available
+                  ? "Talk is temporarily unavailable on the server. Please try again shortly."
+                  : !data?.generalConversation
+                    ? "Talk needs the updated conversation service. Please try again shortly."
+                    : null,
           );
         }
       })
-      .catch((error) => {
+      .catch(() => {
         if (mounted) {
           setAvailable(false);
           setServiceError(
-            error instanceof Error
-              ? error.message
-              : "Could not reach voice service.",
+            controller.signal.aborted
+              ? "Talk took too long to respond. Please try again."
+              : "Could not reach Talk. Check your connection and retry.",
           );
         }
       })
@@ -92,7 +95,7 @@ function ConversationContent() {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [healthCheck, episode.id]);
+  }, [healthCheck]);
   const signIn = async () => {
     setSigningIn(true);
     setServiceError(null);
@@ -112,10 +115,14 @@ function ConversationContent() {
   };
   useFocusEffect(
     useCallback(() => {
+      setToday(localDate());
       setHealthCheck((value) => value + 1);
       const leave = () => voice.end();
       const visible = () => {
-        if (document.visibilityState === "visible") voice.resumeAudio();
+        if (document.visibilityState === "visible") {
+          setToday(localDate());
+          voice.resumeAudio();
+        }
       };
       if (Platform.OS === "web") {
         window.addEventListener("pagehide", leave);
@@ -125,6 +132,10 @@ function ConversationContent() {
         Platform.OS !== "web"
           ? AppState.addEventListener("change", (value) => {
               if (value === "background") voice.end();
+              if (value === "active") {
+                setToday(localDate());
+                setHealthCheck((v) => v + 1);
+              }
             })
           : null;
       return () => {
@@ -137,15 +148,20 @@ function ConversationContent() {
       };
     }, [voice]),
   );
-  const start = (microphone: boolean) => {
+  const start = (
+    microphone: boolean,
+    topic = { id: "open", label: "Just talk" },
+  ) => {
     player.pause();
     stopPronunciation();
     setDraft("");
-    sessionEpisode.current = episode.id;
-    void voice.start(microphone, episode.id).then(() => {
-      if (voice.getSnapshot().status === "error")
-        setHealthCheck((value) => value + 1);
-    });
+    setSessionTopic(topic.label);
+    void voice
+      .start(microphone, undefined, { id: topic.id, date: today })
+      .then(() => {
+        if (voice.getSnapshot().status === "error")
+          setHealthCheck((value) => value + 1);
+      });
   };
   const finish = () => {
     voice.end();
@@ -153,7 +169,8 @@ function ConversationContent() {
     const id = `voice-${Date.now()}`;
     save({
       id,
-      episodeId: sessionEpisode.current,
+      episodeId: "",
+      topicTitle: sessionTopic,
       createdAt: new Date().toISOString(),
       isMock: false,
       turns: snapshot.turns.filter((t) => t.text.trim()),
@@ -163,43 +180,47 @@ function ConversationContent() {
   };
   return (
     <Page>
-      <Label>CONVERSATION STUDIO · LIVE FRENCH</Label>
-      <Title>
-        {active ? "À vous de parler." : "A story is just\nthe beginning."}
-      </Title>
-      <Body>{episode.title} · French, B1–B2</Body>
-      <View style={{ alignItems: "center", gap: 14, paddingVertical: 16 }}>
-        <View
-          style={{
-            width: 108,
-            height: 108,
-            borderRadius: 54,
-            backgroundColor:
-              state.status === "speaking" ? colors.lavender : colors.tint,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <AudioLines size={50} color={colors.green} />
+      <Label>TALK · AI VOICE</Label>
+      <Title>{active ? "À vous de parler." : "On en parle ?"}</Title>
+      <Body>
+        {active || connecting
+          ? sessionTopic
+          : `${suggestions.day} · A little French, about your day.`}
+      </Body>
+      {(active || connecting || state.status === "ended") && (
+        <View style={{ alignItems: "center", gap: 14, paddingVertical: 16 }}>
+          <View
+            style={{
+              width: 108,
+              height: 108,
+              borderRadius: 54,
+              backgroundColor:
+                state.status === "speaking" ? colors.lavender : colors.tint,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <AudioLines size={50} color={colors.green} />
+          </View>
+          <Text accessibilityLiveRegion="polite" style={s.label}>
+            {connecting
+              ? "CONNECTING…"
+              : state.status === "speaking"
+                ? "AMBIO IS SPEAKING"
+                : state.status === "thinking"
+                  ? "THINKING…"
+                  : active
+                    ? state.muted
+                      ? "MICROPHONE MUTED"
+                      : state.microphone
+                        ? "LISTENING · TAKE YOUR TIME"
+                        : "TYPE YOUR REPLY BELOW"
+                    : state.status === "ended"
+                      ? "CONVERSATION ENDED"
+                      : "YOUR FRENCH COMPANION"}
+          </Text>
         </View>
-        <Text accessibilityLiveRegion="polite" style={s.label}>
-          {connecting
-            ? "CONNECTING…"
-            : state.status === "speaking"
-              ? "AMBIO IS SPEAKING"
-              : state.status === "thinking"
-                ? "THINKING…"
-                : active
-                  ? state.muted
-                    ? "MICROPHONE MUTED"
-                    : state.microphone
-                      ? "LISTENING · TAKE YOUR TIME"
-                      : "TYPE YOUR REPLY BELOW"
-                  : state.status === "ended"
-                    ? "CONVERSATION ENDED"
-                    : "YOUR FRENCH COMPANION"}
-        </Text>
-      </View>
+      )}
       {state.error && (
         <View style={s.card}>
           <Text accessibilityRole="alert" style={s.body}>
@@ -209,14 +230,6 @@ function ConversationContent() {
       )}
       {!active && !connecting && (
         <>
-          <View style={s.card}>
-            <Text style={s.subheading}>Your ideas. A real conversation.</Text>
-            <Body>
-              Talk about the extra hour, the journey to Phobos, or chocolate.
-              Ambio listens, replies in French, and gently suggests a more
-              natural phrase when it helps.
-            </Body>
-          </View>
           {serviceError && (
             <Text accessibilityRole="alert" style={s.body}>
               {serviceError}
@@ -248,9 +261,6 @@ function ConversationContent() {
             </View>
           ) : available === false ? (
             <>
-              <Body>
-                Voice is unavailable. Check your connection and try again.
-              </Body>
               <Button
                 label="Retry voice service"
                 onPress={() => {
@@ -258,64 +268,62 @@ function ConversationContent() {
                   setHealthCheck((value) => value + 1);
                 }}
               />
-              {!voiceApi.native && (
-                <Button
-                  label="Sign in to private preview"
-                  onPress={() =>
-                    void Linking.openURL(
-                      "https://ambio-daily-preview.vercel.app/conversation",
-                    )
-                  }
-                />
-              )}
             </>
           ) : (
             <>
+              <View style={s.row}>
+                <Body>Type instead of speaking</Body>
+                <Switch
+                  accessibilityLabel="Type instead of speaking"
+                  value={typing}
+                  onValueChange={setTyping}
+                />
+              </View>
               <Button
-                label={
-                  available === null
-                    ? "Checking voice service…"
-                    : "Start voice conversation"
-                }
+                label={available === null ? "Connecting to Talk…" : "Just talk"}
                 disabled={available !== true}
-                onPress={() => start(true)}
+                onPress={() => start(!typing)}
               />
-              <Button
-                secondary
-                label="Type instead · hear spoken replies"
-                disabled={available !== true}
-                onPress={() => start(false)}
-              />
+              <Label>A FEW IDEAS FOR {suggestions.day.toUpperCase()}</Label>
+              {suggestions.topics.map((topic) => (
+                <Button
+                  key={topic.id}
+                  secondary
+                  label={topic.label}
+                  disabled={available !== true}
+                  onPress={() => start(!typing, topic)}
+                />
+              ))}
             </>
           )}
           {voiceApi.native && !needsSignIn && available === true && (
             <Button
               secondary
-              label="Sign out of voice"
-              onPress={() => {
-                voice.end();
-                void voiceApi
-                  .signOut()
-                  .then(() => {
-                    setNeedsSignIn(true);
-                    setAvailable(false);
-                  })
-                  .catch(() =>
-                    setServiceError("Could not sign out. Please try again."),
-                  );
-              }}
+              label={settings ? "Hide account options" : "Account options"}
+              onPress={() => setSettings(!settings)}
             />
           )}
-          <Text style={s.note}>
-            Starting sends your voice or typed messages and the episode context
-            to OpenAI and uses API credits. Replies use an AI voice. Captions
-            and saved recaps stay on this device; this app does not save audio
-            recordings. There is no app timer: tap End when you are finished.
-            Leaving this conversation screen also ends the session.{" "}
-            {voiceApi.native
-              ? "Switching apps or locking your phone ends the conversation and releases the microphone. You can still save its recap when you return."
-              : "Switching apps or locking your phone does not end practice; your microphone stays enabled unless muted. Safari may temporarily suspend audio or microphone access in the background."}
-          </Text>
+          {settings &&
+            voiceApi.native &&
+            !needsSignIn &&
+            available === true && (
+              <Button
+                secondary
+                label="Sign out of voice"
+                onPress={() => {
+                  voice.end();
+                  void voiceApi
+                    .signOut()
+                    .then(() => {
+                      setNeedsSignIn(true);
+                      setAvailable(false);
+                    })
+                    .catch(() =>
+                      setServiceError("Could not sign out. Please try again."),
+                    );
+                }}
+              />
+            )}
         </>
       )}
       {connecting && (
@@ -449,9 +457,5 @@ function ConversationContent() {
 }
 
 export default function Conversation() {
-  return (
-    <EditionGate>
-      <ConversationContent />
-    </EditionGate>
-  );
+  return <ConversationContent />;
 }

@@ -87,6 +87,7 @@ server.listen(0, "127.0.0.1", async () => {
       {
         available: false,
         dynamicEditions: false,
+        generalConversation: true,
         episodeIds: [
           "daily-fr-2026-10-26",
           "daily-fr-2026-10-24",
@@ -215,15 +216,21 @@ server.listen(0, "127.0.0.1", async () => {
     global.fetch = async (url, opts) => {
       if (url === "https://api.openai.com/v1/realtime/calls") {
         assert.equal(opts.headers.Authorization, "Bearer test-only-key");
+        const config = JSON.parse(opts.body.get("session"));
+        assert.match(config.instructions, /Something that surprised you/);
+        assert.doesNotMatch(config.instructions, /DATED EPISODE:/);
         return new Response("native-answer-sdp");
       }
       return realFetch(url, opts);
     };
-    const nativeCall = await fetch(base + "/api/voice/session", {
-      method: "POST",
-      headers: nativeHeaders,
-      body: "v=0\r\nm=audio",
-    });
+    const nativeCall = await fetch(
+      base + "/api/voice/session?topicId=day-3-1&localDate=2026-10-28",
+      {
+        method: "POST",
+        headers: nativeHeaders,
+        body: "v=0\r\nm=audio",
+      },
+    );
     assert.equal(nativeCall.status, 200);
     assert.equal(await nativeCall.text(), "native-answer-sdp");
     global.fetch = realFetch;

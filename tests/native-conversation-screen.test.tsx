@@ -1,3 +1,5 @@
+import { voiceApi } from "../src/conversation/api";
+import { topicsForDate } from "../preview/lib/conversation-topics.cjs";
 import { act, fireEvent, render } from "@testing-library/react-native";
 import { AppState, AppStateStatus } from "react-native";
 import Conversation from "../src/app/(tabs)/conversation";
@@ -21,12 +23,17 @@ jest.mock("../src/conversation/transport", () => ({
 jest.mock("../src/conversation/api", () => ({
   voiceApi: {
     native: true,
-    request: async () => ({
+    request: jest.fn(async () => ({
       ok: true,
       status: 200,
-      json: async () => ({ available: true }),
+      json: async () => ({
+        available: true,
+        dynamicEditions: true,
+        generalConversation: true,
+        episodeIds: [],
+      }),
       text: async () => "answer",
-    }),
+    })),
     signIn: jest.fn(),
     signOut: jest.fn(),
   },
@@ -49,7 +56,7 @@ test("backgrounding releases a native conversation and leaves its recap saveable
     });
   try {
     const ui = await render(<Conversation />);
-    await fireEvent.press(await ui.findByLabelText("Start voice conversation"));
+    await fireEvent.press(await ui.findByLabelText("Just talk"));
     await act(async () => {
       mockEvents.open();
       mockEvents.message(
@@ -71,4 +78,19 @@ test("backgrounding releases a native conversation and leaves its recap saveable
   } finally {
     listener.mockRestore();
   }
+});
+
+test("Talk starts a day-specific topic without loading the selected edition", async () => {
+  useLibrary.setState({ activeEpisodeId: "missing-remote-edition" });
+  const topic = topicsForDate().topics[0];
+  const ui = await render(<Conversation />);
+  await fireEvent.press(await ui.findByLabelText(topic.label));
+  expect(voiceApi.request).toHaveBeenCalledWith(
+    expect.stringContaining(
+      `/api/voice/session?topicId=${topic.id}&localDate=`,
+    ),
+    expect.objectContaining({ method: "POST" }),
+  );
+  expect(ui.queryByText("Your ideas. A real conversation.")).toBeNull();
+  await ui.unmount();
 });

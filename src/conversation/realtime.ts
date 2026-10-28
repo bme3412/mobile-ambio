@@ -73,7 +73,11 @@ export class VoiceConversation {
     this.release();
     this.update({ status: "error", error: message, microphone: false });
   }
-  async start(microphone = true, episodeId?: string) {
+  async start(
+    microphone = true,
+    episodeId?: string,
+    topic?: { id: string; date: string },
+  ) {
     this.release();
     const generation = this.generation;
     this.update({
@@ -94,10 +98,15 @@ export class VoiceConversation {
       const health = await this.request("/api/voice/health", {
         signal: this.abort.signal,
       });
+      if (health.status === 401) throw Error("Please unlock Talk to continue.");
       const capabilities = health.ok ? await health.json() : null;
       if (!capabilities?.available)
         throw Error(
-          "Voice is unavailable. Check your connection, sign in if prompted, and try again.",
+          "Talk is temporarily unavailable on the server. Please try again shortly.",
+        );
+      if (topic && !capabilities.generalConversation)
+        throw Error(
+          "Talk needs the updated conversation service. Please try again shortly.",
         );
       if (
         episodeId &&
@@ -157,7 +166,7 @@ export class VoiceConversation {
       const offer = await transport.offer(microphone);
       if (generation !== this.generation) return;
       const response = await this.request(
-        `/api/voice/session${episodeId ? `?episodeId=${encodeURIComponent(episodeId)}` : ""}`,
+        `/api/voice/session${topic ? `?topicId=${encodeURIComponent(topic.id)}&localDate=${encodeURIComponent(topic.date)}` : episodeId ? `?episodeId=${encodeURIComponent(episodeId)}` : ""}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/sdp" },

@@ -20,7 +20,11 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
     try {
       const url = new URL(req.url, `http://${req.headers.host}`);
       if (url.pathname === "/api/voice/health")
-        return json(200, { available: !!apiKey, episodeIds });
+        return json(200, {
+          available: !!apiKey,
+          episodeIds,
+          generalConversation: true,
+        });
       if (url.pathname === "/api/voice/session") {
         if (req.method !== "POST")
           return json(405, { error: "Method not allowed." });
@@ -53,6 +57,11 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
         try {
           config = sessionConfig(
             url.searchParams.get("episodeId") ?? undefined,
+            undefined,
+            {
+              topicId: url.searchParams.get("topicId"),
+              localDate: url.searchParams.get("localDate") ?? undefined,
+            },
           );
         } catch {
           return json(400, { error: "Unknown episode." });

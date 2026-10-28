@@ -22,3 +22,41 @@ test("voice context uses a server-owned edition and keeps hosted/local configura
   );
   expect(local.sessionConfig()).toEqual(old);
 });
+
+test("weekday conversation starts directly without episode context", () => {
+  const options = { topicId: "day-3-1", localDate: "2026-10-28" };
+  const config = hosted.sessionConfig(undefined, undefined, options);
+  expect(config).toEqual(local.sessionConfig(undefined, undefined, options));
+  expect(config.instructions).toContain("Something that surprised you");
+  expect(config.instructions).toContain("Wednesday");
+  expect(config.instructions).not.toContain("DATED EPISODE:");
+  expect(config.instructions).toContain("no live news feed");
+  expect(() =>
+    hosted.sessionConfig(undefined, undefined, { topicId: "__proto__" }),
+  ).toThrow();
+  expect(() =>
+    hosted.sessionConfig(undefined, undefined, {
+      topicId: "open",
+      localDate: "2026-02-30",
+    }),
+  ).toThrow();
+});
+test("all seven weekdays have distinct valid starters across date boundaries", () => {
+  const {
+    topicsForDate,
+    conversationOpening,
+    localDate,
+  } = require("../preview/lib/conversation-topics.cjs");
+  const labels = new Set();
+  for (let day = 25; day <= 31; day++) {
+    const date = `2026-10-${day}`;
+    const daily = topicsForDate(date);
+    expect(daily.topics).toHaveLength(3);
+    for (const topic of daily.topics) {
+      labels.add(topic.label);
+      expect(conversationOpening(topic.id, date)).toContain(topic.label);
+    }
+  }
+  expect(labels.size).toBe(21);
+  expect(localDate(new Date(2026, 9, 28, 23, 59))).toBe("2026-10-28");
+});

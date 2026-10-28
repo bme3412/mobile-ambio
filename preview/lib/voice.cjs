@@ -30,6 +30,7 @@ module.exports = async (req, res, url, { native = false } = {}) => {
     return json(200, {
       available: !!process.env.OPENAI_API_KEY,
       episodeIds,
+      generalConversation: true,
       dynamicEditions: require("./editions.cjs").configured(),
     });
   if (url.pathname === "/api/voice/practice/token") {
@@ -79,7 +80,11 @@ module.exports = async (req, res, url, { native = false } = {}) => {
       });
     let config;
     try {
-      const id = url.searchParams.get("episodeId");
+      const topicId =
+        url.pathname === "/api/voice/session"
+          ? url.searchParams.get("topicId")
+          : null;
+      const id = topicId ? null : url.searchParams.get("episodeId");
       const editions = require("./editions.cjs");
       const published =
         id && editions.configured() ? await editions.bundle(id) : null;
@@ -101,6 +106,10 @@ module.exports = async (req, res, url, { native = false } = {}) => {
           : sessionConfig(
               url.searchParams.get("episodeId") ?? undefined,
               published?.editorial,
+              {
+                topicId,
+                localDate: url.searchParams.get("localDate") ?? undefined,
+              },
             );
     } catch {
       return json(400, { error: "Unknown episode or practice phrase." });

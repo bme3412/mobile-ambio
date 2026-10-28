@@ -51,6 +51,7 @@ export interface LearningObservation {
   explanation: string;
 }
 export interface ConversationSession {
+  topicTitle?: string;
   id: string;
   episodeId: string;
   createdAt: string;

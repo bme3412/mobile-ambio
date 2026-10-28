@@ -15,7 +15,7 @@ export default function Recap() {
   return (
     <Page>
       <Label>YOUR CONVERSATION · RECAP</Label>
-      <Title>A little more natural.</Title>
+      <Title>{session?.topicTitle || "A little more natural."}</Title>
       {!session ? (
         <>
           <Body>
