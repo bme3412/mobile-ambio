@@ -14,6 +14,13 @@
     "production": {
       "distribution": "store",
       "autoIncrement": true
+    },
+    "staging": {
+      "extends": "production",
+      "environment": "preview",
+      "env": {
+        "EXPO_PUBLIC_VOICE_URL": "https://ambio-daily-staging.vercel.app"
+      }
     }
   },
   "submit": {

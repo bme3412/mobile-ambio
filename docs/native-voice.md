@@ -39,3 +39,13 @@ References: [Expo SDK 58](https://docs.expo.dev/versions/v58.0.0/), [SecureStore
 ## Hosted activation verification — 25 October 2026
 
 Staged from the current home-refresh deployment, preserving its web assets/audio. Native login, scoped bearer authorization, expiry, password rotation and mocked SDP exchange passed. Lint, typecheck and all 74 tests passed. Live endpoint rejects invalid native credentials and unauthenticated private-page access. Signed-in health returns `{"available":true}`. Successful native sign-in and microphone/speaker exchange still require physical-device acceptance.
+
+## Staging TestFlight build — 28 October 2026
+
+The `staging` EAS build profile extends the store-signed production profile and sets only the public backend URL to `https://ambio-daily-staging.vercel.app`. Build 1.0.0 (12), ID `006a3d5b-6032-4a3c-a7d3-631bd07f163e`, was queued with automatic submission to the existing TestFlight app (ASC ID `6826860799`). It includes the downloadable-edition client. After installing, use the existing private preview password in the app to unlock staging access. Native login and the authenticated edition catalog were verified directly before submission. The October 27 revision 9 is available in that catalog.
+
+```sh
+npx eas-cli@latest build --platform ios --profile staging --auto-submit-with-profile production
+```
+
+`.easignore` excludes `.edition-work/`, Supabase CLI state and Python caches so local production checkpoints and cloud setup credentials are not uploaded with mobile builds. No provider credentials are embedded in the app. This profile uses the existing app identity, so installing it replaces the prior TestFlight build on the device.

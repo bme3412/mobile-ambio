@@ -53,3 +53,8 @@ preview/
 server/
 .env*
 .vercel/
+
+# Private daily-production checkpoints and cloud setup credentials
+.edition-work/
+supabase/.temp/
+__pycache__/
