@@ -155,3 +155,11 @@ gh workflow run daily-edition.yml --repo bme3412/mobile-ambio --ref master \
 ```
 
 All 142 JavaScript tests and 32 Python tests pass, alongside lint and typecheck. New-edition audio generation, publication and browser verification remain pending the provider-credit unblock. Production publishing remains gated.
+
+### Successful publication — 28 October 2026
+
+After API credit was restored, [GitHub Actions run 40691659774](https://github.com/bme3412/mobile-ambio/actions/runs/40691659774) resumed and published `daily-fr-2026-10-27@r9` to staging. Its editorial date remains October 27. The final independent review passed with no issues. The edition, “Des chiffres, des ailes et des couleurs”, contains three stories, 26 presenter turns and 913 aligned words; final duration is 346.160 seconds (5:46). Five speech chunks passed alignment checks. The café mix measured -19.06 LUFS and -5.57 dB true peak, and passed duration and bundle validation.
+
+Authenticated catalog/detail/media checks passed, including the 5,539,675-byte audio checksum. Anonymous catalog access remains rejected. Browser verification confirmed the new Home edition without a deployment, preservation of the prior edition’s listening position, advancing remote playback, +15-second seeking, pause, completed audio download, and the correct story/phrase on the practice screen. Talk context and practice phrase IDs resolve from the published revision. The staging screenshot is retained locally in `.edition-work/staging-published-oct27.png`.
+
+The October 27 run ledger ended at $11.508169 in conservative reservations/settlements across the troubleshooting attempts, within the authorized one-off $15 ceiling. This is not an invoice total. Scheduled runs retain their $10 default. Lint, typecheck and all 32 Python tests passed on resume; all 142 JavaScript tests passed during the preceding fixes. Full listening review, microphone conversations, physical iOS/Android verification and three consecutive reviewed staging editions remain outstanding. Production remains gated.
