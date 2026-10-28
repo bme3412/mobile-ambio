@@ -42,10 +42,14 @@ Staged from the current home-refresh deployment, preserving its web assets/audio
 
 ## Staging TestFlight build — 28 October 2026
 
-The `staging` EAS build profile extends the store-signed production profile and sets only the public backend URL to `https://ambio-daily-staging.vercel.app`. Build 1.0.0 (12), ID `006a3d5b-6032-4a3c-a7d3-631bd07f163e`, was queued with automatic submission to the existing TestFlight app (ASC ID `6826860799`). It includes the downloadable-edition client. After installing, use the existing private preview password in the app to unlock staging access. Native login and the authenticated edition catalog were verified directly before submission. The October 27 revision 9 is available in that catalog.
+The `staging` EAS build profile extends the store-signed production profile and sets only the public backend URL to `https://ambio-daily-staging.vercel.app`. Build 1.0.0 (13), ID `e97e9601-1752-4486-842e-aef46bab3be3`, was queued with automatic submission to the existing TestFlight app (ASC ID `6826860799`). It includes the downloadable-edition client. After installing, use the existing private preview password in the app to unlock staging access. Native login and the authenticated edition catalog were verified directly before submission. The October 27 revision 9 is available in that catalog.
 
 ```sh
 npx eas-cli@latest build --platform ios --profile staging --auto-submit-with-profile production
 ```
 
 `.easignore` excludes `.edition-work/`, Supabase CLI state and Python caches so local production checkpoints and cloud setup credentials are not uploaded with mobile builds. No provider credentials are embedded in the app. This profile uses the existing app identity, so installing it replaces the prior TestFlight build on the device.
+
+Build 12 failed because the upload excluded the shared edition-contract validator under `preview/lib`. The EAS archive now includes that shared library while excluding private deployment state and API entry points. The corrected archive was inspected, and the iOS JavaScript export, lint and typecheck passed before build 13.
+
+Build 13 completed successfully on EAS. Automatic submission `7e0d3164-8002-4976-80b0-24bee92d1f7d` is queued with EAS Submit; Apple processing and availability in TestFlight have not yet been confirmed. Track the [build](https://expo.dev/accounts/bme3412s-team/projects/ambio/builds/e97e9601-1752-4486-842e-aef46bab3be3) and [submission](https://expo.dev/accounts/bme3412s-team/projects/ambio/submissions/7e0d3164-8002-4976-80b0-24bee92d1f7d). Install/update Ambio Daily 1.0.0 (13) in TestFlight once available, unlock with the existing preview password, and refresh Home to load the staging catalog.
