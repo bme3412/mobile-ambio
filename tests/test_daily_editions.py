@@ -151,6 +151,8 @@ class FeaturedCandidateTests(unittest.TestCase):
         self.assertEqual(featured_candidates(draft),['à l’aide de'])
         draft['editorial']['turns'][0][1]='Notre expression du jour est « à mes yeux ». Elle introduit une opinion.'
         self.assertEqual(featured_candidates(draft),['à mes yeux'])
+        draft['editorial']['turns']=[['Camille','Notre expression du jour est jusqu’à. Par exemple : jusqu’au vingt décembre.','']]
+        self.assertEqual(featured_candidates(draft),['jusqu’à'])
 
 class ReviewEvidenceTests(unittest.TestCase):
     def test_server_preserves_exact_evidence(self):
