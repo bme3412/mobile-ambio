@@ -3,7 +3,7 @@ import { useCatalog, findEdition } from "../../data/catalog";
 import { IconButton } from "../../components/IconButton";
 import { useState } from "react";
 import { PracticeSheet } from "../../components/PracticeSheet";
-import { Bookmark } from "../../domain/types";
+import { SavedExpression } from "../../domain/types";
 import { Pressable, Text, View } from "react-native";
 import { router } from "expo-router";
 import { Body, Button, colors, Page, s } from "../../components/ui";
@@ -14,15 +14,21 @@ export default function Saved() {
   const {
     bookmarks: allBookmarks,
     sessions,
+    conversationPhrases,
+    togglePhrase,
+    reviewPhrase,
     review,
     toggle,
     storageError,
     transcripts,
   } = useLibrary();
-  const bookmarks = allBookmarks;
+  const bookmarks: SavedExpression[] = [
+    ...allBookmarks,
+    ...conversationPhrases,
+  ];
   const reviewedCount = bookmarks.filter((b) => b.reviewed).length;
   const remainingCount = bookmarks.length - reviewedCount;
-  const [practice, setPractice] = useState<Bookmark[] | null>(null);
+  const [practice, setPractice] = useState<SavedExpression[] | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [filter, setFilter] = useState("All");
   const visible = bookmarks.filter(
@@ -159,7 +165,7 @@ export default function Saved() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
             >
-              {findEdition(b.episodeId) && (
+              {"episodeId" in b && findEdition(b.episodeId) && (
                 <View
                   style={{ backgroundColor: colors.lavender, borderRadius: 24 }}
                 >
@@ -221,18 +227,25 @@ export default function Saved() {
               >
                 <Body>{b.word.meaning}</Body>
                 <Text style={s.note}>
-                  {findEdition(b.episodeId)?.episode.title ?? "Earlier edition"}{" "}
+                  {"sessionId" in b
+                    ? b.topicTitle
+                    : (findEdition(b.episodeId)?.episode.title ??
+                      "Earlier edition")}{" "}
                   · {b.reviewed ? "Reviewed" : "To review"}
                 </Text>
                 <Button
                   secondary
                   label={b.reviewed ? "Mark for review" : "Mark reviewed"}
-                  onPress={() => review(b.id)}
+                  onPress={() =>
+                    "sessionId" in b ? reviewPhrase(b.id) : review(b.id)
+                  }
                 />
                 <Button
                   secondary
                   label="Remove expression"
-                  onPress={() => toggle(b)}
+                  onPress={() =>
+                    "sessionId" in b ? togglePhrase(b) : toggle(b)
+                  }
                 />
               </View>
             )}
@@ -270,7 +283,7 @@ export default function Saved() {
           <Button
             key={session.id}
             secondary
-            label={`${session.isMock ? "Demo session" : "Voice conversation"} · ${new Date(session.createdAt).toLocaleDateString()}`}
+            label={`${session.topicTitle || (session.isMock ? "Demo session" : "Voice conversation")} · ${new Date(session.createdAt).toLocaleDateString()}`}
             onPress={() =>
               router.push({ pathname: "/recap", params: { id: session.id } })
             }

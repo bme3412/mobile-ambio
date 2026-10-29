@@ -1,9 +1,17 @@
+import { requestReview, practiceFromSession } from "../../conversation/review";
+import type { ConversationPracticeContext } from "../../domain/types";
 import {
   localDate,
   topicsForDate,
 } from "../../../preview/lib/conversation-topics.cjs";
 import { AudioLines } from "lucide-react-native";
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import {
   Platform,
   Switch,
@@ -12,7 +20,7 @@ import {
   View,
   AppState,
 } from "react-native";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import {
   Body,
   Button,
@@ -29,6 +37,15 @@ import { stopPronunciation } from "../../playback/pronunciation";
 import { VoiceConversation } from "../../conversation/realtime";
 
 function ConversationContent() {
+  const params = useLocalSearchParams<{
+    practiceSessionId?: string;
+    practiceRequest?: string;
+    typing?: string;
+  }>();
+  const [focused, setFocused] = useState(false);
+  const consumed = useRef<string | null>(null);
+  const [parentSessionId, setParentSessionId] = useState<string | undefined>();
+  const saving = useRef(false);
   const [today, setToday] = useState(localDate);
   const suggestions = topicsForDate(today);
   const [typing, setTyping] = useState(false);
@@ -115,6 +132,7 @@ function ConversationContent() {
   };
   useFocusEffect(
     useCallback(() => {
+      setFocused(true);
       setToday(localDate());
       setHealthCheck((value) => value + 1);
       const leave = () => voice.end();
@@ -139,6 +157,7 @@ function ConversationContent() {
             })
           : null;
       return () => {
+        setFocused(false);
         appState?.remove();
         voice.end();
         if (Platform.OS === "web") {
@@ -148,27 +167,90 @@ function ConversationContent() {
       };
     }, [voice]),
   );
-  const start = (
-    microphone: boolean,
-    topic = { id: "open", label: "Just talk" },
-  ) => {
-    player.pause();
-    stopPronunciation();
-    setDraft("");
-    setSessionTopic(topic.label);
-    void voice
-      .start(microphone, undefined, { id: topic.id, date: today })
-      .then(() => {
-        if (voice.getSnapshot().status === "error")
-          setHealthCheck((value) => value + 1);
-      });
-  };
-  const finish = () => {
+  const start = useCallback(
+    (
+      microphone: boolean,
+      topic = { id: "open", label: "Just talk" },
+      practiceContext?: ConversationPracticeContext,
+    ) => {
+      player.pause();
+      stopPronunciation();
+      setDraft("");
+      setParentSessionId(practiceContext?.parentSessionId);
+      setSessionTopic(topic.label);
+      void voice
+        .start(
+          microphone,
+          undefined,
+          { id: topic.id, date: today },
+          practiceContext,
+        )
+        .then(() => {
+          if (voice.getSnapshot().status === "error")
+            setHealthCheck((v) => v + 1);
+        });
+    },
+    [
+      today,
+      voice,
+      setDraft,
+      setParentSessionId,
+      setSessionTopic,
+      setHealthCheck,
+    ],
+  );
+  useEffect(() => {
+    if (
+      !focused ||
+      available !== true ||
+      !params.practiceRequest ||
+      !params.practiceSessionId ||
+      consumed.current === params.practiceRequest
+    )
+      return;
+    let cancelled = false;
+    // Start the external voice connection after the route has committed; a blur
+    // or Strict Mode cleanup cancels this handoff before microphone acquisition.
+    void Promise.resolve().then(() => {
+      if (cancelled) return;
+      consumed.current = params.practiceRequest ?? null;
+      const parent = useLibrary
+        .getState()
+        .sessions.find((s) => s.id === params.practiceSessionId);
+      const context = parent && practiceFromSession(parent);
+      if (!context) {
+        setServiceError(
+          "This review is no longer available. Open the saved conversation and generate a review first.",
+        );
+        return;
+      }
+      setTyping(params.typing === "1");
+      start(
+        params.typing !== "1",
+        { id: "open", label: `Practice · ${context.topic}` },
+        context,
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    focused,
+    available,
+    params.practiceRequest,
+    params.practiceSessionId,
+    params.typing,
+    start,
+  ]);
+  const finish = async () => {
+    if (saving.current) return;
+    saving.current = true;
     voice.end();
     const snapshot = voice.getSnapshot();
     const id = `voice-${Date.now()}`;
-    save({
+    await save({
       id,
+      parentSessionId,
       episodeId: "",
       topicTitle: sessionTopic,
       createdAt: new Date().toISOString(),
@@ -176,7 +258,9 @@ function ConversationContent() {
       turns: snapshot.turns.filter((t) => t.text.trim()),
       observations: snapshot.observations,
     });
+    void requestReview(id);
     router.push({ pathname: "/recap", params: { id } });
+    saving.current = false;
   };
   return (
     <Page>

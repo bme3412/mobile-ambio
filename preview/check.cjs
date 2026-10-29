@@ -240,6 +240,54 @@ server.listen(0, "127.0.0.1", async () => {
     assert.equal(await nativeCall.text(), "native-answer-sdp");
     global.fetch = realFetch;
 
+    // JSON follow-up offers use the same authenticated route; legacy SDP above still works.
+    delete require.cache[require.resolve("./lib/voice.cjs")];
+    global.fetch = async (url, opts) => {
+      if (url === "https://api.openai.com/v1/realtime/calls") {
+        const config = JSON.parse(opts.body.get("session"));
+        assert.match(config.instructions, /LEARNING MATERIAL:/);
+        assert.match(config.instructions, /avec mon ami/);
+        assert.equal(
+          config.audio.input.turn_detection.interrupt_response,
+          false,
+        );
+        return new Response("practice-answer-sdp");
+      }
+      return realFetch(url, opts);
+    };
+    const practiceCall = await fetch(base + "/api/voice/session", {
+      method: "POST",
+      headers: { ...nativeHeaders, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sdp: "v=0\r\nm=audio",
+        practiceContext: {
+          parentSessionId: "original",
+          topic: "A café",
+          phrases: ["avec mon ami"],
+        },
+      }),
+    });
+    assert.equal(practiceCall.status, 200);
+    assert.equal(await practiceCall.text(), "practice-answer-sdp");
+    global.fetch = realFetch;
+    assert.equal(
+      (
+        await fetch(base + "/api/voice/review", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: "{}",
+        })
+      ).status,
+      401,
+    );
+    const emptyReview = await fetch(base + "/api/voice/review", {
+      method: "POST",
+      headers: { ...nativeHeaders, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: "empty", topicTitle: "", turns: [] }),
+    });
+    assert.equal(emptyReview.status, 200);
+    assert.deepEqual((await emptyReview.json()).refinements, []);
+
     // Verify editorial and voice-config parity between src/server and preview/lib.
     assert.equal(
       fs.readFileSync("./lib/editorial.json", "utf8"),

@@ -51,6 +51,10 @@ export interface LearningObservation {
   explanation: string;
 }
 export interface ConversationSession {
+  parentSessionId?: string;
+  review?: ConversationReview;
+  reviewStatus?: "pending" | "ready" | "error";
+  reviewError?: string;
   topicTitle?: string;
   id: string;
   episodeId: string;
@@ -64,3 +68,40 @@ export interface ConversationSession {
   observations: LearningObservation[];
   isMock: boolean;
 }
+
+export interface ConversationReview {
+  schemaVersion: number;
+  transcriptFingerprint: string;
+  summary: string;
+  refinements: {
+    id: string;
+    turnId: string;
+    original: string;
+    suggestion: string;
+    explanation: string;
+    kind: "correction" | "alternative";
+  }[];
+  expressions: {
+    id: string;
+    turnId: string;
+    sourceQuote: string;
+    phrase: string;
+    meaning: string;
+    example: string;
+  }[];
+}
+export interface ConversationPracticeContext {
+  parentSessionId: string;
+  topic: string;
+  phrases: string[];
+}
+export interface ConversationPhrase {
+  source: "conversation";
+  id: string;
+  sessionId: string;
+  topicTitle: string;
+  word: Pick<WordToken, "text" | "meaning">;
+  context: string;
+  reviewed: boolean;
+}
+export type SavedExpression = Bookmark | ConversationPhrase;

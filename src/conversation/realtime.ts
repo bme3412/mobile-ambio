@@ -1,6 +1,10 @@
 import { createVoiceTransport } from "./transport";
 import { VoiceTransport, VoiceTransportFactory } from "./transport-types";
-import { ConversationSession, LearningObservation } from "../domain/types";
+import {
+  ConversationSession,
+  LearningObservation,
+  ConversationPracticeContext,
+} from "../domain/types";
 export type VoiceState = {
   status:
     | "idle"
@@ -78,6 +82,7 @@ export class VoiceConversation {
     microphone = true,
     episodeId?: string,
     topic?: { id: string; date: string },
+    practiceContext?: ConversationPracticeContext,
   ) {
     this.release();
     const generation = this.generation;
@@ -170,8 +175,14 @@ export class VoiceConversation {
         `/api/voice/session${topic ? `?topicId=${encodeURIComponent(topic.id)}&localDate=${encodeURIComponent(topic.date)}` : episodeId ? `?episodeId=${encodeURIComponent(episodeId)}` : ""}`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/sdp" },
-          body: offer,
+          headers: {
+            "Content-Type": practiceContext
+              ? "application/json"
+              : "application/sdp",
+          },
+          body: practiceContext
+            ? JSON.stringify({ sdp: offer, practiceContext })
+            : offer,
           signal: this.abort.signal,
         },
       );

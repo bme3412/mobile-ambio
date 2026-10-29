@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import {
   Bookmark,
+  ConversationPhrase,
   ConversationSession,
   PlaybackProgress,
 } from "../domain/types";
@@ -11,6 +12,10 @@ interface Library {
   selectEpisode: (id: string) => void;
   progressByEpisode: Record<string, PlaybackProgress>;
   bookmarks: Bookmark[];
+  conversationPhrases: ConversationPhrase[];
+  togglePhrase: (phrase: ConversationPhrase) => void;
+  reviewPhrase: (id: string) => void;
+  updateSession: (id: string, patch: Partial<ConversationSession>) => void;
   transcripts: string[];
   toggleTranscript: (episodeId: string) => void;
   sessions: ConversationSession[];
@@ -18,7 +23,7 @@ interface Library {
   storageError: boolean;
   toggle: (bookmark: Bookmark) => void;
   review: (id: string) => void;
-  saveSession: (session: ConversationSession) => void;
+  saveSession: (session: ConversationSession) => Promise<void>;
   saveProgress: (progress: PlaybackProgress) => void;
 }
 export const useLibrary = create<Library>()(
@@ -28,6 +33,29 @@ export const useLibrary = create<Library>()(
       selectEpisode: (activeEpisodeId) => set({ activeEpisodeId }),
       progressByEpisode: {},
       bookmarks: [],
+      conversationPhrases: [],
+      togglePhrase: (phrase) =>
+        set((s) => ({
+          conversationPhrases: s.conversationPhrases.some(
+            (p) => p.id === phrase.id,
+          )
+            ? s.conversationPhrases.filter((p) => p.id !== phrase.id)
+            : [phrase, ...s.conversationPhrases],
+        })),
+      reviewPhrase: (id) =>
+        set((s) => ({
+          conversationPhrases: s.conversationPhrases.map((p) =>
+            p.id === id ? { ...p, reviewed: !p.reviewed } : p,
+          ),
+        })),
+      updateSession: (id, patch) =>
+        set((s) => ({
+          sessions: s.sessions.map((session) =>
+            session.id === id
+              ? { ...session, ...patch, id: session.id }
+              : session,
+          ),
+        })),
       transcripts: [],
       toggleTranscript: (id) =>
         set((s) => ({
@@ -50,10 +78,11 @@ export const useLibrary = create<Library>()(
             b.id === id ? { ...b, reviewed: !b.reviewed } : b,
           ),
         })),
-      saveSession: (session) =>
-        set((s) => ({
+      saveSession: async (session) => {
+        await set((s) => ({
           sessions: [session, ...s.sessions.filter((x) => x.id !== session.id)],
-        })),
+        }));
+      },
       saveProgress: (progress) =>
         set((s) => ({
           progress,
@@ -65,11 +94,12 @@ export const useLibrary = create<Library>()(
     }),
     {
       name: "ambio-library-v1",
-      version: 2,
+      version: 3,
       migrate: (persisted) => {
         const state = persisted as Partial<Library>;
         return {
           ...state,
+          conversationPhrases: state.conversationPhrases ?? [],
           activeEpisodeId: state.activeEpisodeId ?? "daily-fr-2026-10-24",
           progressByEpisode:
             state.progressByEpisode ??
@@ -98,6 +128,7 @@ export const useLibrary = create<Library>()(
         removeItem: (key) => AsyncStorage.removeItem(key),
       })),
       partialize: ({
+        conversationPhrases,
         bookmarks,
         sessions,
         progress,
@@ -105,6 +136,7 @@ export const useLibrary = create<Library>()(
         activeEpisodeId,
         progressByEpisode,
       }) => ({
+        conversationPhrases,
         activeEpisodeId,
         progressByEpisode,
         bookmarks,

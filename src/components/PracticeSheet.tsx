@@ -2,21 +2,33 @@ import { findEdition } from "../data/catalog";
 import { useState } from "react";
 import { Modal, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Bookmark } from "../domain/types";
+import { SavedExpression } from "../domain/types";
 import { Body, Button, colors, Label, s, Title } from "./ui";
 import { useLibrary } from "../state/library";
 export function PracticeSheet({
   items,
   onClose,
 }: {
-  items: Bookmark[];
+  items: SavedExpression[];
   onClose: () => void;
 }) {
   const [index, setIndex] = useState(0),
     [revealed, setRevealed] = useState(false);
-  const review = useLibrary((x) => x.review);
+  const reviewEpisode = useLibrary((x) => x.review);
+  const reviewPhrase = useLibrary((x) => x.reviewPhrase);
+  const review = (id: string) =>
+    "sessionId" in items[index] ? reviewPhrase(id) : reviewEpisode(id);
   const item = items[index];
-  const episode = item ? findEdition(item.episodeId)?.episode : undefined;
+  const episode =
+    item && "episodeId" in item
+      ? findEdition(item.episodeId)?.episode
+      : undefined;
+  const isReviewed = () => {
+    const library = useLibrary.getState();
+    return [...library.bookmarks, ...library.conversationPhrases].find(
+      (b) => b.id === item?.id,
+    )?.reviewed;
+  };
   const next = () => {
     setIndex((i) => i + 1);
     setRevealed(false);
@@ -44,7 +56,7 @@ export function PracticeSheet({
                   <Title>{item.word.meaning ?? "In this sentence"}</Title>
                   {!item.word.meaning && (
                     <Body>
-                      {(item.episodeId === episode?.id
+                      {("episodeId" in item && item.episodeId === episode?.id
                         ? episode?.segments.find((s) => s.id === item.segmentId)
                             ?.translation
                         : undefined) ?? item.context}
@@ -53,12 +65,7 @@ export function PracticeSheet({
                   <Button
                     label="Got it · next"
                     onPress={() => {
-                      if (
-                        !useLibrary
-                          .getState()
-                          .bookmarks.find((b) => b.id === item.id)?.reviewed
-                      )
-                        review(item.id);
+                      if (!isReviewed()) review(item.id);
                       next();
                     }}
                   />
@@ -66,12 +73,7 @@ export function PracticeSheet({
                     secondary
                     label="Revisit later"
                     onPress={() => {
-                      if (
-                        useLibrary
-                          .getState()
-                          .bookmarks.find((b) => b.id === item.id)?.reviewed
-                      )
-                        review(item.id);
+                      if (isReviewed()) review(item.id);
                       next();
                     }}
                   />

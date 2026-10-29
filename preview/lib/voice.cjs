@@ -33,6 +33,14 @@ module.exports = async (req, res, url, { native = false } = {}) => {
       generalConversation: true,
       dynamicEditions: require("./editions.cjs").configured(),
     });
+  if (url.pathname === "/api/voice/review") {
+    if (
+      (!native && req.headers.origin !== url.origin) ||
+      (native && req.headers.origin && req.headers.origin !== url.origin)
+    )
+      return json(403, { error: "Forbidden." });
+    return require("./conversation-review.cjs")(req, res);
+  }
   if (url.pathname === "/api/voice/practice/token") {
     if (
       (!native && req.headers.origin !== url.origin) ||
@@ -55,7 +63,13 @@ module.exports = async (req, res, url, { native = false } = {}) => {
     return json(403, { error: "Forbidden." });
   if (!process.env.OPENAI_API_KEY)
     return json(503, { error: "Voice is temporarily unavailable." });
-  if (!req.headers["content-type"]?.startsWith("application/sdp"))
+  const jsonSession =
+    url.pathname === "/api/voice/session" &&
+    req.headers["content-type"]?.startsWith("application/json");
+  if (
+    !jsonSession &&
+    !req.headers["content-type"]?.startsWith("application/sdp")
+  )
     return json(415, { error: "Expected an audio connection offer." });
   try {
     let body = req.body;
@@ -68,6 +82,19 @@ module.exports = async (req, res, url, { native = false } = {}) => {
       }
     }
     if (Buffer.isBuffer(body)) body = body.toString("utf8");
+    let practiceContext;
+    if (jsonSession) {
+      try {
+        const data = typeof body === "string" ? JSON.parse(body) : body;
+        practiceContext =
+          require("./conversation-review-contract.cjs").practiceContext(
+            data.practiceContext,
+          );
+        body = data.sdp;
+      } catch {
+        return json(400, { error: "Invalid conversation practice context." });
+      }
+    }
     if (typeof body !== "string") return json(400, { error: "Invalid offer." });
     if (Buffer.byteLength(body) > 64000)
       return json(413, { error: "Offer too large." });
@@ -84,7 +111,8 @@ module.exports = async (req, res, url, { native = false } = {}) => {
         url.pathname === "/api/voice/session"
           ? url.searchParams.get("topicId")
           : null;
-      const id = topicId ? null : url.searchParams.get("episodeId");
+      const id =
+        topicId || practiceContext ? null : url.searchParams.get("episodeId");
       const editions = require("./editions.cjs");
       const published =
         id && editions.configured() ? await editions.bundle(id) : null;
@@ -107,7 +135,8 @@ module.exports = async (req, res, url, { native = false } = {}) => {
               url.searchParams.get("episodeId") ?? undefined,
               published?.editorial,
               {
-                topicId,
+                topicId: practiceContext ? "open" : topicId,
+                practiceContext,
                 autoInterrupt: !native,
                 localDate: url.searchParams.get("localDate") ?? undefined,
               },

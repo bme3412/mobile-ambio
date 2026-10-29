@@ -25,6 +25,16 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
           episodeIds,
           generalConversation: true,
         });
+      if (url.pathname === "/api/voice/review") {
+        if (
+          !allowedHosts.map((h) => "http://" + h).includes(req.headers.origin)
+        )
+          return json(403, { error: "Local app only." });
+        return require("../preview/lib/conversation-review.cjs")(req, res, {
+          fetchImpl,
+          env: { ...process.env, OPENAI_API_KEY: apiKey },
+        });
+      }
       if (url.pathname === "/api/voice/session") {
         if (req.method !== "POST")
           return json(405, { error: "Method not allowed." });
@@ -38,7 +48,12 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
           return json(503, {
             error: "The local voice server needs OPENAI_API_KEY.",
           });
-        if (!req.headers["content-type"]?.startsWith("application/sdp"))
+        const jsonSession =
+          req.headers["content-type"]?.startsWith("application/json");
+        if (
+          !jsonSession &&
+          !req.headers["content-type"]?.startsWith("application/sdp")
+        )
           return json(415, { error: "Expected an audio connection offer." });
         let body = "";
         for await (const chunk of req) {
@@ -46,7 +61,24 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
           if (Buffer.byteLength(body) > 64000)
             return json(413, { error: "Connection offer too large." });
         }
-        if (!body.startsWith("v=0") || !body.includes("m=audio"))
+        let practiceContext;
+        if (jsonSession) {
+          try {
+            const data = JSON.parse(body);
+            practiceContext =
+              require("../preview/lib/conversation-review-contract.cjs").practiceContext(
+                data.practiceContext,
+              );
+            body = data.sdp;
+          } catch {
+            return json(400, { error: "Invalid practice context." });
+          }
+        }
+        if (
+          typeof body !== "string" ||
+          !body.startsWith("v=0") ||
+          !body.includes("m=audio")
+        )
           return json(400, { error: "Invalid audio connection offer." });
         if (Date.now() - lastSession < 3000)
           return json(429, {
@@ -59,7 +91,10 @@ function createServer({ apiKey, fetchImpl = fetch, port = 8085 }) {
             url.searchParams.get("episodeId") ?? undefined,
             undefined,
             {
-              topicId: url.searchParams.get("topicId"),
+              topicId: practiceContext
+                ? "open"
+                : url.searchParams.get("topicId"),
+              practiceContext,
               localDate: url.searchParams.get("localDate") ?? undefined,
             },
           );
