@@ -1,3 +1,6 @@
+jest.mock("../src/activity/useLearningTime", () => ({
+  useLearningTime: jest.fn(),
+}));
 import { conversation, result } from "./conversation-review-fixture";
 import { validateReview } from "../preview/lib/conversation-review-contract.cjs";
 import { voiceApi } from "../src/conversation/api";

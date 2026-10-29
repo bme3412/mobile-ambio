@@ -3,6 +3,7 @@ import { assertEditionBundle as validate } from "../../preview/lib/edition-contr
 type Input = Parameters<typeof buildEdition>[0];
 export type EditionBundle = Omit<Input, "audio"> & {
   schemaVersion: 1;
+  artwork?: { dataUri: string; description: string; label: string };
   id: string;
   revision: number;
   verifiedAt: string;
@@ -16,6 +17,10 @@ export function assertEditionBundle(
 export function fromBundle(bundle: EditionBundle, audio: string | number = "") {
   const result = buildEdition({ ...bundle, audio });
   result.verifiedAt = bundle.verifiedAt;
+  if (bundle.artwork) {
+    result.episode.cover = bundle.artwork.dataUri;
+    result.episode.coverDescription = bundle.artwork.description;
+  }
   if (bundle.revision > 1) {
     const old = `daily${bundle.date.replaceAll("-", "")}`;
     const next = `${old}r${bundle.revision}`;

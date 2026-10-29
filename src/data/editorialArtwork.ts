@@ -3,7 +3,7 @@ import type { ImageSourcePropType } from "react-native";
 export type EditorialArtwork = {
   source: ImageSourcePropType;
   description: string;
-  label: "Illustration";
+  label: "Illustration" | "AI illustration";
   aspectRatio: number;
 };
 const art = (
@@ -26,6 +26,13 @@ export const editorialArtwork: Record<
     stories: Partial<Record<string, EditorialArtwork>>;
   }
 > = {
+  "daily-fr-2026-10-27": {
+    cover: art(
+      require("../../assets/editorial/oct27.jpg"),
+      "A house and coins, a bat and a watercolor palette illustrate household confidence, bat origins and an art workshop.",
+    ),
+    stories: {},
+  },
   "daily-fr-2026-10-26": {
     cover: brazil,
     stories: {
@@ -61,3 +68,21 @@ export const defaultEditorialArtwork = art(
   require("../../assets/paris-cafe-hero.png"),
   "Ambio café illustration.",
 );
+
+export function artworkForEpisode(episode: {
+  id: string;
+  cover: string;
+  coverDescription?: string;
+}): EditorialArtwork | undefined {
+  if (episode.cover.startsWith("data:image/jpeg;base64,"))
+    return {
+      source: { uri: episode.cover },
+      description: episode.coverDescription ?? "Edition illustration",
+      label: "AI illustration",
+      aspectRatio: 1.5,
+    };
+  return editorialArtwork[episode.id.split("@")[0]]?.cover;
+}
+export function artworkForStory(episodeId: string, storyId: string) {
+  return editorialArtwork[episodeId.split("@")[0]]?.stories[storyId];
+}

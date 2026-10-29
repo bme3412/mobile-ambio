@@ -1,3 +1,4 @@
+import { useActivity } from "../state/activity";
 import { createVoiceTransport } from "./transport";
 import { VoiceTransport, VoiceTransportFactory } from "./transport-types";
 import {
@@ -225,6 +226,9 @@ export class VoiceConversation {
         this.turn(id, "user", String(event.delta ?? ""), true);
         break;
       case "conversation.item.input_audio_transcription.completed":
+        useActivity
+          .getState()
+          .words(id, String(event.transcript ?? ""), "spoken");
         this.turn(
           id,
           "user",
@@ -355,6 +359,7 @@ export class VoiceConversation {
     this.interrupt();
     const id = `msg_${Date.now()}`;
     this.turn(id, "user", text.trim());
+    useActivity.getState().words(id, text.trim(), "typed");
     this.send({
       type: "conversation.item.create",
       item: {

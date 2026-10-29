@@ -1,3 +1,5 @@
+import { useLearningTime } from "../activity/useLearningTime";
+import { useActivity } from "../state/activity";
 import { findEdition } from "../data/catalog";
 import { useState } from "react";
 import { Modal, ScrollView, View } from "react-native";
@@ -19,6 +21,7 @@ export function PracticeSheet({
   const review = (id: string) =>
     "sessionId" in items[index] ? reviewPhrase(id) : reviewEpisode(id);
   const item = items[index];
+  useLearningTime("practice", !!item, `${index}:${revealed}`);
   const episode =
     item && "episodeId" in item
       ? findEdition(item.episodeId)?.episode
@@ -81,7 +84,12 @@ export function PracticeSheet({
               ) : (
                 <Button
                   label="Reveal meaning"
-                  onPress={() => setRevealed(true)}
+                  onPress={() => {
+                    setRevealed(true);
+                    useActivity
+                      .getState()
+                      .words(item.id, item.word.text, "encountered");
+                  }}
                 />
               )}
             </>

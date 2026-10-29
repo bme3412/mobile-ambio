@@ -10,6 +10,7 @@ import sys
 import uuid
 from .core import schedule, identity, production_settings, json_bytes, PaidClient, required_rate
 from .storage import Storage
+from .artwork import generate_artwork
 from .providers import research, story_brief, write_and_review
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -68,6 +69,9 @@ def run(args):
             still_allowed(); status('write-and-review')
             example=json.loads((ROOT/'scripts/daily/example.json').read_text())
             draft,review=write_and_review(client,date,checkpoint['sources'],checkpoint['recent'],example,checkpoint,checkpoint['brief'])
+            still_allowed(); status('artwork')
+            if 'artwork' not in checkpoint:
+                checkpoint['artwork']=generate_artwork(client,date,draft['editorial']);checkpoint.save()
             for name,value in [('editorial',draft['editorial']),('phrases',draft['pairs']),('dictionary',draft['definitions']),('vocabulary',draft['vocabulary'])]:
                 (work/f'{name}.json').write_bytes(json_bytes(value))
             config=work/'settings.json';config.write_bytes(json_bytes(production_settings(date,draft['editorial'],work)))
@@ -86,7 +90,7 @@ def run(args):
             still_allowed();status('speech');sys.argv=['build_elevenlabs_v4','--edition',date];speech.main()
             still_allowed();status('mix');sys.argv=['build_cafe_episode','--edition',date];mix.main()
             audio=(work/f'edition-{date}-cafe.mp3').read_bytes()
-            bundle={**draft,'schemaVersion':1,'id':id,'date':date,'revision':args.revision,
+            bundle={**draft,'artwork':checkpoint['artwork'],'schemaVersion':1,'id':id,'date':date,'revision':args.revision,
                     'verifiedAt':checkpoint.setdefault('verifiedAt',dt.datetime.now(dt.timezone.utc).isoformat()),
                     'timing':json.loads((work/'audio-timing.json').read_text()),
                     'audio':{'path':id+'/audio.mp3','sha256':hashlib.sha256(audio).hexdigest(),'bytes':len(audio)}}

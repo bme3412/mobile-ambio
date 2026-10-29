@@ -44,3 +44,15 @@ test("revisions retain old identities and give corrected references separate ide
   );
   expect(() => referenceFor(two, old.episodePhrases[0].words[0].id)).toThrow();
 });
+test("hosted artwork survives bundle loading and rejects external image URLs", () => {
+  const b = fixture();
+  b.artwork = {
+    dataUri: "data:image/jpeg;base64,/9j/AA==",
+    description: "A story-specific editorial illustration",
+    label: "AI illustration",
+  };
+  assertEditionBundle(b);
+  expect(fromBundle(b).episode.cover).toBe(b.artwork.dataUri);
+  b.artwork.dataUri = "https://untrusted.example/image.jpg";
+  expect(() => assertEditionBundle(b)).toThrow("artwork image");
+});

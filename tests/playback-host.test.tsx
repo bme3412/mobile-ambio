@@ -6,6 +6,7 @@ import { player } from "../src/playback/player";
 jest.mock("expo-audio", () => ({ setAudioModeAsync: jest.fn(async () => {}) }));
 jest.mock("../src/playback/player", () => ({
   player: {
+    getTrackingEpoch: () => 0,
     seek: jest.fn(),
     setRate: jest.fn(),
     pause: jest.fn(),

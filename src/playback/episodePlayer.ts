@@ -13,6 +13,7 @@ type Engine = Omit<PlaybackAdapter, "getSnapshot"> & {
 export function createEpisodePlayer(
   factory: (edition: ReturnType<typeof getEdition>) => Engine,
 ) {
+  let trackingEpoch = 0;
   let id = useLibrary.getState().activeEpisodeId;
   const unavailable = (): Engine => {
     const state = {
@@ -46,6 +47,7 @@ export function createEpisodePlayer(
   };
   const switchEpisode = (next: string) => {
     if (next === id && !missing) return;
+    trackingEpoch++;
     unsubscribe();
     engine.pause();
     save();
@@ -70,6 +72,7 @@ export function createEpisodePlayer(
   });
   return {
     getSnapshot: () => engine.getSnapshot(),
+    getTrackingEpoch: () => trackingEpoch,
     subscribe: (fn: () => void) => {
       listeners.add(fn);
       return () => {
@@ -78,8 +81,14 @@ export function createEpisodePlayer(
     },
     play: () => engine.play(),
     pause: () => engine.pause(),
-    seek: (ms: number) => engine.seek(ms),
-    replay: (start: number, end: number) => engine.replay(start, end),
+    seek: (ms: number) => {
+      trackingEpoch++;
+      engine.seek(ms);
+    },
+    replay: (start: number, end: number) => {
+      trackingEpoch++;
+      engine.replay(start, end);
+    },
     setRate: (rate: number) => engine.setRate(rate),
     tick: (ms: number) => engine.tick(ms),
     dispose: () => engine.dispose(),

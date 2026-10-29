@@ -1,19 +1,18 @@
+import { DailyProgress } from "../../components/DailyProgress";
+import { learningSummary } from "../../activity/learning";
 import { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { router, useFocusEffect } from "expo-router";
-import { Body, Button, Label, Page, Title, s } from "../../components/ui";
+import { useFocusEffect } from "expo-router";
+import { Body, Label, Page, Title, s } from "../../components/ui";
 import { useActivity } from "../../state/activity";
 import { useLibrary } from "../../state/library";
 import { practiceSummary } from "../../activity/model";
-import {
-  useCatalog,
-  editions,
-  findEdition,
-  latestEdition,
-} from "../../data/catalog";
+import { useCatalog, editions, findEdition } from "../../data/catalog";
 
 export default function Progress() {
   useCatalog((s) => s.version);
+  const days = useActivity((s) => s.days);
+  const phrases = useLibrary((s) => s.conversationPhrases);
   const attempts = useActivity((state) => state.attempts);
   const storageError = useActivity((state) => state.storageError);
   const bookmarks = useLibrary((state) => state.bookmarks);
@@ -28,7 +27,7 @@ export default function Progress() {
     }, []),
   );
   const summary = practiceSummary(attempts, now);
-  const goal = 3;
+
   return (
     <Page mini>
       <Label>YOUR FRENCH, DAY BY DAY</Label>
@@ -40,90 +39,60 @@ export default function Progress() {
           survive restarting the app.
         </Text>
       )}
-      <View style={styles.hero}>
-        <Label>TODAY’S PRACTICE</Label>
-        <Text style={styles.number}>
-          {summary.todayPhrases}{" "}
-          <Text style={styles.denominator}>/ {goal} phrases</Text>
-        </Text>
-        <View
-          accessibilityRole="progressbar"
-          accessibilityLabel={`Daily practice goal: ${summary.todayPhrases} of ${goal} different phrases coached today`}
-          accessibilityValue={{
-            min: 0,
-            max: goal,
-            now: Math.min(goal, summary.todayPhrases),
-            text: `${summary.todayPhrases} different phrases coached today; goal ${goal}`,
-          }}
-          style={styles.track}
-        >
-          <View
-            style={[
-              styles.fill,
-              {
-                width: `${Math.min(100, (summary.todayPhrases / goal) * 100)}%`,
-              },
-            ]}
-          />
-        </View>
-        <Body>
-          {summary.todayPhrases >= goal
-            ? "You made time for French today. Keep going if you feel like it."
-            : "Try three different phrases today. Take your time, and repeat whenever it helps."}
-        </Body>
-        <Button
-          label="Practise a story"
-          onPress={() =>
-            router.push({
-              pathname: "/practice",
-              params: {
-                episodeId: latestEdition.episode.id,
-                storyId: latestEdition.episode.stories[0].id,
-              },
-            })
-          }
-        />
-      </View>
+      <DailyProgress now={now} />
       <Text accessibilityRole="header" style={s.subheading}>
         Your last seven days
       </Text>
       <View style={styles.week}>
-        {summary.week.map((day) => (
-          <View
-            key={day.day}
-            style={styles.day}
-            accessible
-            accessibilityLabel={`${day.date.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}: ${day.attempts} coached attempts`}
-          >
-            <Text style={styles.dayLabel}>
-              {day.date.toLocaleDateString(undefined, { weekday: "narrow" })}
-            </Text>
+        {summary.week.map((day) => {
+          const minutes = learningSummary(days, day.date).milliseconds / 60000;
+          return (
             <View
-              style={[
-                styles.dot,
-                day.attempts > 0 && styles.activeDot,
-                day.day === summary.today && styles.today,
-              ]}
+              key={day.day}
+              style={styles.day}
+              accessible
+              accessibilityLabel={`${day.date.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}: ${minutes.toFixed(1)} minutes of French`}
             >
-              <Text
-                style={[styles.count, day.attempts > 0 && { color: "white" }]}
-              >
-                {day.attempts || "–"}
+              <Text style={styles.dayLabel}>
+                {day.date.toLocaleDateString(undefined, { weekday: "narrow" })}
               </Text>
+              <View
+                style={[
+                  styles.dot,
+                  minutes > 0 && styles.activeDot,
+                  day.day === summary.today && styles.today,
+                ]}
+              >
+                <Text style={[styles.count, minutes > 0 && { color: "white" }]}>
+                  {minutes > 0
+                    ? minutes < 1
+                      ? "<1"
+                      : minutes.toFixed(0)
+                    : "–"}
+                </Text>
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
       <Body>
-        {summary.activeDays} of 7 days with spoken practice. Each count is an
-        attempt with completed coach feedback.
+        {
+          summary.week.filter(
+            (day) => learningSummary(days, day.date).milliseconds > 0,
+          ).length
+        }{" "}
+        of 7 days with French activity. Time and word tracking begins with this
+        update; earlier activity is not estimated.
       </Body>
       <View style={styles.metrics}>
         <Metric value={attempts.length} label="Coached attempts" />
         <Metric value={summary.phrases} label="Different phrases" />
-        <Metric value={bookmarks.length} label="Saved words & phrases" />
         <Metric
-          value={bookmarks.filter((b) => b.reviewed).length}
+          value={bookmarks.length + phrases.length}
+          label="Saved words & phrases"
+        />
+        <Metric
+          value={[...bookmarks, ...phrases].filter((b) => b.reviewed).length}
           label="Marked reviewed"
         />
         <Metric

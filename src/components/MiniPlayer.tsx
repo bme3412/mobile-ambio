@@ -1,6 +1,6 @@
 import { useLibrary } from "../state/library";
 import { findEdition, useCatalog } from "../data/catalog";
-import { cafeArtwork } from "../data/artwork";
+import { artworkForEpisode } from "../data/editorialArtwork";
 import { Image, Pressable, Text, View } from "react-native";
 import { router } from "expo-router";
 import { player, time, usePlayback } from "../playback/player";
@@ -34,15 +34,17 @@ export function MiniPlayer({
         alignItems: "center",
       }}
     >
-      <Image
-        source={cafeArtwork}
-        style={{
-          width: 52,
-          height: 52,
-          borderRadius: 10,
-          backgroundColor: "#D8FAE9",
-        }}
-      />
+      {artworkForEpisode(episode) && (
+        <Image
+          source={artworkForEpisode(episode)!.source}
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 10,
+            backgroundColor: "#D8FAE9",
+          }}
+        />
+      )}
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Open current episode"

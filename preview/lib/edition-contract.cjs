@@ -14,6 +14,23 @@ function assertEditionBundle(b) {
   );
   const id = `daily-fr-${b.date}${b.revision === 1 ? "" : `@r${b.revision}`}`;
   check(b.id === id && ID.test(b.id), "identity");
+  if (b.artwork !== undefined) {
+    check(
+      b.artwork &&
+        typeof b.artwork.dataUri === "string" &&
+        b.artwork.dataUri.length <= 2000023 &&
+        /^data:image\/jpeg;base64,\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(
+          b.artwork.dataUri,
+        ),
+      "artwork image",
+    );
+    check(
+      typeof b.artwork.description === "string" &&
+        b.artwork.description.length > 0 &&
+        b.artwork.description.length <= 2000,
+      "artwork description",
+    );
+  }
   const {
     editorial: e,
     timing: t,

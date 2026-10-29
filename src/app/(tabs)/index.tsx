@@ -1,3 +1,4 @@
+import { DailyProgress } from "../../components/DailyProgress";
 import { EditionStatus, EditionDownload } from "../../components/EditionStatus";
 import { useMemo, useState } from "react";
 import {
@@ -18,8 +19,8 @@ import {
   refreshCatalog,
 } from "../../data/catalog";
 import {
-  editorialArtwork,
-  defaultEditorialArtwork,
+  artworkForEpisode,
+  artworkForStory,
 } from "../../data/editorialArtwork";
 import { EditorialImage } from "../../components/EditorialImage";
 import { Body, Button, colors, s } from "../../components/ui";
@@ -120,7 +121,9 @@ export default function Home() {
               />
             </View>
           )}
+        <EditorialImage artwork={artworkForEpisode(episode)} />
         <EditionDownload id={episode.id} />
+        <DailyProgress compact />
         <View style={m.rule}>
           <Text style={m.kicker}>DANS CETTE ÉDITION</Text>
           <Text style={m.meta}>01 — 03</Text>
@@ -137,12 +140,11 @@ export default function Home() {
               key={story.id}
               style={{ width: columns && index > 0 ? "47%" : "100%", gap: 12 }}
             >
-              <EditorialImage
-                artwork={
-                  editorialArtwork[episode.id]?.stories[story.id] ??
-                  defaultEditorialArtwork
-                }
-              />
+              {artworkForStory(episode.id, story.id) && (
+                <EditorialImage
+                  artwork={artworkForStory(episode.id, story.id)}
+                />
+              )}
               <Text style={m.kicker}>
                 {String(index + 1).padStart(2, "0")} / {story.category}
               </Text>

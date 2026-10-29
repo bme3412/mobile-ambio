@@ -1,3 +1,4 @@
+import { useLearningTime } from "../activity/useLearningTime";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import {
   KeyboardAvoidingView,
@@ -54,6 +55,11 @@ export default function SpokenPractice({
     coach.subscribe,
     coach.getSnapshot,
     coach.getSnapshot,
+  );
+  useLearningTime(
+    "practice",
+    active && ["listening", "thinking", "speaking"].includes(state.status),
+    state.status,
   );
   const phrase = material.phrases[index];
   const busy = ["connecting", "listening", "thinking", "speaking"].includes(

@@ -1,9 +1,6 @@
 import { EditionStatus, EditionDownload } from "../../components/EditionStatus";
 import { EditorialImage } from "../../components/EditorialImage";
-import {
-  editorialArtwork,
-  defaultEditorialArtwork,
-} from "../../data/editorialArtwork";
+import { artworkForEpisode } from "../../data/editorialArtwork";
 import { useState } from "react";
 import { Text, TextInput, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
@@ -120,11 +117,7 @@ export default function Library() {
                 },
               ]}
             >
-              <EditorialImage
-                artwork={
-                  editorialArtwork[episode.id]?.cover ?? defaultEditorialArtwork
-                }
-              />
+              <EditorialImage artwork={artworkForEpisode(episode)} />
               <EditionDownload id={episode.id} />
               {episode.id === LATEST_EPISODE_ID && (
                 <Text

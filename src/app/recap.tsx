@@ -1,3 +1,4 @@
+import { useLearningTime } from "../activity/useLearningTime";
 import { useState } from "react";
 import { Text, View, Switch } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
@@ -18,6 +19,7 @@ export default function Recap() {
   const [expanded, setExpanded] = useState(false);
   const [typing, setTyping] = useState(false);
   const review = session ? currentReview(session) : undefined;
+  useLearningTime("practice", !!review, `${id}:${expanded}`);
   const pending = session?.reviewStatus === "pending" && isReviewPending(id);
   const practice = session ? practiceFromSession(session) : undefined;
   return (

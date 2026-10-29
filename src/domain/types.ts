@@ -27,6 +27,7 @@ export interface Episode {
   language: "fr";
   durationMs: number;
   cover: string;
+  coverDescription?: string;
   stories: Story[];
   segments: TranscriptSegment[];
   isMock: boolean;

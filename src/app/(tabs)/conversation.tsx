@@ -1,3 +1,4 @@
+import { useLearningTime } from "../../activity/useLearningTime";
 import { requestReview, practiceFromSession } from "../../conversation/review";
 import type { ConversationPracticeContext } from "../../domain/types";
 import {
@@ -56,6 +57,11 @@ function ConversationContent() {
     voice.subscribe,
     voice.getSnapshot,
     voice.getSnapshot,
+  );
+  useLearningTime(
+    "talk",
+    ["listening", "thinking", "speaking"].includes(state.status),
+    state.turns,
   );
   const [captions, setCaptions] = useState(true);
   const [fullTranscript, setFullTranscript] = useState(true);

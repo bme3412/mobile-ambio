@@ -1,3 +1,5 @@
+import { listeningCredit } from "../activity/learning";
+import { useActivity } from "../state/activity";
 import { findEdition } from "../data/catalog";
 import { setAudioModeAsync } from "expo-audio";
 import { stopPronunciation } from "../playback/pronunciation";
@@ -40,6 +42,38 @@ export function PlaybackHost() {
       player.tick(now - last);
       last = now;
     }, 100);
+    let sample = {
+      time: Date.now(),
+      state: player.getSnapshot(),
+      epoch: player.getTrackingEpoch(),
+    };
+    const learning = setInterval(() => {
+      const now = Date.now(),
+        state = player.getSnapshot(),
+        epoch = player.getTrackingEpoch();
+      const elapsed = now - sample.time;
+      const credit = listeningCredit(
+        sample.state,
+        state,
+        elapsed,
+        epoch === sample.epoch,
+      );
+      if (useActivity.persist.hasHydrated() && credit > 0) {
+        const edition = findEdition(useLibrary.getState().activeEpisodeId);
+        const words =
+          edition?.episode.segments
+            .flatMap((s) => s.words)
+            .filter(
+              (w) =>
+                w.startMs >= sample.state.positionMs &&
+                w.startMs < state.positionMs,
+            )
+            .map((w) => w.text)
+            .join(" ") ?? "";
+        useActivity.getState().track("listening", now - credit, now, words);
+      }
+      sample = { time: now, state, epoch };
+    }, 1000);
     const persistence = setInterval(save, 3000);
     const app = AppState.addEventListener("change", (state) => {
       if (state !== "active") {
@@ -54,6 +88,7 @@ export function PlaybackHost() {
     });
     return () => {
       clearInterval(timer);
+      clearInterval(learning);
       clearInterval(persistence);
       app.remove();
       unsub();
