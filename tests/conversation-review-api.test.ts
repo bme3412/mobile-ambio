@@ -111,3 +111,35 @@ test("practice prompt treats supplied context as data and retains native protect
   expect(config.instructions).toContain("je vais");
   expect(config.audio.input.turn_detection.interrupt_response).toBe(false);
 });
+
+test("unsupported expressions are omitted while valid feedback is retained", async () => {
+  const output = result();
+  output.expressions.push({
+    ...output.expressions[0],
+    phrase: "je va",
+    sourceQuote: "je va",
+  });
+  output.expressions.push({
+    ...output.expressions[0],
+    phrase: "invented",
+    sourceQuote: "invented",
+  });
+  const response = res();
+  await handler(req(conversation()), response, {
+    env: { OPENAI_API_KEY: "test" },
+    fetchImpl: async () => ({
+      ok: true,
+      json: async () => ({
+        status: "completed",
+        output: [
+          { content: [{ type: "output_text", text: JSON.stringify(output) }] },
+        ],
+      }),
+    }),
+  });
+  expect(response.statusCode).toBe(200);
+  const review = JSON.parse(response.end.mock.calls[0][0]);
+  expect(review.refinements).toHaveLength(1);
+  expect(review.expressions).toHaveLength(1);
+  expect(review.expressions[0].phrase).toBe("avec mon ami");
+});
