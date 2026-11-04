@@ -144,7 +144,7 @@ When a story brief is supplied, use exactly those three stories and ONLY its sup
             if any(s['url'] not in allowed for s in draft['editorial']['sources']): raise ValueError('Unretrieved source URL')
             cited={s['url'] for s in draft['editorial']['sources']}
             paragraphs={f'{i}:{j}':{'url':s['url'],'evidence':text} for i,s in enumerate(sources) if s['url'] in cited for j,text in enumerate(s['evidence'].split('\n\n')) if len(text.strip())>=40}
-            review_input={'draft':draft,'paragraphs':paragraphs,'recent':recent}
+            review_input={'date':date,'brief':brief,'draft':draft,'paragraphs':paragraphs,'recent':recent}
             review_schema=obj({'passed':{'type':'boolean'},'issues':arr(S),'claims':arr(obj({'claim':S,'paragraphId':{'type':'string','enum':list(paragraphs)}}),minItems=3)})
             review_hash=hashlib.sha256(json_bytes({'instructions':REVIEW,'input':review_input})).hexdigest()
             review=checkpoint.get(f'review{attempt}') if checkpoint.get(f'reviewHash{attempt}')==review_hash else None
