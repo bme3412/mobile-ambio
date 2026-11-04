@@ -61,7 +61,7 @@ class PipelineResumeTests(unittest.TestCase):
         from unittest.mock import MagicMock
         storage=MagicMock()
         storage.rpc.return_value=True
-        storage.get.return_value=b'{"uploaded":true}'
+        storage.get.return_value=b'{"uploaded":true,"editorialPolicy":"france-tech-sport-v1"}'
         storage.rows.return_value=[]
         args=Namespace(date='2026-10-27',revision=1,scheduled=True)
         with patch('scripts.daily.run.Storage',return_value=storage),patch('scripts.daily.run.schedule',return_value=('2026-10-27',True,due)):
@@ -141,7 +141,7 @@ class SourceBriefTests(unittest.TestCase):
         ]+[{'url':'https://example.test/archives/2026','markdown':'Listing '*200}]}}
         with patch.dict('os.environ',{'FIRECRAWL_API_KEY':'test','FIRECRAWL_SEARCH_MAX_USD':'.1'}):sources=research(client,'2026-10-27')
         self.assertEqual(len(sources),3)
-        self.assertEqual(client.call.call_count,3)
+        self.assertEqual(client.call.call_count,4)
         self.assertTrue(all(c.args[2]['scrapeOptions']['onlyMainContent'] for c in client.call.call_args_list))
 
 class FeaturedCandidateTests(unittest.TestCase):

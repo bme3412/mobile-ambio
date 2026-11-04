@@ -10,6 +10,7 @@ import sys
 import uuid
 from .core import schedule, identity, production_settings, json_bytes, PaidClient, required_rate
 from .storage import Storage
+from .editorial_policy import VERSION
 from .artwork import generate_artwork
 from .providers import research, story_brief, write_and_review
 ROOT=Path(__file__).resolve().parents[2]
@@ -52,6 +53,8 @@ def run(args):
         existing=storage.rows(f'edition_revisions?id=eq.{id}&select=status')
         if existing and existing[0]['status']=='published': print('Already published.'); return
         if existing and existing[0]['status']=='withdrawn': raise ValueError('Withdrawn edition requires explicit rollback or a new revision')
+        if checkpoint and checkpoint.get('editorialPolicy') != VERSION: raise ValueError('Draft uses an earlier editorial policy; start a new revision')
+        checkpoint['editorialPolicy']=VERSION; checkpoint.save()
         if not checkpoint.get('uploaded'):
             client=PaidClient(storage,date,owner,float(os.environ.get('EDITION_DAILY_BUDGET_USD','10')),still_allowed)
             still_allowed(); status('research')
@@ -65,7 +68,15 @@ def run(args):
                 checkpoint.save()
             still_allowed(); status('story-brief')
             if 'brief' not in checkpoint:
-                checkpoint['brief']=story_brief(client,date,checkpoint['sources'],checkpoint['recent']);checkpoint.save()
+                try:
+                    checkpoint['brief']=story_brief(client,date,checkpoint['sources'],checkpoint['recent'],days=checkpoint.get('sourceWindow',1))
+                except ValueError:
+                    if checkpoint.get('sourceWindow') == 3: raise
+                    if 'expandedSources' not in checkpoint:
+                        checkpoint['expandedSources']=research(client,date,days=3);checkpoint.save()
+                    checkpoint['sources']=checkpoint['expandedSources'];checkpoint['sourceWindow']=3;checkpoint.save()
+                    checkpoint['brief']=story_brief(client,date,checkpoint['sources'],checkpoint['recent'],days=3)
+                checkpoint.save()
             still_allowed(); status('write-and-review')
             example=json.loads((ROOT/'scripts/daily/example.json').read_text())
             draft,review=write_and_review(client,date,checkpoint['sources'],checkpoint['recent'],example,checkpoint,checkpoint['brief'])
