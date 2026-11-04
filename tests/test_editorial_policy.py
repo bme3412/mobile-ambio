@@ -37,8 +37,9 @@ class EditorialPolicyTests(unittest.TestCase):
         with patch.dict('os.environ',{'FIRECRAWL_API_KEY':'test','FIRECRAWL_SEARCH_MAX_USD':'.01'}): research(client,'2026-11-03',days=3)
         bodies=[call.args[2] for call in client.call.call_args_list]
         self.assertEqual(len(bodies),4)
+        self.assertTrue(all('3 novembre 2026' in b['query'] and '1 novembre 2026' in b['query'] for b in bodies))
         self.assertTrue(all(b['tbs']=='cdr:1,cd_min:11/01/2026,cd_max:11/03/2026' for b in bodies))
-        self.assertTrue(any('global AI' in b['query'] for b in bodies))
+        self.assertTrue(any('AI news' in b['query'] for b in bodies))
     def test_shared_selection_and_review_rules(self):
         for prompt in [WRITE,REVIEW]:
             self.assertIn(POLICY,prompt)

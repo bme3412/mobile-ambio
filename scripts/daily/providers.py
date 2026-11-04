@@ -25,8 +25,15 @@ def research(client,date,days=1):
     day=dt.date.fromisoformat(date)
     if days not in (1,3): raise ValueError('Invalid research window')
     start=day-dt.timedelta(days=days-1)
+    french=('janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre')
+    english=('January','February','March','April','May','June','July','August','September','October','November','December')
+    dates=[]
+    for offset in range(days):
+        d=day-dt.timedelta(days=offset)
+        dates.extend((f'"{d.day} {french[d.month-1]} {d.year}"',f'"{english[d.month-1]} {d.day}, {d.year}"',f'"{d.isoformat()}"'))
+    dated='('+' OR '.join(dates)+')'
     for topic in QUERIES:
-        body={'query':f'{topic} -archives -replay -site:youtube.com -site:facebook.com', 'limit':4,
+        body={'query':f'{topic} {dated} -archives -replay -site:youtube.com -site:facebook.com', 'limit':4,
               'scrapeOptions':{'formats':['markdown'],'onlyMainContent':True},
               'tbs':f'cdr:1,cd_min:{start:%m/%d/%Y},cd_max:{day:%m/%d/%Y}'}
         result=client.call('https://api.firecrawl.dev/v2/search',{'Authorization':'Bearer '+os.environ['FIRECRAWL_API_KEY']},body,required_rate('FIRECRAWL_SEARCH_MAX_USD'))

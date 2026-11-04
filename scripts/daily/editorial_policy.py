@@ -3,11 +3,12 @@ VERSION = 'france-tech-sport-v1'
 LANES = ('france', 'technology-ai', 'european-sports')
 LABELS = ('FRANCE', 'TECH & IA', 'SPORT EUROPÉEN')
 QUERIES = (
-    'France actualité politique économie société décisions gouvernement entreprises',
-    'Europe technologie innovation intelligence artificielle entreprises lancement infrastructure',
-    'major global AI news model launch artificial intelligence capabilities adoption',
-    'European sport major results football tennis rugby cycling Formula 1 European athletes',
+    'France actualité (politique OR économie OR société)',
+    'Europe technologie (innovation OR lancement OR intelligence artificielle)',
+    'AI news (launch OR model OR release OR adoption)',
+    'sport (football OR tennis OR rugby OR cyclisme OR "Formule 1") résultats Europe',
 )
+
 POLICY = '''Select exactly one story in each lane, in this order:
 1. france: consequential French domestic politics, public policy, business, or everyday life.
 2. technology-ai: substantive European technology developments OR major global AI news, with no European connection required for global AI. Prioritize real capabilities, launches, adoption and industry changes over promotional promises. General science discoveries do not qualify.
