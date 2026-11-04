@@ -12,7 +12,7 @@ class EditorialPolicyTests(unittest.TestCase):
             url=f'https://news.example/{i}'; evidence='Reported November 3, 2026: a substantive new development.'
             sources.append({'url':url,'evidence':evidence})
             fact={'url':url,'evidence':evidence,'claim':'A supported development'}
-            stories.append({'lane':lane,'developmentDate':'2026-11-03','dateEvidence':fact,'novelty':'A new result absent from recent editions','facts':[dict(fact) for _ in range(3)]})
+            stories.append({'lane':lane,'developmentDate':'2026-11-03','dateEvidence':fact,'hasNewDevelopment':True,'novelty':'A new result absent from recent editions','facts':[dict(fact) for _ in range(3)]})
         return {'stories':stories},sources
     def test_exact_order_and_missing_lane(self):
         brief,sources=self.fixture();validate_brief(brief,sources,'2026-11-03',1)
@@ -49,3 +49,10 @@ class EditorialPolicyTests(unittest.TestCase):
             self.assertIn('tennis, rugby, cycling, F1',prompt)
             self.assertIn('No repetitive summaries',prompt)
         self.assertNotIn('Create length through clear paraphrase',WRITE)
+
+    def test_unchanged_story_rejected_before_writing(self):
+        for value in [False, None, 'true']:
+            brief,sources=self.fixture()
+            brief['stories'][2]['hasNewDevelopment']=value
+            with self.assertRaisesRegex(ValueError,'new development'):
+                validate_brief(brief,sources,'2026-11-03')

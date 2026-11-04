@@ -6,7 +6,7 @@ QUERIES = (
     'France actualité -"info du jour" -agenda -programme',
     'technologie Europe innovation -emploi -ETF',
     'intelligence artificielle actualité lancement -emploi -formation',
-    'site:lequipe.fr sport -calendrier -programme -billetterie',
+    'sport résultats actualité -calendrier -programme -billetterie',
 )
 
 POLICY = '''Select exactly one story in each lane, in this order:

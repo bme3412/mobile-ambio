@@ -12,7 +12,7 @@ from .core import schedule, identity, production_settings, json_bytes, PaidClien
 from .storage import Storage
 from .editorial_policy import VERSION
 from .artwork import generate_artwork
-from .providers import research, story_brief, write_and_review
+from .providers import research, story_brief, validate_brief, write_and_review
 ROOT=Path(__file__).resolve().parents[2]
 
 class Checkpoint(dict):
@@ -77,6 +77,7 @@ def run(args):
                     checkpoint['sources']=checkpoint['expandedSources'];checkpoint['sourceWindow']=3;checkpoint.save()
                     checkpoint['brief']=story_brief(client,date,checkpoint['sources'],checkpoint['recent'],days=3)
                 checkpoint.save()
+            validate_brief(checkpoint['brief'],checkpoint['sources'],date,checkpoint.get('sourceWindow',1))
             still_allowed(); status('write-and-review')
             example=json.loads((ROOT/'scripts/daily/example.json').read_text())
             draft,review=write_and_review(client,date,checkpoint['sources'],checkpoint['recent'],example,checkpoint,checkpoint['brief'])
