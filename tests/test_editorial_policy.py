@@ -56,3 +56,15 @@ class EditorialPolicyTests(unittest.TestCase):
             brief['stories'][2]['hasNewDevelopment']=value
             with self.assertRaisesRegex(ValueError,'new development'):
                 validate_brief(brief,sources,'2026-11-03')
+
+    def test_cached_repeat_cannot_resume_into_paid_writing(self):
+        import json
+        from argparse import Namespace
+        from scripts.daily.run import run
+        brief,sources=self.fixture();brief['stories'][2]['hasNewDevelopment']=False
+        storage=MagicMock();storage.rpc.return_value=True;storage.rows.return_value=[]
+        storage.get.return_value=json.dumps({'editorialPolicy':'france-tech-sport-v1','brief':brief,'sources':sources,'recent':[]}).encode()
+        with patch('scripts.daily.run.Storage',return_value=storage),patch('scripts.daily.run.schedule',return_value=('2026-11-03',True,True)),patch('scripts.daily.run.write_and_review') as writer:
+            with self.assertRaisesRegex(ValueError,'new development'):
+                run(Namespace(date='2026-11-03',revision=1,scheduled=False))
+            writer.assert_not_called()
