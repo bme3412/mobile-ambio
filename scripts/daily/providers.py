@@ -24,26 +24,24 @@ def research(client,date,days=1):
     sources=[];seen=set()
     day=dt.date.fromisoformat(date)
     if days not in (1,3): raise ValueError('Invalid research window')
-    start=day-dt.timedelta(days=days-1)
     french=('janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre')
-    english=('January','February','March','April','May','June','July','August','September','October','November','December')
-    dates=[]
-    for offset in range(days):
-        d=day-dt.timedelta(days=offset)
-        dates.extend((f'"{d.day} {french[d.month-1]} {d.year}"',f'"{english[d.month-1]} {d.day}, {d.year}"',f'"{d.isoformat()}"'))
-    dated='('+' OR '.join(dates)+')'
-    for topic in QUERIES:
-        body={'query':f'{topic} {dated} -archives -replay -site:youtube.com -site:facebook.com', 'limit':4,
-              'scrapeOptions':{'formats':['markdown'],'onlyMainContent':True},
-              'tbs':f'cdr:1,cd_min:{start:%m/%d/%Y},cd_max:{day:%m/%d/%Y}'}
-        result=client.call('https://api.firecrawl.dev/v2/search',{'Authorization':'Bearer '+os.environ['FIRECRAWL_API_KEY']},body,required_rate('FIRECRAWL_SEARCH_MAX_USD'))
-        data=result.get('data',{})
-        rows=data.get('web',[]) if isinstance(data,dict) else data
-        for r in rows:
-            url=r.get('url','');evidence=r.get('markdown','')
-            if not url.startswith('https://') or url in seen or len(evidence)<600 or re.search(r'/archives?(?:/|-)|/replay|youtube\.com|facebook\.com',url):continue
-            seen.add(url)
-            sources.append({'url':url,'title':r.get('title',''),'retrievedAt':dt.datetime.now(dt.timezone.utc).isoformat(),'evidence':evidence[:18000]})
+    # Short exact-date queries avoid broad OR clauses being treated as generic keywords.
+    # Expand by searching each older date separately, then merge all results.
+    query_days=[day] if days==1 else [day-dt.timedelta(days=i) for i in range(3)]
+    for query_day in query_days:
+      dated=f'"{query_day.day} {french[query_day.month-1]} {query_day.year}"'
+      for topic in QUERIES:
+          body={'query':f'{topic} {dated} -archives -replay -site:youtube.com -site:facebook.com', 'limit':4,
+                'scrapeOptions':{'formats':['markdown'],'onlyMainContent':True},
+                'tbs':'qdr:w'}
+          result=client.call('https://api.firecrawl.dev/v2/search',{'Authorization':'Bearer '+os.environ['FIRECRAWL_API_KEY']},body,required_rate('FIRECRAWL_SEARCH_MAX_USD'))
+          data=result.get('data',{})
+          rows=data.get('web',[]) if isinstance(data,dict) else data
+          for r in rows:
+              url=r.get('url','');evidence=r.get('markdown','')
+              if not url.startswith('https://') or url in seen or len(evidence)<600 or re.search(r'/archives?(?:/|-)|/replay|youtube\.com|facebook\.com',url):continue
+              seen.add(url)
+              sources.append({'url':url,'title':r.get('title',''),'retrievedAt':dt.datetime.now(dt.timezone.utc).isoformat(),'evidence':evidence[:18000]})
     return sources
 
 def story_brief(client,date,sources,recent,days=1):

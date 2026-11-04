@@ -3,10 +3,10 @@ VERSION = 'france-tech-sport-v1'
 LANES = ('france', 'technology-ai', 'european-sports')
 LABELS = ('FRANCE', 'TECH & IA', 'SPORT EUROPÉEN')
 QUERIES = (
-    'France actualité (politique OR économie OR société)',
-    'Europe technologie (innovation OR lancement OR intelligence artificielle)',
-    'AI news (launch OR model OR release OR adoption)',
-    'sport (football OR tennis OR rugby OR cyclisme OR "Formule 1") résultats Europe',
+    'France actualité -"info du jour" -agenda -programme',
+    'technologie Europe innovation -emploi -ETF',
+    'intelligence artificielle actualité lancement -emploi -formation',
+    'site:lequipe.fr sport -calendrier -programme -billetterie',
 )
 
 POLICY = '''Select exactly one story in each lane, in this order:
