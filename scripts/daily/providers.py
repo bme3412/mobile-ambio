@@ -92,7 +92,7 @@ Apply the actual product rules: reputable secondary reporting is acceptable when
 Output contract: issues contains ONLY blocking substantive errors, never observations or non-blocking caveats. If passed is true, issues MUST be empty. If any blocking error exists, passed MUST be false. Assess only claims actually made in the draft. Do not attribute assertions found only in supplied source text to the draft. Each blocking issue must identify the relevant draft field and quote its exact affected words. Return the review schema with supporting paragraphId references for every story. Select the paragraph that directly supports each claim. The server attaches its exact evidence and URL; never generate quotations.'''
 
 WRITE += '\n'+POLICY+'\n'+STYLE+'\n'+STYLE_EXAMPLES+'\nUse exactly these category labels in order: '+', '.join(LABELS)
-REVIEW += '\n'+POLICY+'\n'+STYLE+' Reject category mismatches, unsupported development dates, stale or unchanged stories, invented experiences, and padding that materially replaces story content.'
+REVIEW += '\nCheck each story segmentIndex against indexedTurns: it must identify the FIRST turn introducing that story, not a later detail.\n'+POLICY+'\n'+STYLE+' Reject category mismatches, unsupported development dates, stale or unchanged stories, invented experiences, and padding that materially replaces story content.'
 
 def resolve_review_evidence(review,paragraphs):
     for claim in review.get('claims',[]):
@@ -150,7 +150,7 @@ When a story brief is supplied, use exactly those three stories and ONLY its sup
             if any(s['url'] not in allowed for s in draft['editorial']['sources']): raise ValueError('Unretrieved source URL')
             cited={s['url'] for s in draft['editorial']['sources']}
             paragraphs={f'{i}:{j}':{'url':s['url'],'evidence':text} for i,s in enumerate(sources) if s['url'] in cited for j,text in enumerate(s['evidence'].split('\n\n')) if len(text.strip())>=40}
-            review_input={'date':date,'brief':brief,'draft':draft,'paragraphs':paragraphs,'recent':recent}
+            review_input={'date':date,'brief':brief,'draft':draft,'paragraphs':paragraphs,'recent':recent, 'indexedTurns':[{'index':i,'french':t[1]} for i,t in enumerate(draft['editorial']['turns'])]}
             review_schema=obj({'passed':{'type':'boolean'},'issues':arr(S),'claims':arr(obj({'claim':S,'paragraphId':{'type':'string','enum':list(paragraphs)}}),minItems=3)})
             review_hash=hashlib.sha256(json_bytes({'instructions':REVIEW,'input':review_input})).hexdigest()
             review=checkpoint.get(f'review{attempt}') if checkpoint.get(f'reviewHash{attempt}')==review_hash else None

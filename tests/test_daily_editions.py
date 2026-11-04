@@ -195,3 +195,11 @@ class ProviderRateLimitTests(unittest.TestCase):
             call.side_effect=[error,response]
             self.assertEqual(PaidClient(MemoryStorage(),'2026-10-27','owner').call('https://api.example',{}, {},1),{'ok':True})
             sleep.assert_called_once_with(45)
+
+    def test_elevenlabs_quota_detail_is_safe_and_not_retried(self):
+        import io,urllib.error
+        error=urllib.error.HTTPError('https://api.elevenlabs.io',401,'unauthorized',{},io.BytesIO(b'{"detail":{"status":"quota_exceeded","message":"private account information"}}'))
+        with patch('urllib.request.urlopen',side_effect=error) as call,patch('time.sleep') as sleep:
+            with self.assertRaisesRegex(RuntimeError,r'^Provider HTTP 401 \(quota_exceeded\)$'):
+                PaidClient(MemoryStorage(),'2026-11-04','owner').call('https://api.elevenlabs.io',{}, {},1)
+            self.assertEqual(call.call_count,1);sleep.assert_not_called()
