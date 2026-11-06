@@ -1,8 +1,10 @@
+import type { StoryPhoto } from "../domain/types";
 import { buildEdition } from "./buildEdition";
 import { assertEditionBundle as validate } from "../../preview/lib/edition-contract.cjs";
 type Input = Parameters<typeof buildEdition>[0];
 export type EditionBundle = Omit<Input, "audio"> & {
   schemaVersion: 1;
+  storyArtwork?: Record<string, StoryPhoto>;
   artwork?: { dataUri: string; description: string; label: string };
   id: string;
   revision: number;
@@ -17,6 +19,7 @@ export function assertEditionBundle(
 export function fromBundle(bundle: EditionBundle, audio: string | number = "") {
   const result = buildEdition({ ...bundle, audio });
   result.verifiedAt = bundle.verifiedAt;
+  result.episode.storyArtwork = bundle.storyArtwork;
   if (bundle.artwork) {
     result.episode.cover = bundle.artwork.dataUri;
     result.episode.coverDescription = bundle.artwork.description;

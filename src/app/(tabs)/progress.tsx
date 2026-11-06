@@ -1,3 +1,5 @@
+import { colors } from "../../components/theme";
+import { Masthead } from "../../components/Masthead";
 import { DailyProgress } from "../../components/DailyProgress";
 import { learningSummary } from "../../activity/learning";
 import { useCallback, useState } from "react";
@@ -30,6 +32,7 @@ export default function Progress() {
 
   return (
     <Page mini>
+      <Masthead />
       <Label>YOUR FRENCH, DAY BY DAY</Label>
       <Title>A little more fluent.</Title>
       <Body>Small moments of listening and speaking add up.</Body>
@@ -181,43 +184,48 @@ function Metric({ value, label }: { value: number; label: string }) {
   );
 }
 const styles = StyleSheet.create({
-  hero: { backgroundColor: "#EEE9F5", padding: 22, borderRadius: 22, gap: 16 },
-  number: { fontSize: 46, color: "#183A31", fontWeight: "600" },
+  hero: {
+    backgroundColor: colors.lavender,
+    padding: 22,
+    borderRadius: 0,
+    gap: 16,
+  },
+  number: { fontSize: 46, color: colors.ink, fontWeight: "600" },
   denominator: { fontSize: 20, fontWeight: "400" },
   track: {
     height: 9,
     borderRadius: 8,
-    backgroundColor: "#DAD4E4",
+    backgroundColor: colors.line,
     overflow: "hidden",
   },
-  fill: { height: "100%", backgroundColor: "#26785F" },
+  fill: { height: "100%", backgroundColor: colors.blue },
   week: { flexDirection: "row", gap: 4 },
   day: { flex: 1, alignItems: "center", gap: 9 },
-  dayLabel: { fontSize: 14, color: "#54635B" },
+  dayLabel: { fontSize: 14, color: colors.muted },
   dot: {
     width: "100%",
     maxWidth: 42,
     minHeight: 36,
     paddingVertical: 7,
     borderRadius: 18,
-    backgroundColor: "#EEEBE6",
+    backgroundColor: colors.lavender,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "transparent",
   },
-  activeDot: { backgroundColor: "#26785F" },
-  today: { borderColor: "#6250A0" },
-  count: { color: "#54635B", fontSize: 14, fontWeight: "600" },
+  activeDot: { backgroundColor: colors.blue },
+  today: { borderColor: colors.blue },
+  count: { color: colors.muted, fontSize: 14, fontWeight: "600" },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
   metric: {
     flexGrow: 1,
     flexBasis: "44%",
-    backgroundColor: "#F4F1EB",
+    backgroundColor: colors.lavender,
     padding: 18,
-    borderRadius: 16,
+    borderRadius: 0,
     gap: 6,
   },
-  metricValue: { fontSize: 30, color: "#183A31" },
-  episode: { fontSize: 19, lineHeight: 28, color: "#183A31" },
+  metricValue: { fontSize: 30, color: colors.ink },
+  episode: { fontSize: 19, lineHeight: 28, color: colors.ink },
 });

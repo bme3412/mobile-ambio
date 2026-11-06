@@ -1,3 +1,4 @@
+import { colors } from "../components/theme";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AppState, View } from "react-native";
 import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
@@ -77,7 +78,7 @@ export default function Practice() {
   return (
     <SafeAreaView
       edges={["bottom", "left", "right"]}
-      style={{ flex: 1, backgroundColor: "#F5F0E6" }}
+      style={{ flex: 1, backgroundColor: colors.paper }}
     >
       <Stack.Screen options={{ title: "Spoken practice" }} />
       {focused && (

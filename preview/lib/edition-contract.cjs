@@ -1,3 +1,4 @@
+const { assertStoryArtwork } = require("./photo-contract.cjs");
 // Shared runtime validation for the publisher, backend, and mobile repository.
 const ID = /^daily-fr-\d{4}-\d{2}-\d{2}(?:@r[2-9]\d*|@r1\d+)?$/;
 const normalize = (s) => s.toLowerCase().replace(/[^a-zàâéèêëîïôùûüç]/g, "");
@@ -55,6 +56,10 @@ function assertEditionBundle(b) {
       e.stories.length === 3 &&
       new Set(e.stories.map((s) => s.id)).size === 3,
     "three stories",
+  );
+  assertStoryArtwork(
+    b.storyArtwork,
+    e.stories.map((s) => s.id),
   );
   check(
     e.stories.every(

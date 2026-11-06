@@ -1,5 +1,5 @@
 import { WordSheet } from "../src/components/WordSheet";
-import { fireEvent, render } from "@testing-library/react-native";
+import { act, fireEvent, render } from "@testing-library/react-native";
 import Library from "../src/app/(tabs)/library";
 import { editions, getEdition, phraseAt } from "../src/data/catalog";
 import { useLibrary } from "../src/state/library";
@@ -38,10 +38,14 @@ test("search finds stories and filters resume/finished editions", async () => {
   ).toBeTruthy();
   await fireEvent.press(ui.getByLabelText("Show all episodes"));
   await fireEvent.press(
-    ui.getByLabelText(`Read transcript · ${latest.episode.title}`),
+    ui.getByLabelText(`Open edition · ${latest.episode.title}`),
   );
   expect(useLibrary.getState().activeEpisodeId).toBe(latest.episode.id);
-  expect(router.push).toHaveBeenCalledWith("/transcript");
+  expect(router.push).toHaveBeenCalledWith({
+    pathname: "/player",
+    params: { details: "1" },
+  });
+  expect(player.getSnapshot().playing).toBe(false);
 });
 test("switching disposes the old engine and independently restores positions and rates", async () => {
   await useLibrary.persist.rehydrate();
@@ -156,4 +160,40 @@ test("October 26 is first and missing editions never substitute another episode"
   expect(latest.episode.durationMs).toBeGreaterThanOrEqual(300000);
   expect(latest.episode.durationMs).toBeLessThanOrEqual(360000);
   expect(latest.featuredPhrase.word.text).toBe("tenir compte de");
+});
+
+test("active unfinished edition is featured once and opening details does not start playback", async () => {
+  player.seek(32000);
+  const ui = await render(<Library />);
+  expect(ui.getByText("PICK UP WHERE YOU LEFT OFF")).toBeTruthy();
+  expect(
+    ui.getAllByLabelText(`Open edition · ${original.episode.title}`),
+  ).toHaveLength(1);
+  await fireEvent.press(
+    ui.getByLabelText(`Open edition · ${original.episode.title}`),
+  );
+  expect(player.getSnapshot()).toMatchObject({
+    playing: false,
+    positionMs: 32000,
+  });
+  expect(router.push).toHaveBeenLastCalledWith({
+    pathname: "/player",
+    params: { details: "1" },
+  });
+});
+
+test("featured edition follows search and a completed episode replays from the beginning", async () => {
+  const ui = await render(<Library />);
+  await fireEvent.changeText(ui.getByLabelText("Search episodes"), "Louvre");
+  expect(ui.getAllByText(latest.episode.title)).toHaveLength(1);
+  expect(ui.queryByText("MORE TO DISCOVER")).toBeNull();
+  await fireEvent.changeText(ui.getByLabelText("Search episodes"), "");
+  await act(async () => {
+    player.seek(original.episode.durationMs);
+  });
+  await fireEvent.press(ui.getByLabelText("Finished"));
+  await fireEvent.press(
+    ui.getByLabelText(`Listen again · ${original.episode.title}`),
+  );
+  expect(player.getSnapshot()).toMatchObject({ positionMs: 0, playing: true });
 });

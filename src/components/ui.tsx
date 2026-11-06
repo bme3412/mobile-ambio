@@ -1,10 +1,8 @@
-import { cafeArtwork } from "../data/artwork";
 import { Play, ArrowUpRight, ArrowDown } from "lucide-react-native";
 import { MiniPlayer } from "./MiniPlayer";
 import { selectionAsync } from "expo-haptics";
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren } from "react";
 import {
-  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -12,19 +10,10 @@ import {
   RefreshControl,
   StyleSheet,
   Text,
-  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-export const colors = {
-  paper: "#FCFBF9",
-  ink: "#0B1937",
-  green: "#00A980",
-  muted: "#63738F",
-  line: "#E9EAF0",
-  tint: "#D8FAE9",
-  lavender: "#F1EEFF",
-  purple: "#6250FA",
-};
+import { colors } from "./theme";
+export { colors } from "./theme";
 export function Page({
   children,
   scroll = true,
@@ -129,23 +118,6 @@ export function Button({
     </Pressable>
   );
 }
-export function Cover({ compact = false }: { compact?: boolean }) {
-  const [failed, setFailed] = useState(false);
-  return (
-    <View style={[s.cover, { height: compact ? 180 : 280 }]}>
-      {!failed ? (
-        <Image
-          accessibilityLabel="A warm Paris café terrace overlooking the Eiffel Tower"
-          source={cafeArtwork}
-          style={[StyleSheet.absoluteFill, { width: "100%", height: "100%" }]}
-          onError={() => setFailed(true)}
-        />
-      ) : (
-        <Title>Paris, autrement.</Title>
-      )}
-    </View>
-  );
-}
 export function DemoNote() {
   return (
     <Text style={s.note}>
@@ -156,7 +128,7 @@ export function DemoNote() {
 export const s = StyleSheet.create({
   page: { flex: 1, backgroundColor: colors.paper },
   content: {
-    padding: 24,
+    padding: 20,
     paddingBottom: 40,
     gap: 18,
     maxWidth: 680,
@@ -166,7 +138,7 @@ export const s = StyleSheet.create({
   title: {
     fontSize: 32,
     lineHeight: 38,
-    fontFamily: "Georgia",
+    fontWeight: "800",
     color: colors.ink,
   },
   body: { fontSize: 16, lineHeight: 25, color: colors.muted },
@@ -180,17 +152,17 @@ export const s = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     backgroundColor: colors.green,
-    borderRadius: 28,
+    borderRadius: 0,
     paddingHorizontal: 20,
     paddingVertical: 15,
     minHeight: 48,
     alignItems: "center",
     justifyContent: "center",
   },
-  secondary: { backgroundColor: "#F3F3F6" },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  secondary: { backgroundColor: colors.lavender },
+  buttonText: { flexShrink: 1, color: "#fff", fontSize: 16, fontWeight: "600" },
   cover: {
-    borderRadius: 24,
+    borderRadius: 0,
     overflow: "hidden",
     backgroundColor: colors.tint,
     justifyContent: "center",
@@ -213,15 +185,15 @@ export const s = StyleSheet.create({
     flexWrap: "wrap",
   },
   card: {
-    backgroundColor: "#FFFDF8",
+    backgroundColor: colors.paper,
     padding: 20,
-    borderRadius: 16,
+    borderRadius: 0,
     borderWidth: 1,
     borderColor: colors.line,
     gap: 12,
   },
   divider: { height: 1, backgroundColor: colors.line },
-  subheading: { fontSize: 23, fontFamily: "Georgia", color: colors.ink },
+  subheading: { fontSize: 23, fontWeight: "800", color: colors.ink },
   link: {
     color: colors.green,
     fontSize: 16,
@@ -229,10 +201,10 @@ export const s = StyleSheet.create({
     paddingVertical: 12,
   },
   input: {
-    backgroundColor: "#fffdf8",
+    backgroundColor: colors.paper,
     borderWidth: 1,
     borderColor: colors.line,
-    borderRadius: 12,
+    borderRadius: 0,
     padding: 14,
     fontSize: 16,
     color: colors.ink,

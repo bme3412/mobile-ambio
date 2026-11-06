@@ -1,3 +1,4 @@
+import { colors } from "../components/theme";
 import { useLearningTime } from "../activity/useLearningTime";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import {
@@ -273,27 +274,32 @@ const styles = StyleSheet.create({
     maxWidth: 720,
     alignSelf: "center",
   },
-  title: { fontSize: 19, color: "#44534B", fontWeight: "600" },
+  title: { fontSize: 19, color: colors.muted, fontWeight: "600" },
   phrase: {
     fontSize: 32,
     lineHeight: 44,
-    color: "#183A31",
-    fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
+    color: colors.ink,
+    fontWeight: "700",
     marginVertical: 14,
   },
-  coach: { backgroundColor: "#EEE9F5", borderRadius: 20, padding: 20, gap: 16 },
-  status: { fontSize: 20, fontWeight: "700", color: "#183A31" },
-  caption: { fontSize: 19, lineHeight: 29, color: "#183A31" },
+  coach: {
+    backgroundColor: colors.lavender,
+    borderRadius: 0,
+    padding: 20,
+    gap: 16,
+  },
+  status: { fontSize: 20, fontWeight: "700", color: colors.ink },
+  caption: { fontSize: 19, lineHeight: 29, color: colors.ink },
   error: { color: "#8B2635", fontSize: 16, lineHeight: 24 },
   navigation: { gap: 12 },
   input: {
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "#63738F",
+    borderColor: colors.muted,
     borderRadius: 12,
     padding: 14,
     fontSize: 18,
     minHeight: 50,
   },
-  note: { fontSize: 14, lineHeight: 21, color: "#54635B" },
+  note: { fontSize: 14, lineHeight: 21, color: colors.muted },
 });

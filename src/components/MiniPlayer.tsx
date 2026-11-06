@@ -1,7 +1,9 @@
+import { colors } from "./theme";
+import { EditorialImage } from "./EditorialImage";
 import { useLibrary } from "../state/library";
 import { findEdition, useCatalog } from "../data/catalog";
 import { artworkForEpisode } from "../data/editorialArtwork";
-import { Image, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { router } from "expo-router";
 import { player, time, usePlayback } from "../playback/player";
 import { IconButton } from "./IconButton";
@@ -22,11 +24,11 @@ export function MiniPlayer({
   return (
     <View
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.paper,
         borderTopWidth: 1,
-        borderTopLeftRadius: 22,
-        borderTopRightRadius: 22,
-        borderColor: "#E9EAF0",
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderColor: colors.line,
         paddingHorizontal: 16,
         paddingVertical: 12,
         flexDirection: "row",
@@ -34,17 +36,9 @@ export function MiniPlayer({
         alignItems: "center",
       }}
     >
-      {artworkForEpisode(episode) && (
-        <Image
-          source={artworkForEpisode(episode)!.source}
-          style={{
-            width: 52,
-            height: 52,
-            borderRadius: 10,
-            backgroundColor: "#D8FAE9",
-          }}
-        />
-      )}
+      <View style={{ width: 52 }}>
+        <EditorialImage artwork={artworkForEpisode(episode)} compact />
+      </View>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Open current episode"
@@ -53,11 +47,11 @@ export function MiniPlayer({
       >
         <Text
           numberOfLines={1}
-          style={{ fontSize: 14, fontWeight: "600", color: "#0B1937" }}
+          style={{ fontSize: 14, fontWeight: "600", color: colors.ink }}
         >
           {episode.title}
         </Text>
-        <Text style={{ fontSize: 12, color: "#63738F" }}>
+        <Text style={{ fontSize: 12, color: colors.muted }}>
           {time(p.positionMs)} / {time(episode.durationMs)}
         </Text>
       </Pressable>

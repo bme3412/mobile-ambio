@@ -263,8 +263,8 @@ export default function PracticeReader({
       style={{
         fontFamily: "system-ui",
         fontSize: 16 * textScale,
-        color: "#0B1937",
-        background: "#F5F0E6",
+        color: "#111111",
+        background: "#FFFFFF",
         minHeight: "100vh",
         boxSizing: "border-box",
         padding: "24px",
@@ -272,15 +272,14 @@ export default function PracticeReader({
         margin: "auto",
       }}
     >
-      <style>{`body{margin:0;background:#F5F0E6}*{box-sizing:border-box}button{font:inherit;min-height:48px;border:1px solid #C9C7BB;border-radius:24px;background:#FCFBF9;color:#173E35;padding:12px 18px;cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible{outline:3px solid #6250FA;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}p{line-height:1.6}.primary{background:#175745;color:white;border-color:#175745}`}</style>
+      <style>{`body{margin:0;background:#FFFFFF}*{box-sizing:border-box}button{font:inherit;min-height:48px;border:1px solid #D8DCE4;border-radius:24px;background:#FFFFFF;color:#111111;padding:12px 18px;cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible{outline:3px solid #2448FF;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}p{line-height:1.6}.primary{background:#2448FF;color:white;border-color:#2448FF}`}</style>
       <p style={{ fontSize: 12 * textScale, letterSpacing: 1.5 }}>
         LISTEN · READ · REFINE
       </p>
       <h1
         style={{
-          fontFamily: "Georgia",
+          fontWeight: "800",
           fontSize: 30 * textScale,
-          fontWeight: 400,
         }}
       >
         {title}
@@ -292,7 +291,7 @@ export default function PracticeReader({
         lang="fr"
         aria-label="French reference phrase"
         style={{
-          fontFamily: "Georgia",
+          fontWeight: "800",
           fontSize: 32 * textScale,
           lineHeight: 1.65,
           margin: "28px 0",
@@ -318,7 +317,7 @@ export default function PracticeReader({
                   : result?.accuracy !== null && result?.accuracy !== undefined
                     ? "#DDEBDD"
                     : tentative
-                      ? "#EAE5F0"
+                      ? "#F4F5F8"
                       : "transparent",
                 borderRadius: 4,
               }}
@@ -328,8 +327,8 @@ export default function PracticeReader({
           );
         })}
       </div>
-      <p style={{ color: "#59615E" }}>{phrase.translation}</p>
-      <p style={{ fontSize: 13 * textScale, color: "#59615E" }}>
+      <p style={{ color: "#626774" }}>{phrase.translation}</p>
+      <p style={{ fontSize: 13 * textScale, color: "#626774" }}>
         Read aloud sends your microphone audio to Azure for assessment. Your
         replay copy is kept only for this phrase.
       </p>
@@ -337,12 +336,9 @@ export default function PracticeReader({
         <section
           role="region"
           aria-labelledby="unlock-title"
-          style={{ background: "#EAE5F0", padding: 20, borderRadius: 16 }}
+          style={{ background: "#F4F5F8", padding: 20, borderRadius: 16 }}
         >
-          <h2
-            id="unlock-title"
-            style={{ fontFamily: "Georgia", fontWeight: 400 }}
-          >
+          <h2 id="unlock-title" style={{ fontWeight: 800 }}>
             Unlock voice practice
           </h2>
           <p>
@@ -372,7 +368,7 @@ export default function PracticeReader({
                 padding: 14,
                 marginTop: 8,
                 borderRadius: 10,
-                border: "1px solid #63738F",
+                border: "1px solid #626774",
               }}
             />
             {unlockError && <p role="alert">{unlockError}</p>}
@@ -457,12 +453,11 @@ export default function PracticeReader({
       {assessment && (
         <section
           aria-label="Pronunciation feedback"
-          style={{ background: "#EAE5F0", padding: 18, borderRadius: 12 }}
+          style={{ background: "#F4F5F8", padding: 18, borderRadius: 12 }}
         >
           <h2
             style={{
-              fontFamily: "Georgia",
-              fontWeight: 400,
+              fontWeight: "800",
               fontSize: 24 * textScale,
             }}
           >
@@ -522,7 +517,7 @@ export default function PracticeReader({
           story when you’re ready.
         </p>
       )}
-      <p style={{ fontSize: 13 * textScale, color: "#59615E" }}>
+      <p style={{ fontSize: 13 * textScale, color: "#626774" }}>
         When you tap Read aloud, microphone audio is streamed to Microsoft Azure
         for French pronunciation assessment. Ambio does not save your recording.
         The microphone stops after each attempt, when you cancel, or when you

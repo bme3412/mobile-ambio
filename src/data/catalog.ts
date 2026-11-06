@@ -27,6 +27,8 @@ import timing26 from "./editions/2026-10-26/audio-timing.json";
 import vocabulary26 from "./editions/2026-10-26/vocabulary.json";
 import definitions26 from "./editions/2026-10-26/dictionary.json";
 import pairs26 from "./editions/2026-10-26/phrases.json";
+import bundledStoryPhotos from "./bundled-story-photos.json";
+import type { StoryPhoto } from "../domain/types";
 import { buildEdition } from "./buildEdition";
 import { useLibrary } from "../state/library";
 
@@ -77,6 +79,11 @@ export let editions = [
   }),
   original,
 ];
+// Local backfill preserves edition identity, audio, progress, and published bundles.
+const localPhotos: Record<string, Record<string, StoryPhoto>> = bundledStoryPhotos;
+for (const { episode } of editions) {
+  episode.storyArtwork = localPhotos[episode.id];
+}
 export let LATEST_EPISODE_ID = "daily-fr-2026-10-26";
 export let latestEdition = editions.find(
   ({ episode }) => episode.id === LATEST_EPISODE_ID,
@@ -148,7 +155,11 @@ async function request(path: string) {
       "New editions are unavailable. Downloaded editions still work. Please retry.",
     );
   useCatalog.setState({ signedOut: false });
-  return response.json();
+  return response.json().catch(() => {
+    throw Error(
+      "New editions are unavailable. Your saved editions are still here.",
+    );
+  });
 }
 function install(b: EditionBundle) {
   if (bundles.has(b.id)) return;

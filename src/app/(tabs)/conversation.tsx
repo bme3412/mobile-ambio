@@ -1,3 +1,4 @@
+import { Masthead } from "../../components/Masthead";
 import { useLearningTime } from "../../activity/useLearningTime";
 import {
   requestReview,
@@ -292,6 +293,7 @@ function ConversationContent() {
   };
   return (
     <Page>
+      <Masthead />
       <Label>TALK · AI VOICE</Label>
       <Title>{active ? "À vous de parler." : "On en parle ?"}</Title>
       <Body>

@@ -1,3 +1,4 @@
+import { colors } from "./theme";
 import { Text } from "react-native";
 import { WordToken } from "../domain/types";
 import { wordRevealOpacity } from "../domain/transcript";
@@ -24,7 +25,7 @@ export function RevealWord({
       style={{
         opacity: wordRevealOpacity(word.startMs, positionMs, playing),
         color: current ? "#006B52" : "#344158",
-        backgroundColor: current ? "#D8FAE9" : "transparent",
+        backgroundColor: current ? colors.tint : "transparent",
         // Constant weight avoids shifting the line as the highlight advances.
         fontWeight: "500",
       }}

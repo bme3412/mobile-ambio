@@ -1,9 +1,11 @@
-import { EditionGate } from "../components/EditionStatus";
+import { EditionDownload, EditionGate } from "../components/EditionStatus";
+import { EditorialImage } from "../components/EditorialImage";
+import { artworkForEpisode, artworkForStory } from "../data/editorialArtwork";
 import { useEpisodeData } from "../data/catalog";
 import { useState } from "react";
 import { Linking, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { PhraseReader } from "../components/PhraseReader";
 import { WordSheet } from "../components/WordSheet";
 import { Body, Button, DemoNote, colors, Label, s } from "../components/ui";
@@ -12,14 +14,14 @@ import { WordToken, TranscriptSegment } from "../domain/types";
 import { player } from "../playback/player";
 import { useLibrary } from "../state/library";
 
-function PlayerContent() {
+function PlayerContent({ initialDetails }: { initialDetails: boolean }) {
   const { episode, episodeSources, speakingPrompt, vocabulary, verifiedAt } =
     useEpisodeData();
   const [selection, setSelection] = useState<{
     word: WordToken;
     segment: TranscriptSegment;
   } | null>(null);
-  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(initialDetails);
   const saved = useLibrary((state) => state.transcripts.includes(episode.id));
   const toggle = useLibrary((state) => state.toggleTranscript);
   return (
@@ -46,7 +48,7 @@ function PlayerContent() {
               onPress={() => router.push("/transcript")}
               style={{ minHeight: 44, justifyContent: "center" }}
             >
-              <Text style={{ color: "#007B60", fontWeight: "600" }}>
+              <Text style={{ color: colors.blue, fontWeight: "600" }}>
                 Full transcript ↗
               </Text>
             </Pressable>
@@ -64,6 +66,37 @@ function PlayerContent() {
           </View>
           {detailsOpen && (
             <View style={{ gap: 18 }}>
+              <Text style={s.title}>{episode.title}</Text>
+              <EditorialImage artwork={artworkForEpisode(episode)} />
+              <EditionDownload id={episode.id} />
+              <Button
+                label="Practice this edition"
+                onPress={() =>
+                  router.push({
+                    pathname: "/practice",
+                    params: { episodeId: episode.id },
+                  })
+                }
+              />
+              {episode.stories.map((story) => (
+                <View key={story.id} style={{ gap: 10 }}>
+                  <EditorialImage
+                    artwork={artworkForStory(episode, story.id)}
+                  />
+                  <Text style={s.subheading}>{story.title}</Text>
+                  <Body>{story.description}</Body>
+                  <Button
+                    secondary
+                    label={`Practice · ${story.title}`}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/practice",
+                        params: { episodeId: episode.id, storyId: story.id },
+                      })
+                    }
+                  />
+                </View>
+              ))}
               <Button
                 secondary
                 label={
@@ -152,9 +185,13 @@ function PlayerContent() {
 }
 
 export default function Player() {
+  const { details } = useLocalSearchParams<{ details?: string }>();
   return (
     <EditionGate>
-      <PlayerContent />
+      <PlayerContent
+        key={details ?? "reader"}
+        initialDetails={details === "1"}
+      />
     </EditionGate>
   );
 }

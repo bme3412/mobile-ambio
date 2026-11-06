@@ -1,3 +1,4 @@
+import { colors } from "./theme";
 import { Text, View } from "react-native";
 import { useActivity } from "../state/activity";
 import { learningSummary } from "../activity/learning";
@@ -16,14 +17,14 @@ export function DailyProgress({
   return (
     <View
       style={{
-        backgroundColor: "#EEE9F5",
+        backgroundColor: colors.lavender,
         padding: 22,
-        borderRadius: 22,
+        borderRadius: 0,
         gap: 14,
       }}
     >
       <Label>YOUR FRENCH TODAY</Label>
-      <Text style={{ fontSize: 32, color: "#183A31" }}>
+      <Text style={{ fontSize: 32, color: colors.ink }}>
         {minutes(x.milliseconds)} / 10 min
       </Text>
       <View
@@ -38,14 +39,14 @@ export function DailyProgress({
         style={{
           height: 9,
           borderRadius: 8,
-          backgroundColor: "#DAD4E4",
+          backgroundColor: colors.line,
           overflow: "hidden",
         }}
       >
         <View
           style={{
             height: "100%",
-            backgroundColor: "#26785F",
+            backgroundColor: colors.blue,
             width: `${Math.min(100, (x.milliseconds / goal) * 100)}%`,
           }}
         />
@@ -59,7 +60,7 @@ export function DailyProgress({
         Talk{x.typed ? ` · ${x.typed} typed` : ""}
       </Body>
       {!compact && (
-        <Text style={{ fontSize: 12, lineHeight: 18, color: "#54635B" }}>
+        <Text style={{ fontSize: 12, lineHeight: 18, color: colors.muted }}>
           Time reflects active use; overlapping activities count once. Words
           encountered come from played transcript passages and revealed phrases.
           Spoken words are transcription estimates, not a mastery score.

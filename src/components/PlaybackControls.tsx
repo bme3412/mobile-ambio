@@ -52,7 +52,7 @@ export function PlaybackControls({ compact = false }: { compact?: boolean }) {
               (event.nativeEvent.actionName === "increment" ? 15000 : -15000),
           )
         }
-        style={{ height: 28, justifyContent: "center" }}
+        style={{ height: 44, justifyContent: "center" }}
       >
         <View
           style={{ height: 4, backgroundColor: colors.line, borderRadius: 4 }}

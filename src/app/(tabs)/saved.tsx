@@ -1,3 +1,4 @@
+import { Masthead } from "../../components/Masthead";
 import { hasPronunciation, pronounce } from "../../playback/pronunciation";
 import { useCatalog, findEdition } from "../../data/catalog";
 import { IconButton } from "../../components/IconButton";
@@ -37,6 +38,7 @@ export default function Saved() {
   );
   return (
     <Page mini>
+      <Masthead />
       <Text
         accessibilityRole="header"
         style={{

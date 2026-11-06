@@ -1,3 +1,13 @@
+export interface StoryPhoto {
+  dataUri: string;
+  thumbnailDataUri: string;
+  description: string;
+  caption: string;
+  sourcePage: string;
+  creator: string;
+  license: string;
+  licenseUrl: string;
+}
 export interface WordToken {
   id: string;
   text: string;
@@ -28,6 +38,7 @@ export interface Episode {
   durationMs: number;
   cover: string;
   coverDescription?: string;
+  storyArtwork?: Record<string, StoryPhoto>;
   stories: Story[];
   segments: TranscriptSegment[];
   isMock: boolean;

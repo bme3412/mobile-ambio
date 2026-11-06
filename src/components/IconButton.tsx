@@ -1,3 +1,4 @@
+import { colors } from "./theme";
 import { Pressable, Text, View } from "react-native";
 import {
   Play,
@@ -34,17 +35,17 @@ export function IconButton({
 }) {
   const Icon = icons[icon];
   const skip = icon === "rewind" || icon === "forward";
-  const color = filled ? "white" : (tint ?? "#0B1937");
+  const color = filled ? "white" : (tint ?? colors.ink);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       onPress={onPress}
       style={({ pressed }) => ({
-        width: size,
-        height: size,
+        width: Math.max(44, size),
+        height: Math.max(44, size),
         borderRadius: size / 2,
-        backgroundColor: filled ? "#0B1937" : "transparent",
+        backgroundColor: filled ? colors.blue : "transparent",
         alignItems: "center",
         justifyContent: "center",
         opacity: pressed ? 0.6 : 1,

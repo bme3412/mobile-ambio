@@ -78,7 +78,7 @@ function WordDetails({
         style={{
           flex: 1,
           justifyContent: "flex-end",
-          backgroundColor: "#0B193766",
+          backgroundColor: "#11111166",
         }}
       >
         <Pressable
@@ -168,12 +168,12 @@ function WordDetails({
               style={{
                 padding: 20,
                 borderRadius: 18,
-                backgroundColor: "#E6F7EF",
+                backgroundColor: colors.tint,
                 gap: 8,
               }}
             >
               <Text
-                style={{ fontSize: 17, fontWeight: "600", color: "#00694F" }}
+                style={{ fontSize: 17, fontWeight: "600", color: colors.blue }}
               >
                 {word.text}
               </Text>

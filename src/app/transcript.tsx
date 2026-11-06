@@ -190,7 +190,7 @@ function TranscriptContent() {
                 <Text
                   style={{
                     fontSize: 13,
-                    color: active ? "#007B60" : colors.ink,
+                    color: active ? colors.blue : colors.ink,
                   }}
                 >
                   {mode}
@@ -236,7 +236,7 @@ function TranscriptContent() {
               </Text>
               <Text style={s.subheading}>{story.title}</Text>
               <Text style={s.body}>{story.description}</Text>
-              <Text style={{ color: "#007B60", fontWeight: "600" }}>
+              <Text style={{ color: colors.blue, fontWeight: "600" }}>
                 Listen to this story
               </Text>
             </Pressable>
@@ -328,7 +328,7 @@ function TranscriptContent() {
                   }
                   style={{ minHeight: 44, justifyContent: "center" }}
                 >
-                  <Text style={{ color: "#175745", fontWeight: "600" }}>
+                  <Text style={{ color: colors.blue, fontWeight: "600" }}>
                     Practise this passage ↗
                   </Text>
                 </Pressable>

@@ -1,3 +1,4 @@
+import { Masthead } from "../../components/Masthead";
 import { DailyProgress } from "../../components/DailyProgress";
 import { EditionStatus, EditionDownload } from "../../components/EditionStatus";
 import { useMemo, useState } from "react";
@@ -65,7 +66,7 @@ export default function Home() {
   return (
     <SafeAreaView
       edges={["top", "left", "right"]}
-      style={[s.page, { backgroundColor: "#F5F0E6" }]}
+      style={[s.page, { backgroundColor: colors.paper }]}
     >
       <ScrollView
         contentContainerStyle={m.page}
@@ -79,12 +80,7 @@ export default function Home() {
         }
       >
         <EditionStatus />
-        <View style={m.masthead}>
-          <Text accessibilityRole="header" style={m.brand}>
-            Ambio
-          </Text>
-          <Text style={m.kicker}>LE MONDE EN FRANÇAIS</Text>
-        </View>
+        <Masthead />
         <Text style={m.kicker}>ÉDITION DU {date.toUpperCase()}</Text>
         <Text accessibilityRole="header" style={m.headline}>
           {episode.title}
@@ -94,7 +90,7 @@ export default function Home() {
           French · B1–B2 · 3 stories · {time(episode.durationMs)}
         </Text>
         <Button
-          tone="#175745"
+          tone={colors.blue}
           label={`▶ Listen to the edition · ${time(episode.durationMs)}`}
           accessibilityLabel={`Listen to latest edition · ${episode.title}`}
           onPress={() => listen()}
@@ -110,7 +106,7 @@ export default function Home() {
                 place is saved
               </Text>
               <Button
-                tone="#175745"
+                tone={colors.blue}
                 secondary
                 label="Continue listening"
                 onPress={() => {
@@ -140,11 +136,7 @@ export default function Home() {
               key={story.id}
               style={{ width: columns && index > 0 ? "47%" : "100%", gap: 12 }}
             >
-              {artworkForStory(episode.id, story.id) && (
-                <EditorialImage
-                  artwork={artworkForStory(episode.id, story.id)}
-                />
-              )}
+              {<EditorialImage artwork={artworkForStory(episode, story.id)} />}
               <Text style={m.kicker}>
                 {String(index + 1).padStart(2, "0")} / {story.category}
               </Text>
@@ -206,7 +198,7 @@ export default function Home() {
             ))}
           </View>
           <Button
-            tone="#175745"
+            tone={colors.blue}
             secondary
             label="Read transcript & vocabulary →"
             onPress={() => {
@@ -217,7 +209,7 @@ export default function Home() {
           />
         </View>
         <Button
-          tone="#175745"
+          tone={colors.blue}
           secondary
           label="Browse episode library →"
           onPress={() => router.push("/library")}
@@ -232,47 +224,47 @@ const m = StyleSheet.create({
     width: "100%",
     maxWidth: 680,
     alignSelf: "center",
-    padding: 22,
+    padding: 20,
     paddingBottom: 36,
     gap: 20,
   },
   masthead: {
     paddingBottom: 18,
     borderBottomWidth: 2,
-    borderColor: "#173E35",
+    borderColor: colors.ink,
     gap: 4,
   },
   brand: {
-    fontFamily: "Georgia",
+    fontWeight: "800",
     fontSize: 49,
-    color: "#173E35",
+    color: colors.ink,
     letterSpacing: -2,
   },
   kicker: {
     fontSize: 11,
     letterSpacing: 1.7,
     fontWeight: "600",
-    color: "#36574C",
+    color: colors.muted,
   },
   headline: {
-    fontFamily: "Georgia",
+    fontWeight: "800",
     fontSize: 43,
     lineHeight: 48,
     color: colors.ink,
     letterSpacing: -1,
   },
-  meta: { fontSize: 13, color: "#59615E", lineHeight: 20 },
+  meta: { fontSize: 13, color: colors.muted, lineHeight: 20 },
   resume: {
     borderLeftWidth: 3,
-    borderColor: "#8C80AD",
-    backgroundColor: "#EAE5F0",
+    borderColor: colors.blue,
+    backgroundColor: colors.lavender,
     padding: 16,
     gap: 10,
   },
-  smallTitle: { fontFamily: "Georgia", fontSize: 22, color: colors.ink },
+  smallTitle: { fontWeight: "800", fontSize: 22, color: colors.ink },
   rule: {
     borderTopWidth: 1,
-    borderColor: "#C9C7BB",
+    borderColor: colors.line,
     paddingTop: 20,
     marginTop: 8,
     flexDirection: "row",
@@ -280,23 +272,23 @@ const m = StyleSheet.create({
     justifyContent: "space-between",
     gap: 8,
   },
-  storyTitle: { fontFamily: "Georgia", fontSize: 28, color: colors.ink },
+  storyTitle: { fontWeight: "800", fontSize: 28, color: colors.ink },
   storyAction: {
     minHeight: 48,
     justifyContent: "center",
     borderBottomWidth: 1,
-    borderColor: "#C9C7BB",
+    borderColor: colors.line,
     paddingVertical: 12,
   },
-  link: { color: "#175745", fontSize: 16, fontWeight: "600" },
+  link: { color: colors.blue, fontSize: 16, fontWeight: "600" },
   vocabulary: {
-    backgroundColor: "#EAE5F0",
+    backgroundColor: colors.lavender,
     padding: 18,
     gap: 18,
     marginTop: 12,
   },
   chip: {
-    backgroundColor: "#F8F5FB",
+    backgroundColor: colors.lavender,
     paddingHorizontal: 14,
     paddingVertical: 14,
     borderRadius: 24,

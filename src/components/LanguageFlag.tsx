@@ -22,7 +22,7 @@ export function LanguageFlag({
         overflow: "hidden",
         flexShrink: 0,
         borderWidth: 0.5,
-        borderColor: "#0B193726",
+        borderColor: "#11111126",
       }}
     >
       <Svg width="100%" height="100%" viewBox="0 0 60 40">
