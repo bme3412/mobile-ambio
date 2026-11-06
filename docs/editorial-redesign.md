@@ -82,3 +82,21 @@ Official API references:
 - Expo web/iOS/Android JavaScript exports succeed. Signed native installers,
   physical-device microphone behavior, and native accessibility text scaling
   still require device acceptance. No cloud build or production publish was run.
+
+## Hosted and TestFlight release — November 5, 2026
+
+Source commit: `6d21232c693964a1f4b90bb9e67a6faa19abd790`.
+The private staging website is deployed at https://ambio-daily-staging.vercel.app
+(Vercel deployment `dpl_D17mLpe62MfLZoK3nK4kwMby9zQZ`). Live authentication,
+photo-bundle checksum, catalog, audio ranges, and voice health checks passed.
+
+EAS staging iOS build **1.0.0 (21)** completed successfully:
+https://expo.dev/accounts/bme3412s-team/projects/ambio/builds/00cb0ac5-46d9-4f4f-b762-afddc08c5baa
+
+Automatic TestFlight submission finished successfully:
+https://expo.dev/accounts/bme3412s-team/projects/ambio/submissions/e27d64a3-76ed-483d-aacf-feb5c6bddb48
+
+The app uses the existing staging backend and includes all nine bundled story
+photographs. Apple processing and on-device availability were not independently
+verified. No public App Store review was requested. Lint and typecheck passed
+before submission, with the same ten existing test-file lint warnings.
