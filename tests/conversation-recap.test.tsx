@@ -64,3 +64,27 @@ test("an interrupted review offers explicit retry and retains the transcript", a
   expect(ui.getByText(conversation().turns[1].text)).toBeTruthy();
   await ui.unmount();
 });
+
+test("retry preview reveals a matched hint and routes the selected exchange", async () => {
+  const parent = conversation();
+  parent.review = validateReview(result(), parent);
+  const original = JSON.stringify(parent);
+  useLibrary.setState({ sessions: [parent] });
+  const ui = await render(<Recap />);
+  await fireEvent.press(ui.getByLabelText("Show original transcript"));
+  await fireEvent.press(ui.getByLabelText("Try this again"));
+  expect(ui.getByLabelText("Show a hint")).toBeTruthy();
+  await fireEvent.press(ui.getByLabelText("Show a hint"));
+  expect(ui.getByText("OPTIONAL HINT")).toBeTruthy();
+  await fireEvent.press(ui.getByLabelText("Start speaking"));
+  expect(router.push).toHaveBeenCalledWith({
+    pathname: "/conversation",
+    params: expect.objectContaining({
+      practiceSessionId: parent.id,
+      retryTurnId: "learner",
+      typing: "0",
+    }),
+  });
+  expect(JSON.stringify(useLibrary.getState().sessions[0])).toBe(original);
+  await ui.unmount();
+});

@@ -120,6 +120,31 @@ function validateReview(value, input) {
 function practiceContext(value) {
   text(value?.parentSessionId, 160);
   text(value.topic, 200, true);
+  if (value.mode !== undefined && value.mode !== "retry")
+    throw Error("Invalid practice mode");
+  if (value.mode === "retry") {
+    const e = value.exchange;
+    const exchange = {
+      tutorTurnId: text(e?.tutorTurnId, 160),
+      learnerTurnId: text(e?.learnerTurnId, 160),
+      question: text(e?.question, 6000),
+      answer: text(e?.answer, 6000),
+      ...(e?.hint === undefined ? {} : { hint: text(e.hint, 600) }),
+    };
+    if (
+      exchange.tutorTurnId === exchange.learnerTurnId ||
+      !usable({ text: exchange.question }) ||
+      !usable({ text: exchange.answer })
+    )
+      throw Error("Invalid retry exchange");
+    return {
+      parentSessionId: value.parentSessionId,
+      topic: value.topic,
+      mode: "retry",
+      exchange,
+      phrases: [],
+    };
+  }
   if (
     !Array.isArray(value.phrases) ||
     value.phrases.length < 1 ||

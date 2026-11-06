@@ -1,5 +1,7 @@
 import {
   fingerprint,
+  usable,
+  practiceContext,
   transcript,
   validateReview,
   VERSION,
@@ -90,4 +92,43 @@ export function practiceFromSession(
     topic: session.topicTitle || "Your conversation",
     phrases,
   };
+}
+
+export function retryFromSession(
+  session: ConversationSession,
+  learnerTurnId: string,
+): ConversationPracticeContext | undefined {
+  const index = session.turns.findIndex((t) => t.id === learnerTurnId);
+  const learner = session.turns[index];
+  const tutor = session.turns[index - 1];
+  if (
+    learner?.role !== "user" ||
+    tutor?.role !== "tutor" ||
+    !usable(learner) ||
+    !usable(tutor)
+  )
+    return;
+  const review = currentReview(session);
+  const hint =
+    review?.refinements.find((r) => r.turnId === learner.id)?.suggestion ??
+    review?.expressions.find(
+      (e) => e.turnId === learner.id || e.turnId === tutor.id,
+    )?.phrase;
+  try {
+    return practiceContext({
+      parentSessionId: session.id,
+      topic: session.topicTitle || "Your conversation",
+      mode: "retry",
+      phrases: [],
+      exchange: {
+        tutorTurnId: tutor.id,
+        learnerTurnId: learner.id,
+        question: tutor.text,
+        answer: learner.text,
+        ...(hint ? { hint } : {}),
+      },
+    });
+  } catch {
+    return;
+  }
 }

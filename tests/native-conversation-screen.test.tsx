@@ -12,6 +12,7 @@ import { useLibrary } from "../src/state/library";
 import type { VoiceTransportEvents } from "../src/conversation/transport-types";
 let mockParams: {
   practiceSessionId?: string;
+  retryTurnId?: string;
   practiceRequest?: string;
   typing?: string;
 } = {};
@@ -106,44 +107,52 @@ test("Talk starts a day-specific topic without loading the selected edition", as
   await ui.unmount();
 });
 
-test("a recap handoff starts once and saves a child without replacing its parent", async () => {
-  const parent = conversation();
-  parent.review = validateReview(result(), parent);
-  useLibrary.setState({ sessions: [parent] });
-  mockParams = {
-    practiceSessionId: parent.id,
-    practiceRequest: "one-request",
-    typing: "1",
-  };
-  try {
-    const ui = await render(<Conversation />);
-    await act(async () => {
-      await Promise.resolve();
-    });
-    expect(voiceApi.request).toHaveBeenCalledWith(
-      expect.stringContaining("/api/voice/session"),
-      expect.objectContaining({
-        body: expect.stringContaining('"parentSessionId":"review-test"'),
-      }),
-    );
-    await act(async () => {
-      mockEvents.open();
-      mockEvents.message(
-        JSON.stringify({
-          type: "conversation.item.input_audio_transcription.completed",
-          item_id: "new-turn",
-          transcript: "Je vais au café.",
+test.each([false, true])(
+  "a recap handoff (retry=%s) saves a child without replacing its parent",
+  async (retry) => {
+    const parent = conversation();
+    parent.review = validateReview(result(), parent);
+    useLibrary.setState({ sessions: [parent] });
+    mockParams = {
+      practiceSessionId: parent.id,
+      practiceRequest: "one-request",
+      ...(retry ? { retryTurnId: "learner" } : {}),
+      typing: "1",
+    };
+    try {
+      const ui = await render(<Conversation />);
+      await act(async () => {
+        await Promise.resolve();
+      });
+      expect(voiceApi.request).toHaveBeenCalledWith(
+        expect.stringContaining("/api/voice/session"),
+        expect.objectContaining({
+          body: expect.stringContaining('"parentSessionId":"review-test"'),
         }),
       );
-    });
-    await fireEvent.press(ui.getByLabelText("End & save conversation"));
-    const sessions = useLibrary.getState().sessions;
-    expect(
-      sessions.find((s) => s.parentSessionId === parent.id)?.turns[0].text,
-    ).toBe("Je vais au café.");
-    expect(sessions.find((s) => s.id === parent.id)).toEqual(parent);
-    await ui.unmount();
-  } finally {
-    mockParams = {};
-  }
-});
+      await act(async () => {
+        mockEvents.open();
+        mockEvents.message(
+          JSON.stringify({
+            type: "conversation.item.input_audio_transcription.completed",
+            item_id: "new-turn",
+            transcript: "Je vais au café.",
+          }),
+        );
+      });
+      await fireEvent.press(ui.getByLabelText("End & save conversation"));
+      const sessions = useLibrary.getState().sessions;
+      expect(
+        sessions.find((s) => s.parentSessionId === parent.id)?.turns[0].text,
+      ).toBe("Je vais au café.");
+      if (retry)
+        expect(
+          sessions.find((s) => s.parentSessionId === parent.id)?.retryExchange,
+        ).toEqual({ tutorTurnId: "tutor", learnerTurnId: "learner" });
+      expect(sessions.find((s) => s.id === parent.id)).toEqual(parent);
+      await ui.unmount();
+    } finally {
+      mockParams = {};
+    }
+  },
+);

@@ -53,6 +53,7 @@ export interface LearningObservation {
 }
 export interface ConversationSession {
   parentSessionId?: string;
+  retryExchange?: { tutorTurnId: string; learnerTurnId: string };
   review?: ConversationReview;
   reviewStatus?: "pending" | "ready" | "error";
   reviewError?: string;
@@ -92,6 +93,14 @@ export interface ConversationReview {
   }[];
 }
 export interface ConversationPracticeContext {
+  mode?: "retry";
+  exchange?: {
+    tutorTurnId: string;
+    learnerTurnId: string;
+    question: string;
+    answer: string;
+    hint?: string;
+  };
   parentSessionId: string;
   topic: string;
   phrases: string[];

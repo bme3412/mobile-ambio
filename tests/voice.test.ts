@@ -272,3 +272,45 @@ test("interruption marks the existing caption without erasing it or duplicating 
     },
   ]);
 });
+
+test("late caption deltas cannot corrupt finalized learner or tutor transcripts", () => {
+  const voice = new VoiceConversation();
+  voice.handle({
+    type: "conversation.item.input_audio_transcription.completed",
+    item_id: "u",
+    transcript: "Je suis allé au marché.",
+  });
+  voice.handle({
+    type: "conversation.item.input_audio_transcription.delta",
+    item_id: "u",
+    delta: "au marché",
+  });
+  voice.handle({
+    type: "response.output_audio_transcript.done",
+    item_id: "t",
+    transcript: "Qu’avez-vous acheté ?",
+  });
+  voice.handle({
+    type: "response.output_audio_transcript.delta",
+    item_id: "t",
+    delta: "acheté",
+  });
+  expect(voice.getSnapshot().turns.map((t) => t.text)).toEqual([
+    "Je suis allé au marché.",
+    "Qu’avez-vous acheté ?",
+  ]);
+});
+
+test("ending during playback preserves the caption and flags it as interrupted", () => {
+  const voice = new VoiceConversation();
+  voice.handle({
+    type: "response.output_audio_transcript.done",
+    item_id: "t",
+    transcript: "Et demain ?",
+  });
+  voice.handle({ type: "output_audio_buffer.started" });
+  voice.end();
+  expect(voice.getSnapshot().turns).toEqual([
+    { id: "t", role: "tutor", text: "Et demain ?", interrupted: true },
+  ]);
+});

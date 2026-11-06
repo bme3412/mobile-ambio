@@ -1,5 +1,9 @@
 import { useLearningTime } from "../../activity/useLearningTime";
-import { requestReview, practiceFromSession } from "../../conversation/review";
+import {
+  requestReview,
+  practiceFromSession,
+  retryFromSession,
+} from "../../conversation/review";
 import type { ConversationPracticeContext } from "../../domain/types";
 import {
   localDate,
@@ -40,11 +44,15 @@ import { VoiceConversation } from "../../conversation/realtime";
 function ConversationContent() {
   const params = useLocalSearchParams<{
     practiceSessionId?: string;
+    retryTurnId?: string;
     practiceRequest?: string;
     typing?: string;
   }>();
   const [focused, setFocused] = useState(false);
   const consumed = useRef<string | null>(null);
+  const [retryExchange, setRetryExchange] = useState<
+    { tutorTurnId: string; learnerTurnId: string } | undefined
+  >();
   const [parentSessionId, setParentSessionId] = useState<string | undefined>();
   const saving = useRef(false);
   const [today, setToday] = useState(localDate);
@@ -183,6 +191,14 @@ function ConversationContent() {
       stopPronunciation();
       setDraft("");
       setParentSessionId(practiceContext?.parentSessionId);
+      setRetryExchange(
+        practiceContext?.exchange
+          ? {
+              tutorTurnId: practiceContext.exchange.tutorTurnId,
+              learnerTurnId: practiceContext.exchange.learnerTurnId,
+            }
+          : undefined,
+      );
       setSessionTopic(topic.label);
       void voice
         .start(
@@ -223,10 +239,14 @@ function ConversationContent() {
       const parent = useLibrary
         .getState()
         .sessions.find((s) => s.id === params.practiceSessionId);
-      const context = parent && practiceFromSession(parent);
+      const context =
+        parent &&
+        (params.retryTurnId
+          ? retryFromSession(parent, params.retryTurnId)
+          : practiceFromSession(parent));
       if (!context) {
         setServiceError(
-          "This review is no longer available. Open the saved conversation and generate a review first.",
+          "This practice material is no longer available. Open the saved conversation and select it again.",
         );
         return;
       }
@@ -245,6 +265,7 @@ function ConversationContent() {
     available,
     params.practiceRequest,
     params.practiceSessionId,
+    params.retryTurnId,
     params.typing,
     start,
   ]);
@@ -257,6 +278,7 @@ function ConversationContent() {
     await save({
       id,
       parentSessionId,
+      retryExchange,
       episodeId: "",
       topicTitle: sessionTopic,
       createdAt: new Date().toISOString(),

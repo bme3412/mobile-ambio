@@ -6,6 +6,7 @@ import { Body, Button, Label, Page, s, Title } from "../components/ui";
 import { useLibrary } from "../state/library";
 import {
   currentReview,
+  retryFromSession,
   isReviewPending,
   practiceFromSession,
   requestReview,
@@ -17,9 +18,13 @@ export default function Recap() {
   const toggle = useLibrary((x) => x.togglePhrase);
   const storageError = useLibrary((x) => x.storageError);
   const [expanded, setExpanded] = useState(false);
+  const [retryTurn, setRetryTurn] = useState<string>();
+  const [showHint, setShowHint] = useState(false);
   const [typing, setTyping] = useState(false);
   const review = session ? currentReview(session) : undefined;
   useLearningTime("practice", !!review, `${id}:${expanded}`);
+  const retry =
+    session && retryTurn ? retryFromSession(session, retryTurn) : undefined;
   const pending = session?.reviewStatus === "pending" && isReviewPending(id);
   const practice = session ? practiceFromSession(session) : undefined;
   return (
@@ -167,6 +172,66 @@ export default function Recap() {
               <View key={t.id} style={s.card}>
                 <Label>{t.role === "user" ? "YOU" : "AMBIO · AI TUTOR"}</Label>
                 <Body>{t.text}</Body>
+                {retryFromSession(session, t.id) && (
+                  <Button
+                    secondary
+                    label="Try this again"
+                    onPress={() => {
+                      setRetryTurn(t.id);
+                      setShowHint(false);
+                    }}
+                  />
+                )}
+                {retry?.exchange && retryTurn === t.id && (
+                  <View style={s.card}>
+                    <Text style={s.subheading}>Try this exchange again</Text>
+                    <Label>AMBIO ASKED</Label>
+                    <Body>{retry.exchange.question}</Body>
+                    <Label>YOUR ORIGINAL ANSWER</Label>
+                    <Body>{retry.exchange.answer}</Body>
+                    {retry.exchange.hint &&
+                      (showHint ? (
+                        <>
+                          <Label>OPTIONAL HINT</Label>
+                          <Body>{retry.exchange.hint}</Body>
+                        </>
+                      ) : (
+                        <Button
+                          secondary
+                          label="Show a hint"
+                          onPress={() => setShowHint(true)}
+                        />
+                      ))}
+                    <View style={s.row}>
+                      <Body>Type your retry instead</Body>
+                      <Switch
+                        accessibilityLabel="Type your retry instead"
+                        value={typing}
+                        onValueChange={setTyping}
+                      />
+                    </View>
+                    <Body>Starting Talk requires a connection.</Body>
+                    <Button
+                      label={typing ? "Start typing" : "Start speaking"}
+                      onPress={() =>
+                        router.push({
+                          pathname: "/conversation",
+                          params: {
+                            practiceSessionId: id,
+                            retryTurnId: t.id,
+                            practiceRequest: String(Date.now()),
+                            typing: typing ? "1" : "0",
+                          },
+                        })
+                      }
+                    />
+                    <Button
+                      secondary
+                      label="Close preview"
+                      onPress={() => setRetryTurn(undefined)}
+                    />
+                  </View>
+                )}
                 {t.interrupted && (
                   <Text style={s.note}>
                     Interrupted · some text may not have been spoken.

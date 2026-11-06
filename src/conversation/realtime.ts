@@ -46,6 +46,7 @@ export class VoiceConversation {
   private playing = false;
   private needsContinuation = false;
   private outputItem: string | null = null;
+  private finalizedTranscripts = new Set<string>();
   subscribe = (listener: () => void) => {
     this.listeners.add(listener);
     return () => {
@@ -63,6 +64,7 @@ export class VoiceConversation {
     text: string,
     append = false,
   ) {
+    if (!id || (append && this.finalizedTranscripts.has(id))) return;
     const exists = this.state.turns.some((t) => t.id === id);
     this.update({
       turns: exists
@@ -87,6 +89,7 @@ export class VoiceConversation {
   ) {
     this.release();
     const generation = this.generation;
+    this.finalizedTranscripts.clear();
     this.update({
       status: "connecting",
       turns: [],
@@ -226,6 +229,7 @@ export class VoiceConversation {
         this.turn(id, "user", String(event.delta ?? ""), true);
         break;
       case "conversation.item.input_audio_transcription.completed":
+        this.finalizedTranscripts.add(id);
         useActivity
           .getState()
           .words(id, String(event.transcript ?? ""), "spoken");
@@ -237,6 +241,7 @@ export class VoiceConversation {
         );
         break;
       case "conversation.item.input_audio_transcription.failed":
+        this.finalizedTranscripts.add(id);
         this.turn(id, "user", "[Speech could not be transcribed]");
         break;
       case "response.created":
@@ -257,6 +262,7 @@ export class VoiceConversation {
         this.turn(id, "tutor", String(event.delta ?? ""), true);
         break;
       case "response.output_audio_transcript.done":
+        this.finalizedTranscripts.add(id);
         this.outputItem = id;
         this.turn(id, "tutor", String(event.transcript ?? ""));
         break;
@@ -382,6 +388,8 @@ export class VoiceConversation {
   }
 
   end() {
+    if (this.outputItem && (this.playing || this.generating))
+      this.markInterrupted(this.outputItem);
     this.release();
     this.update({ status: "ended", microphone: false, muted: false });
   }

@@ -15,3 +15,7 @@ export function validateReview(
   input: Pick<ConversationSession, "id" | "topicTitle" | "turns">,
 ): ConversationReview;
 export function practiceContext(value: unknown): ConversationPracticeContext;
+
+export function usable(
+  turn: ConversationSession["turns"][number] | undefined,
+): boolean;
